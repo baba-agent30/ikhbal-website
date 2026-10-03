@@ -727,6 +727,7 @@
           }, { threshold: .08, rootMargin: '0px 0px -30px' });
           items.forEach(function (el) { o.observe(el); });
         } else {
+
           items.forEach(function (el) { el.classList.add('visible'); });
         }
       }
@@ -748,5 +749,22 @@
         .catch(function () { /* products.json unavailable: static fallback cards stay */ });
     }());
   </script>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    // Catch Netlify Identity invite/recovery tokens landing on the homepage
+    // (e.g. https://ikhbal-alhuzaibi.netlify.app/#invite_token=...) and show
+    // the signup/password form instead of silently ignoring them.
+    (function () {
+      if (!window.netlifyIdentity) return;
+      window.netlifyIdentity.on('init', function (user) {
+        if (!user) {
+          window.netlifyIdentity.on('login', function () {
+            document.location.href = '/admin.html';
+          });
+        }
+      });
+    }());
+  </script>
 </body>
 </html>
+
