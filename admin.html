@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Content Manager — Ikhbal Alhuzaibi</title>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+  <!-- Decap CMS admin: not linked from the public site. Open /admin.html to log in. -->
+  <!-- Manual init: config is defined inline below instead of a separate config.yml. -->
+  <script>
+    window.CMS_MANUAL_INIT = true;
+  </script>
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <script>
+    CMS.init({
+      config: {
+        backend: {
+          name: "git-gateway",
+          branch: "main"
+        },
+        // Product images uploaded through the CMS land here (flat root layout).
+        media_folder: "uploads",
+        public_folder: "/uploads",
+        collections: [
+          {
+            name: "products",
+            label: "Products",
+            files: [
+              {
+                name: "products",
+                label: "Digital Products",
+                file: "products.json",
+                fields: [
+                  {
+                    label: "Products",
+                    name: "products",
+                    widget: "list",
+                    summary: "{{fields.name}} ({{fields.status}})",
+                    fields: [
+                      { label: "ID", name: "id", widget: "string", hint: "Unique slug, e.g. kelarin-v6. Used for anchor IDs." },
+                      { label: "Name", name: "name", widget: "string" },
+                      { label: "Category", name: "category", widget: "string", hint: "Shown as a tag, e.g. Ebooks, Business Tools." },
+                      { label: "Description", name: "description", widget: "text", hint: "Keep it English, one short paragraph." },
+                      { label: "Price", name: "price", widget: "string", hint: "Main price line, e.g. $1.99 or Rp29.000." },
+                      { label: "Price note", name: "price_note", widget: "string", required: false, hint: "Small line under the price. HTML allowed, e.g. Rp29.000 <del>Rp49.000</del>." },
+                      { label: "Status", name: "status", widget: "select", options: ["NEW", "FEATURED", "FREE", "PRO"] },
+                      { label: "Image", name: "image", widget: "image", required: false, hint: "Upload a cover. If empty, a monogram tile is shown instead." },
+                      { label: "Buy link", name: "link", widget: "string", hint: "Full URL, e.g. https://lynk.id/ikhbalalhuzaibi/xxxx" },
+                      { label: "CTA label", name: "cta", widget: "string", required: false, hint: "Button text. Defaults to 'View Product'." },
+                      { label: "Extra tag", name: "tag3", widget: "string", required: false, hint: "Optional third tag, e.g. Web App. Defaults to 'Available now'." }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    });
+  </script>
+</body>
+</html>

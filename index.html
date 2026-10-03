@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#0b0d0f" />
+  <meta name="description" content="The digital home of Ikhbal Alhuzaibi — independent creator working across AI, technology, experiments and digital products." />
+  <link rel="icon" href="data:," />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <title>Ikhbal Alhuzaibi — Independent Creator</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0d0f;
+      --bg-raised: #111418;
+      --surface: #161a1f;
+      --surface-2: #1c2127;
+      --ink: #f3f0e8;
+      --muted: #a5a8a5;
+      --faint: #737874;
+      --line: rgba(243, 240, 232, .15);
+      --line-strong: rgba(243, 240, 232, .28);
+      --accent: #d8ff57;
+      --accent-soft: rgba(216, 255, 87, .11);
+      --warm: #e5c8a6;
+      --shadow: 0 28px 90px rgba(0, 0, 0, .35);
+      --radius-xl: 34px;
+      --radius-lg: 24px;
+      --radius-md: 16px;
+    }
+    :root[data-theme="light"] {
+      color-scheme: light;
+      --bg: #f3f1eb;
+      --bg-raised: #ebe8e0;
+      --surface: #fffdfa;
+      --surface-2: #e4e2db;
+      --ink: #111315;
+      --muted: #555c5b;
+      --faint: #777d7b;
+      --line: rgba(17, 19, 21, .14);
+      --line-strong: rgba(17, 19, 21, .27);
+      --accent: #8cad16;
+      --accent-soft: rgba(140, 173, 22, .12);
+      --warm: #8d5b31;
+      --shadow: 0 28px 80px rgba(32, 35, 31, .13);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 92px; }
+    body {
+      margin: 0;
+      overflow-x: hidden;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Manrope", sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color .25s ease, color .25s ease;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+      opacity: .026;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { font: inherit; }
+    .shell { width: min(1220px, calc(100% - 52px)); margin-inline: auto; }
+    .skip-link { position: fixed; left: 16px; top: -70px; z-index: 100; padding: 10px 15px; background: var(--accent); color: #10120d; font-weight: 700; text-decoration: none; border-radius: 10px; }
+    .skip-link:focus { top: 16px; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 18;
+      border-bottom: 1px solid transparent;
+      background: color-mix(in srgb, var(--bg) 78%, transparent);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      transition: border-color .2s ease;
+    }
+    .topbar.scrolled { border-color: var(--line); }
+    .nav-inner { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .nav-context { color: var(--muted); font-size: .78rem; letter-spacing: .04em; white-space: nowrap; }
+    .nav-context strong { color: var(--ink); font-weight: 700; }
+    .nav-links { display: flex; align-items: center; justify-content: flex-end; gap: 24px; }
+    .nav-links a { color: var(--muted); font-size: .8rem; font-weight: 600; text-decoration: none; transition: color .18s ease; }
+    .nav-links a:hover, .nav-links a:focus-visible { color: var(--ink); }
+    .nav-cta { padding: 8px 13px; border: 1px solid var(--line-strong); border-radius: 999px; color: var(--ink) !important; }
+    .theme-toggle { width: 38px; height: 38px; display: grid; place-items: center; padding: 0; border: 1px solid var(--line); border-radius: 50%; background: transparent; color: var(--ink); cursor: pointer; transition: border-color .18s ease, background-color .18s ease; }
+    .theme-toggle:hover { border-color: var(--line-strong); background: var(--surface); }
+    .theme-toggle svg { width: 16px; height: 16px; }
+    .theme-toggle .sun { display: none; }
+    :root[data-theme="light"] .theme-toggle .sun { display: block; }
+    :root[data-theme="light"] .theme-toggle .moon { display: none; }
+
+    .hero { position: relative; min-height: calc(100svh - 72px); display: grid; align-items: center; overflow: clip; border-bottom: 1px solid var(--line); }
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 580px;
+      height: 580px;
+      top: 0;
+      right: -140px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(216,255,87,.12) 0%, rgba(216,255,87,.025) 42%, transparent 70%);
+      filter: blur(2px);
+      pointer-events: none;
+    }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(290px, .65fr); gap: 74px; align-items: end; padding-block: 92px 86px; }
+    .eyebrow { margin: 0 0 28px; color: var(--muted); font-size: .74rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .hero h1 { margin: 0; max-width: 920px; font-size: clamp(4rem, 8.7vw, 8.8rem); line-height: .82; letter-spacing: -.07em; font-weight: 600; }
+    .hero h1 .serif { font-family: "Bodoni Moda", Georgia, serif; font-weight: 500; font-style: italic; color: var(--accent); letter-spacing: -.055em; }
+    .hero-bottom { display: grid; grid-template-columns: minmax(220px, 460px) auto; align-items: end; gap: 30px; margin-top: 48px; }
+    .hero-copy { margin: 0; color: var(--muted); font-size: clamp(1rem, 1.5vw, 1.18rem); }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .btn { min-height: 50px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 12px 19px; border-radius: 999px; text-decoration: none; font-size: .85rem; font-weight: 700; transition: transform .18s ease, background-color .18s ease, color .18s ease, border-color .18s ease; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: var(--accent); color: #12150c; }
+    .btn-secondary { border: 1px solid var(--line-strong); color: var(--ink); }
+    .btn-secondary:hover { background: var(--surface); }
+    .btn svg, .arrow-link svg { width: 17px; height: 17px; flex: none; transition: transform .18s ease; }
+    .btn:hover svg, .arrow-link:hover svg { transform: translateX(3px); }
+    .hero-index { position: relative; min-height: 410px; display: flex; flex-direction: column; justify-content: space-between; padding: 28px; border: 1px solid var(--line); border-radius: var(--radius-xl) var(--radius-xl) 6px var(--radius-xl); background: linear-gradient(145deg, var(--surface), color-mix(in srgb, var(--surface-2) 72%, transparent)); box-shadow: var(--shadow); overflow: hidden; }
+    .hero-index::after { content: "IA"; position: absolute; right: -14px; bottom: -62px; font-family: "Bodoni Moda", Georgia, serif; font-size: 12rem; line-height: 1; letter-spacing: -.1em; color: transparent; -webkit-text-stroke: 1px var(--line-strong); opacity: .65; }
+    .index-top { position: relative; z-index: 1; display: flex; justify-content: space-between; gap: 18px; color: var(--faint); font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; }
+    .status-dot { display: inline-flex; align-items: center; gap: 7px; color: var(--ink); }
+    .status-dot::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 5px var(--accent-soft); }
+    .index-list { position: relative; z-index: 1; display: grid; gap: 0; margin-top: auto; }
+    .index-list span { display: flex; justify-content: space-between; gap: 16px; padding: 13px 0; border-top: 1px solid var(--line); font-size: .88rem; }
+    .index-list small { color: var(--faint); font-size: .73rem; }
+
+    section { padding: 126px 0; }
+    .section-top { display: grid; grid-template-columns: 185px minmax(0, 1fr); gap: 42px; align-items: start; margin-bottom: 58px; }
+    .section-no { margin: 8px 0 0; color: var(--faint); font-size: .72rem; letter-spacing: .12em; }
+    .section-heading { max-width: 780px; }
+    h2 { margin: 0; font: 500 clamp(2.8rem, 5.5vw, 5.8rem)/.95 "Bodoni Moda", Georgia, serif; letter-spacing: -.045em; }
+    .section-intro { max-width: 650px; margin: 20px 0 0; color: var(--muted); font-size: 1.04rem; }
+    .kicker { display: block; margin-bottom: 8px; color: var(--accent); font: italic 500 1.25rem/1 "Bodoni Moda", Georgia, serif; }
+
+    .products { background: var(--bg-raised); }
+    .product-feature { display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); min-height: 640px; border: 1px solid var(--line); background: var(--surface); box-shadow: var(--shadow); }
+    .product-visual { position: relative; display: grid; place-items: center; min-height: 580px; overflow: hidden; background: #0d5758; }
+    .product-visual::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 20% 15%, rgba(255,211,100,.44), transparent 28%), linear-gradient(145deg, rgba(255,255,255,.04), transparent 60%); }
+    .product-visual::after { content: ""; position: absolute; width: 300px; height: 300px; right: -150px; bottom: -150px; border: 1px solid rgba(255,255,255,.2); border-radius: 50%; box-shadow: 0 0 0 58px rgba(255,255,255,.035), 0 0 0 116px rgba(255,255,255,.022); }
+    .product-visual img { position: relative; z-index: 1; width: min(330px, 68%); aspect-ratio: 2/3; object-fit: cover; border-radius: 9px; transform: rotate(-2.5deg); box-shadow: 0 32px 64px rgba(0,0,0,.36); transition: transform .35s ease; }
+    .product-feature:hover .product-visual img { transform: rotate(0deg) translateY(-5px); }
+    .product-info { display: flex; flex-direction: column; justify-content: center; padding: clamp(36px, 6vw, 74px); }
+    .meta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; margin-bottom: 24px; }
+    .tag { display: inline-flex; align-items: center; min-height: 29px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: .67rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .tag-featured { background: var(--accent); border-color: var(--accent); color: #11150b; }
+    .product-info h3 { max-width: 630px; margin: 0; font: 600 clamp(2.2rem, 4.1vw, 4.2rem)/1.02 "Bodoni Moda", Georgia, serif; letter-spacing: -.04em; }
+    .product-info > p { max-width: 580px; margin: 22px 0 0; color: var(--muted); font-size: 1rem; }
+    .product-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 34px 0; }
+    .product-facts div { border-top: 1px solid var(--line-strong); padding-top: 13px; }
+    .product-facts strong { display: block; font-size: 1rem; }
+    .product-facts span { color: var(--faint); font-size: .76rem; }
+    .buy-row { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; }
+    .price-block { min-width: 136px; }
+    .price-block strong { display: block; font: 600 2rem/1 "Bodoni Moda", Georgia, serif; }
+    .price-block span { color: var(--faint); font-size: .78rem; }
+    .price-block del { margin-left: 6px; }
+    .product-secondary { display: grid; grid-template-columns: minmax(260px, .7fr) minmax(0, 1.3fr); min-height: 440px; margin-top: 18px; border: 1px solid var(--line); background: var(--surface); }
+    .kelarin-visual { position: relative; display: grid; place-items: center; min-height: 420px; overflow: hidden; background: #0c1525; }
+    .kelarin-visual::before { content: ""; position: absolute; width: 340px; height: 340px; border-radius: 50%; background: rgba(28, 116, 255, .26); filter: blur(54px); }
+    .kelarin-visual::after { content: ""; position: absolute; inset: 24px; border: 1px solid rgba(255, 255, 255, .08); border-radius: var(--radius-lg); }
+    .kelarin-icon { position: relative; z-index: 1; width: clamp(150px, 18vw, 210px); aspect-ratio: 1; display: grid; place-items: center; border-radius: 28%; background: linear-gradient(145deg, #287fff, #0755ca); box-shadow: 0 28px 60px rgba(0, 72, 190, .4), inset 0 1px 0 rgba(255,255,255,.2); transform: rotate(-2deg); transition: transform .3s ease; }
+    .product-secondary:hover .kelarin-icon { transform: rotate(0deg) translateY(-4px); }
+    .kelarin-icon svg { width: 57%; height: 57%; overflow: visible; }
+    .kelarin-dot { position: absolute; right: 16%; bottom: 16%; width: 14%; aspect-ratio: 1; border-radius: 50%; background: #ffd84d; box-shadow: 0 0 0 7px rgba(255, 216, 77, .15); }
+    .product-secondary .product-info { padding: clamp(30px, 4.5vw, 58px); }
+    .product-secondary .product-info h3 { font-size: clamp(2.2rem, 3.7vw, 3.7rem); }
+    .product-secondary .product-info > p { max-width: 700px; font-size: .91rem; }
+    .product-secondary .buy-row { margin-top: 30px; }
+    .product-secondary .price-block { min-width: 210px; }
+    .product-secondary .price-block strong { font: 700 1.22rem/1.2 "Manrope", sans-serif; letter-spacing: -.02em; }
+    .future-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 18px; }
+    .future-row.single { grid-template-columns: 1fr; }
+    .future-slot { min-height: 168px; display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: center; padding: 25px; border: 1px dashed var(--line-strong); color: var(--muted); }
+    .future-slot .slot-no { font: 500 2.1rem/1 "Bodoni Moda", Georgia, serif; color: var(--faint); }
+    .future-slot h3 { margin: 0 0 4px; color: var(--ink); font-size: 1rem; }
+    .future-slot p { margin: 0; font-size: .82rem; }
+
+    .works { overflow: hidden; }
+    .works-grid { display: grid; grid-template-columns: 1.2fr .8fr; grid-template-rows: auto auto; gap: 20px; }
+    .work-card { position: relative; overflow: hidden; border: 1px solid var(--line); background: var(--surface); }
+    .work-card.featured { grid-row: 1 / span 2; min-height: 680px; display: flex; flex-direction: column; }
+    .work-media { position: relative; overflow: hidden; min-height: 390px; background: #0c4d4d; }
+    .work-media img { width: 100%; height: 100%; min-height: 390px; object-fit: cover; object-position: center; transition: transform .45s ease, filter .3s ease; }
+    .work-card:hover .work-media img { transform: scale(1.025); }
+    .work-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(4,13,14,.34), transparent 48%); }
+    .work-copy { flex: 1; padding: 28px; }
+    .work-head { display: flex; justify-content: space-between; gap: 24px; align-items: start; }
+    .work-copy h3 { margin: 0; font: 600 clamp(1.6rem, 2.5vw, 2.45rem)/1.08 "Bodoni Moda", Georgia, serif; }
+    .work-copy p { margin: 13px 0 0; color: var(--muted); font-size: .91rem; }
+    .work-card.small { min-height: 270px; display: flex; flex-direction: column; justify-content: space-between; }
+    .work-card.small.blog-card { background: #d8ff57; color: #11150c; }
+    .work-card.small.blog-card .tag { border-color: rgba(17,21,12,.3); color: #303724; }
+    .work-card.small.blog-card p { color: #3d4430; }
+    .work-link { display: inline-flex; align-items: center; justify-content: space-between; gap: 14px; width: 100%; padding: 18px 28px; border-top: 1px solid var(--line); text-decoration: none; font-size: .8rem; font-weight: 700; }
+    .blog-card .work-link { border-color: rgba(17,21,12,.22); }
+    .work-link svg { width: 17px; }
+    .taxonomy { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+
+    .journal { background: var(--bg-raised); }
+    .journal-layout { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr); gap: 62px; align-items: stretch; }
+    .journal-feature { position: relative; min-height: 560px; overflow: hidden; }
+    .journal-feature img { width: 100%; height: 100%; min-height: 560px; object-fit: cover; }
+    .journal-overlay { position: absolute; inset: auto 0 0; padding: 90px 34px 32px; background: linear-gradient(transparent, rgba(3,10,11,.92)); color: #fff; }
+    .journal-overlay span { color: #d8ff57; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .journal-overlay h3 { max-width: 620px; margin: 8px 0 10px; font: 600 clamp(2rem, 4vw, 3.8rem)/1.02 "Bodoni Moda", Georgia, serif; letter-spacing: -.04em; }
+    .journal-overlay p { max-width: 610px; margin: 0; color: #d8dcda; font-size: .9rem; }
+    .journal-side { display: flex; flex-direction: column; border-top: 1px solid var(--line-strong); }
+    .journal-note { display: grid; grid-template-columns: 42px 1fr; gap: 16px; padding: 25px 0; border-bottom: 1px solid var(--line); }
+    .journal-note > span { color: var(--faint); font: 500 1rem/1 "Bodoni Moda", Georgia, serif; }
+    .journal-note h3 { margin: 0 0 7px; font-size: .98rem; }
+    .journal-note p { margin: 0; color: var(--muted); font-size: .82rem; }
+    .journal-cta { margin-top: auto; padding-top: 28px; }
+    .arrow-link { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); font-size: .86rem; font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--line-strong); padding-bottom: 5px; }
+
+    .about { position: relative; overflow: hidden; }
+    .about-layout { display: grid; grid-template-columns: .78fr 1.22fr; gap: 80px; align-items: start; }
+    .about-mark { position: sticky; top: 120px; min-height: 360px; display: grid; place-items: center; border: 1px solid var(--line); background: var(--surface); overflow: hidden; }
+    .about-mark span { font: 500 clamp(8rem, 18vw, 15rem)/1 "Bodoni Moda", Georgia, serif; letter-spacing: -.12em; color: transparent; -webkit-text-stroke: 1px var(--line-strong); transform: translateX(-.05em); }
+    .about-mark::before { content: ""; position: absolute; width: 180px; height: 180px; border-radius: 50%; background: var(--accent-soft); filter: blur(35px); }
+    .about-copy .lead { margin: 0; font: 500 clamp(2rem, 4.4vw, 4.5rem)/1.06 "Bodoni Moda", Georgia, serif; letter-spacing: -.04em; }
+    .about-copy .lead em { color: var(--accent); }
+    .about-copy > p:not(.lead) { max-width: 660px; color: var(--muted); font-size: 1rem; margin: 28px 0 0; }
+    .about-values { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 44px; }
+    .about-values div { padding-top: 15px; border-top: 1px solid var(--line-strong); }
+    .about-values strong { display: block; font-size: .9rem; }
+    .about-values span { color: var(--faint); font-size: .74rem; }
+
+    .philosophy { padding: 74px 0; border-block: 1px solid var(--line); background: var(--surface); }
+    .philosophy-line { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; gap: 0 .26em; margin: 0; text-align: center; font: 500 clamp(2.8rem, 7vw, 7.5rem)/.95 "Bodoni Moda", Georgia, serif; letter-spacing: -.055em; }
+    .philosophy-line em { color: var(--accent); font-weight: 500; }
+
+    .contact { padding-bottom: 74px; }
+    .contact-panel { display: grid; grid-template-columns: 1fr 1fr; min-height: 480px; border: 1px solid var(--line); background: var(--surface); }
+    .contact-main { display: flex; flex-direction: column; justify-content: space-between; padding: clamp(32px, 5vw, 64px); border-right: 1px solid var(--line); }
+    .contact-main h2 { max-width: 620px; }
+    .contact-main p { max-width: 480px; color: var(--muted); }
+    .contact-links { display: grid; align-content: stretch; }
+    .contact-row { min-height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 17px 25px; border-bottom: 1px solid var(--line); text-decoration: none; transition: background-color .18s ease; }
+    .contact-row:last-child { border-bottom: 0; }
+    a.contact-row:hover { background: var(--accent-soft); }
+    .contact-row strong { font-size: .84rem; }
+    .contact-row span { color: var(--faint); font-size: .74rem; text-align: right; }
+    .contact-row.active span { color: var(--accent); }
+
+    footer { padding: 24px 0 36px; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 24px; color: var(--faint); font-size: .75rem; }
+    .footer-inner a { color: var(--ink); text-underline-offset: 4px; }
+
+    .reveal { opacity: 1; transform: none; }
+    .btn:focus-visible, .nav-links a:focus-visible, .theme-toggle:focus-visible, .work-link:focus-visible, .arrow-link:focus-visible, .contact-row:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+    @media (max-width: 980px) {
+      .nav-context { display: none; }
+      .nav-inner { justify-content: center; }
+      .hero-grid { grid-template-columns: 1fr; align-items: start; gap: 48px; }
+      .hero-index { min-height: 320px; }
+      .hero-bottom { grid-template-columns: 1fr; align-items: start; }
+      .product-feature, .product-secondary { grid-template-columns: 1fr; }
+      .product-visual { min-height: 560px; }
+      .kelarin-visual { min-height: 380px; }
+      .works-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+      .work-card.featured { grid-row: auto; min-height: auto; }
+      .work-card.small { min-height: 230px; }
+      .journal-layout, .about-layout { grid-template-columns: 1fr; }
+      .about-mark { position: relative; top: auto; min-height: 300px; }
+      .contact-panel { grid-template-columns: 1fr; }
+      .contact-main { min-height: 390px; border-right: 0; border-bottom: 1px solid var(--line); }
+    }
+    @media (max-width: 720px) {
+      .shell { width: min(100% - 28px, 1220px); }
+      html { scroll-padding-top: 76px; }
+      .nav-inner { min-height: 64px; justify-content: space-between; }
+      .nav-links { width: 100%; justify-content: space-between; gap: 9px; }
+      .nav-links a { font-size: .64rem; }
+      .nav-links .nav-cta { display: none; }
+      .theme-toggle { width: 32px; height: 32px; flex: none; }
+      .hero { min-height: auto; }
+      .hero-grid { padding-block: 66px 54px; gap: 34px; }
+      .hero h1 { font-size: clamp(3.55rem, 18vw, 5.1rem); }
+      .eyebrow { margin-bottom: 20px; font-size: .66rem; }
+      .hero-bottom { margin-top: 34px; gap: 24px; }
+      .actions { flex-direction: column; }
+      .actions .btn { width: 100%; }
+      .hero-index { min-height: 300px; padding: 22px; border-radius: 24px 24px 4px 24px; }
+      .hero-index::after { font-size: 9rem; bottom: -44px; }
+      section { padding: 86px 0; }
+      .section-top { grid-template-columns: 1fr; gap: 12px; margin-bottom: 36px; }
+      .section-no { margin-top: 0; }
+      h2 { font-size: clamp(2.65rem, 13vw, 4rem); }
+      .product-visual { min-height: 460px; }
+      .product-visual img { width: min(280px, 67%); }
+      .kelarin-visual { min-height: 320px; }
+      .kelarin-visual::after { inset: 16px; }
+      .kelarin-icon { width: 150px; border-radius: 26%; }
+      .product-info { padding: 30px 22px 34px; }
+      .product-facts { grid-template-columns: 1fr; gap: 10px; }
+      .product-facts div { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+      .product-facts span { text-align: right; }
+      .buy-row { align-items: stretch; flex-direction: column; }
+      .buy-row .btn { width: 100%; }
+      .future-row { grid-template-columns: 1fr; }
+      .future-slot { min-height: 136px; padding: 21px; }
+      .work-media, .work-media img { min-height: 330px; }
+      .work-copy { padding: 22px; }
+      .work-link { padding-inline: 22px; }
+      .taxonomy { margin-top: 18px; }
+      .journal-layout { gap: 34px; }
+      .journal-feature, .journal-feature img { min-height: 470px; }
+      .journal-overlay { padding: 90px 22px 24px; }
+      .about-layout { gap: 38px; }
+      .about-mark { min-height: 230px; }
+      .about-values { grid-template-columns: 1fr; }
+      .philosophy { padding: 54px 0; }
+      .contact { padding-bottom: 54px; }
+      .contact-main { min-height: 350px; }
+      .contact-row { padding-inline: 20px; }
+      .footer-inner { align-items: flex-start; flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .001ms !important; animation-duration: .001ms !important; animation-iteration-count: 1 !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar" aria-label="Primary navigation">
+    <div class="shell nav-inner">
+      <div class="nav-context"><strong>Independent Creator</strong> / AI · Technology · Digital Products</div>
+      <nav class="nav-links" aria-label="Page sections">
+        <a href="#home">Home</a>
+        <a href="#products">Products</a>
+        <a href="#works">Works</a>
+        <a href="#journal">Journal</a>
+        <a href="#about">About</a>
+        <a class="nav-cta" href="#contact">Let's Build</a>
+        <button class="theme-toggle" type="button" aria-label="Switch to light mode" title="Change theme">
+          <svg class="moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.7 14.1A8.5 8.5 0 0 1 9.9 3.3 8.7 8.7 0 1 0 20.7 14.1Z"/></svg>
+          <svg class="sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3.7"/><path d="M12 2v2.2M12 19.8V22M4.93 4.93l1.56 1.56M17.51 17.51l1.56 1.56M2 12h2.2M19.8 12H22M4.93 19.07l1.56-1.56M17.51 6.49l1.56-1.56"/></svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="home" aria-labelledby="hero-title">
+      <div class="shell hero-grid">
+        <div>
+          <p class="eyebrow">Ikhbal Alhuzaibi · Digital Studio / 2026</p>
+          <h1 id="hero-title">BUILDING IDEAS INTO <span class="serif">DIGITAL THINGS.</span></h1>
+          <div class="hero-bottom">
+            <p class="hero-copy">AI, code, experiments and digital products — built with curiosity, shaped with care, and made to be useful.</p>
+            <div class="actions">
+              <a class="btn btn-primary" href="#works">Explore My Works
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+              <a class="btn btn-secondary" href="#products">Explore Products</a>
+            </div>
+          </div>
+        </div>
+        <aside class="hero-index" aria-label="Studio focus">
+          <div class="index-top"><span>Studio index</span><span class="status-dot">Building</span></div>
+          <div class="index-list">
+            <span>Digital products <small>01</small></span>
+            <span>Web &amp; AI experiments <small>02</small></span>
+            <span>Independent publishing <small>03</small></span>
+            <span>Useful ideas <small>04</small></span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="products" id="products" aria-labelledby="products-title">
+      <div class="shell">
+        <div class="section-top reveal">
+          <p class="section-no">01 / PRODUCTS</p>
+          <div class="section-heading">
+            <span class="kicker">Useful by design</span>
+            <h2 id="products-title">Digital Products</h2>
+            <p class="section-intro">Tools, templates and digital creations built to be useful. Two released products, with room for the collection to grow.</p>
+          </div>
+        </div>
+
+        <article class="product-feature reveal">
+          <div class="product-visual">
+            <img src="ebook-cover.webp" alt="Cover of 100 Fakta Hewan Teraneh di Dunia" width="960" height="1440" />
+          </div>
+          <div class="product-info">
+            <div class="meta-row">
+              <span class="tag tag-featured">Featured</span>
+              <span class="tag">Ebook</span>
+              <span class="tag">Available now</span>
+            </div>
+            <h3 lang="id">100 Fakta Hewan Teraneh di Dunia</h3>
+            <p>A 46-page Indonesian ebook for curious readers aged 7–12, featuring 100 verified animal facts, quizzes, and original illustrations.</p>
+            <div class="product-facts" aria-label="Product details">
+              <div><strong>46 pages</strong><span>Full-color ebook</span></div>
+              <div><strong>100 facts</strong><span>Verified content</span></div>
+              <div><strong>Ages 7–12</strong><span>Young readers</span></div>
+            </div>
+            <div class="buy-row">
+              <div class="price-block">
+                <strong>$1.99</strong>
+                <span>Rp29.000 <del>Rp49.000</del></span>
+              </div>
+              <a class="btn btn-primary" href="https://lynk.id/ikhbalalhuzaibi/r622mgxlemmx" target="_blank" rel="noopener noreferrer">View Product
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <article class="product-secondary reveal" aria-labelledby="kelarin-title">
+          <div class="kelarin-visual" aria-hidden="true">
+            <div class="kelarin-icon">
+              <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M34 22V98" stroke="white" stroke-width="15" stroke-linecap="round"/>
+                <path d="M40 63L82 24" stroke="white" stroke-width="15" stroke-linecap="round"/>
+                <path d="M55 50L87 94" stroke="white" stroke-width="15" stroke-linecap="round"/>
+              </svg>
+              <span class="kelarin-dot"></span>
+            </div>
+          </div>
+          <div class="product-info">
+            <div class="meta-row">
+              <span class="tag tag-featured">New</span>
+              <span class="tag">Business Tools</span>
+              <span class="tag">Web App</span>
+            </div>
+            <h3 id="kelarin-title">KELARIN v6</h3>
+            <p>Offline-first web toolkit (PWA) for small-business administration. Dashboard with revenue &amp; profit summaries, product &amp; stock management, cashier/POS with cart and printable receipts, cashflow ledger, debt &amp; receivables tracking, business performance reports, and a business calculator (margin vs markup, BEP, ROI, EOQ). Built with pure HTML/CSS/JS — no frameworks, no backend; 100% of data stored locally on the device, installable on phone and laptop like a native app.</p>
+            <div class="buy-row">
+              <div class="price-block">
+                <strong>Rp100.000 – Rp300.000</strong>
+                <span>One-time purchase · no subscription</span>
+              </div>
+              <a class="btn btn-primary" href="https://lynk.id/ikhbalalhuzaibi" target="_blank" rel="noopener noreferrer">Get KELARIN
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <div class="future-row single reveal" aria-label="Reserved space for future products">
+          <div class="future-slot">
+            <span class="slot-no">03</span>
+            <div><h3>Collection grows here</h3><p>Reserved for future releases. New products can be added without changing the system.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="works" id="works" aria-labelledby="works-title">
+      <div class="shell">
+        <div class="section-top reveal">
+          <p class="section-no">02 / SELECTED WORKS</p>
+          <div class="section-heading">
+            <span class="kicker">Made, tested, published</span>
+            <h2 id="works-title">Selected Works</h2>
+            <p class="section-intro">A growing archive of products, publishing projects and experiments — shown as they become real.</p>
+            <div class="taxonomy" aria-label="Future work categories">
+              <span class="tag">AI</span><span class="tag">Web</span><span class="tag">Tools</span><span class="tag">Experiments</span><span class="tag">Other</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="works-grid">
+          <article class="work-card featured reveal">
+            <div class="work-media"><img src="ebook-cover.webp" alt="Illustrated cover of the ebook 100 Fakta Hewan Teraneh di Dunia" width="960" height="1440" loading="lazy" /></div>
+            <div class="work-copy">
+              <div class="work-head"><span class="tag">Other · Published</span><span class="section-no">W—01</span></div>
+              <h3 lang="id">100 Fakta Hewan Teraneh di Dunia</h3>
+              <p>Research, writing, quizzes and original illustration brought together as one complete learning product.</p>
+            </div>
+            <a class="work-link" href="https://lynk.id/ikhbalalhuzaibi/r622mgxlemmx" target="_blank" rel="noopener noreferrer">See the finished work
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </article>
+
+          <article class="work-card small blog-card reveal">
+            <div class="work-copy">
+              <div class="work-head"><span class="tag">Web · Active</span><span class="section-no" style="color:#4a513b">W—02</span></div>
+              <h3>Update Fakta</h3>
+              <p>An Indonesian science-facts publication with a new article every day.</p>
+            </div>
+            <a class="work-link" href="https://updatefaktazf.blogspot.com/" target="_blank" rel="noopener noreferrer">Visit the publication
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </article>
+
+          <article class="work-card small reveal" aria-label="Future project space">
+            <div class="work-copy">
+              <div class="work-head"><span class="tag">Next project</span><span class="section-no">W—03</span></div>
+              <h3>Reserved for what comes next.</h3>
+              <p>This is an intentional placeholder, ready for a real AI, web, tool or experiment project when it ships.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="journal" id="journal" aria-labelledby="journal-title">
+      <div class="shell">
+        <div class="section-top reveal">
+          <p class="section-no">03 / JOURNAL</p>
+          <div class="section-heading">
+            <span class="kicker">Notes from the process</span>
+            <h2 id="journal-title">Ideas, experiments, lessons and things I'm building.</h2>
+          </div>
+        </div>
+
+        <div class="journal-layout">
+          <article class="journal-feature reveal">
+            <img src="journal-orangutan.webp" alt="Illustration of a young orangutan in a tropical rainforest" width="1400" height="933" loading="lazy" />
+            <div class="journal-overlay">
+              <span>Update Fakta · Indonesian</span>
+              <h3>Curiosity, published daily.</h3>
+              <p>Science, nature and the strange details that make the world worth exploring.</p>
+            </div>
+          </article>
+          <div class="journal-side reveal">
+            <article class="journal-note"><span>01</span><div><h3>AI experiments</h3><p>Process notes and honest observations from trying new tools.</p></div></article>
+            <article class="journal-note"><span>02</span><div><h3>Building in public</h3><p>Progress, decisions and lessons behind each digital release.</p></div></article>
+            <article class="journal-note"><span>03</span><div><h3>Technology insights</h3><p>Practical ideas, tutorials and useful discoveries.</p></div></article>
+            <article class="journal-note"><span>04</span><div><h3>Personal notes</h3><p>Thoughts on curiosity, making and learning through action.</p></div></article>
+            <div class="journal-cta">
+              <a class="arrow-link" href="https://updatefaktazf.blogspot.com/" target="_blank" rel="noopener noreferrer">Read Update Fakta
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about" id="about" aria-labelledby="about-title">
+      <div class="shell">
+        <div class="section-top reveal">
+          <p class="section-no">04 / ABOUT</p>
+          <div class="section-heading"><h2 id="about-title">About Ikhbal</h2></div>
+        </div>
+        <div class="about-layout">
+          <div class="about-mark reveal" aria-hidden="true"><span>IA</span></div>
+          <div class="about-copy reveal">
+            <p class="lead">I'm interested in the space where <em>AI, technology and creativity</em> meet.</p>
+            <p>I like taking simple ideas, experimenting with them, and turning them into digital things people can actually use. This site is the working home for those products, tools, projects and notes as they grow.</p>
+            <div class="about-values">
+              <div><strong>Curiosity first</strong><span>Ask better questions</span></div>
+              <div><strong>Make it useful</strong><span>Ideas become tangible</span></div>
+              <div><strong>Keep learning</strong><span>Every build is feedback</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="philosophy" aria-label="Creator philosophy">
+      <div class="shell"><p class="philosophy-line">BUILD. <em>EXPERIMENT.</em> LEARN. REPEAT.</p></div>
+    </section>
+
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="shell">
+        <div class="section-top reveal">
+          <p class="section-no">05 / CONTACT</p>
+          <div class="section-heading"><span class="kicker">A door, left open</span><h2 id="contact-title">Let's build something.</h2></div>
+        </div>
+        <div class="contact-panel reveal">
+          <div class="contact-main">
+            <div>
+              <p class="eyebrow">Independent creator · open to possibility</p>
+              <h2>Start with a good idea.</h2>
+            </div>
+            <p>The Lynk store is live. Other contact and social channels will appear here when official links are ready.</p>
+          </div>
+          <div class="contact-links" aria-label="Contact channels">
+            <a class="contact-row active" href="https://lynk.id/ikhbalalhuzaibi" target="_blank" rel="noopener noreferrer"><strong>Lynk</strong><span>Visit store ↗</span></a>
+            <div class="contact-row"><strong>Email</strong><span>Address not added</span></div>
+            <div class="contact-row"><strong>GitHub</strong><span>Link not added</span></div>
+            <div class="contact-row"><strong>Instagram</strong><span>Link not added</span></div>
+            <div class="contact-row"><strong>TikTok</strong><span>Link not added</span></div>
+            <div class="contact-row"><strong>YouTube</strong><span>Link not added</span></div>
+            <div class="contact-row"><strong>PayPal</strong><span>Link not added</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner">
+      <span>© 2026 Ikhbal Alhuzaibi. Built one idea at a time.</span>
+      <a href="#home">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var toggle = document.querySelector('.theme-toggle');
+      var topbar = document.querySelector('.topbar');
+
+      toggle.addEventListener('click', function () {
+        var isLight = root.getAttribute('data-theme') === 'light';
+        if (isLight) {
+          root.removeAttribute('data-theme');
+          toggle.setAttribute('aria-label', 'Switch to light mode');
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0b0d0f');
+        } else {
+          root.setAttribute('data-theme', 'light');
+          toggle.setAttribute('aria-label', 'Switch to dark mode');
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f3f1eb');
+        }
+      });
+
+      function updateTopbar() {
+        topbar.classList.toggle('scrolled', window.scrollY > 12);
+      }
+      updateTopbar();
+      window.addEventListener('scroll', updateTopbar, { passive: true });
+
+      var revealItems = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: .08, rootMargin: '0px 0px -30px' });
+        revealItems.forEach(function (item) { observer.observe(item); });
+      } else {
+        revealItems.forEach(function (item) { item.classList.add('visible'); });
+      }
+    }());
+  </script>
+
+  <script>
+    /* Dynamic products: renders the Digital Products section from products.json.
+       If products.json cannot be loaded, the static cards already in the HTML
+       remain visible as the built-in fallback. */
+    (function () {
+      var ARROW_SVG = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+      function esc(s) {
+        return String(s == null ? '' : s)
+          .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
+
+      function statusLabel(s) {
+        s = String(s || 'NEW').toLowerCase();
+        return s.charAt(0).toUpperCase() + s.slice(1);
+      }
+
+      function visualBlock(p, featured) {
+        if (p.image) {
+          return '<div class="product-visual"><img src="' + esc(p.image) + '" alt="' +
+            esc(p.alt || ('Cover of ' + p.name)) + '" loading="lazy" /></div>';
+        }
+        var letter = esc(String(p.name || '?').trim().charAt(0).toUpperCase());
+        return '<div class="kelarin-visual" aria-hidden="true"><div class="kelarin-icon">' +
+          '<span style="color:#fff;font-weight:800;font-size:64px;line-height:1;font-family:inherit;">' +
+          letter + '</span><span class="kelarin-dot"></span></div></div>';
+      }
+
+      function buyRow(p) {
+        var cta = esc(p.cta || 'View Product');
+        return '<div class="buy-row"><div class="price-block"><strong>' + esc(p.price || '') +
+          '</strong>' + (p.price_note ? '<span>' + p.price_note + '</span>' : '') + '</div>' +
+          '<a class="btn btn-primary" href="' + esc(p.link || '#') + '" target="_blank" rel="noopener noreferrer">' +
+          cta + ARROW_SVG + '</a></div>';
+      }
+
+      function tagsRow(p, extraTag) {
+        var t = '<div class="meta-row"><span class="tag tag-featured">' + esc(statusLabel(p.status)) + '</span>' +
+          '<span class="tag">' + esc(p.category || '') + '</span>';
+        if (extraTag) t += '<span class="tag">' + esc(extraTag) + '</span>';
+        else t += '<span class="tag">Available now</span>';
+        return t + '</div>';
+      }
+
+      function factsRow(facts) {
+        if (!facts || !facts.length) return '';
+        var cells = facts.map(function (f) {
+          return '<div><strong>' + esc(f.value) + '</strong><span>' + esc(f.label) + '</span></div>';
+        }).join('');
+        return '<div class="product-facts" aria-label="Product details">' + cells + '</div>';
+      }
+
+      function featuredCard(p) {
+        return '<article class="product-feature reveal">' + visualBlock(p, true) +
+          '<div class="product-info">' + tagsRow(p, p.tag3) +
+          '<h3>' + esc(p.name) + '</h3><p>' + esc(p.description) + '</p>' +
+          factsRow(p.facts) + buyRow(p) + '</div></article>';
+      }
+
+      function secondaryCard(p, i) {
+        var labelledby = 'product-title-' + esc(p.id || ('p' + i));
+        return '<article class="product-secondary reveal" aria-labelledby="' + labelledby + '">' +
+          visualBlock(p, false) + '<div class="product-info">' + tagsRow(p, p.tag3) +
+          '<h3 id="' + labelledby + '">' + esc(p.name) + '</h3><p>' + esc(p.description) + '</p>' +
+          buyRow(p) + '</div></article>';
+      }
+
+      function observeFresh(root) {
+        var items = root.querySelectorAll('article.reveal');
+        if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          var o = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting) { e.target.classList.add('visible'); o.unobserve(e.target); }
+            });
+          }, { threshold: .08, rootMargin: '0px 0px -30px' });
+          items.forEach(function (el) { o.observe(el); });
+        } else {
+          items.forEach(function (el) { el.classList.add('visible'); });
+        }
+      }
+
+      fetch('products.json', { cache: 'no-store' })
+        .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+        .then(function (data) {
+          var list = Array.isArray(data) ? data : (data && data.products);
+          if (!list || !list.length) return; // keep static fallback cards
+          var shell = document.querySelector('#products .shell');
+          var top = shell && shell.querySelector('.section-top');
+          if (!shell || !top) return;
+          shell.querySelectorAll('article.product-feature, article.product-secondary')
+            .forEach(function (el) { el.remove(); });
+          var html = list.map(function (p, i) { return i === 0 ? featuredCard(p) : secondaryCard(p, i); }).join('');
+          top.insertAdjacentHTML('afterend', html);
+          observeFresh(shell);
+        })
+        .catch(function () { /* products.json unavailable: static fallback cards stay */ });
+    }());
+  </script>
+</body>
+</html>
