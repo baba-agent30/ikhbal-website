@@ -1,8 +1,8 @@
 {
-  "updated_at": "10 Okt 2026, 13:25 WIB",
+  "updated_at": "10 Okt 2026, 13:40 WIB",
   "agents": [
     {
-      "name": "Pandu",
+      "name": "Mark",
       "role": "Video Pagi",
       "slot": "07:00",
       "status": "done",
@@ -10,7 +10,7 @@
       "url": "https://www.facebook.com/reel/1771224030824237/"
     },
     {
-      "name": "Sari",
+      "name": "Einstein",
       "role": "Produk Digital",
       "slot": "09:00",
       "status": "done",
@@ -18,7 +18,7 @@
       "url": "http://lynk.id/ikhbalalhuzaibi/73ddy6r7mq8r"
     },
     {
-      "name": "Wira",
+      "name": "Tesla",
       "role": "Artikel Blog",
       "slot": "10:00",
       "status": "done",
@@ -26,7 +26,7 @@
       "url": "https://updatefaktazf.blogspot.com/2026/10/gobekli-tepe-kuil-11600-tahun-lebih-tua-dari-stonehenge.html"
     },
     {
-      "name": "Bagas",
+      "name": "Newton",
       "role": "Video Siang",
       "slot": "12:00",
       "status": "done",
@@ -34,12 +34,49 @@
       "url": "https://www.facebook.com/reel/1422173705985183/"
     },
     {
-      "name": "Ayu",
+      "name": "Edison",
       "role": "Video Malam",
       "slot": "19:00",
       "status": "pending",
       "detail": "Menunggu jadwal",
       "url": ""
+    }
+  ],
+  "board": [
+    {
+      "label": "Video FP pagi",
+      "status": "done",
+      "note": "Tayang"
+    },
+    {
+      "label": "Produk digital",
+      "status": "done",
+      "note": "Kitab Saku Excel Admin"
+    },
+    {
+      "label": "Artikel blog",
+      "status": "done",
+      "note": "Publish"
+    },
+    {
+      "label": "Video FP siang",
+      "status": "done",
+      "note": "Tayang"
+    },
+    {
+      "label": "Video FP malam",
+      "status": "pending",
+      "note": "Menunggu jadwal"
+    },
+    {
+      "label": "Novel Fizzo",
+      "status": "hold",
+      "note": "Nunggu upload Bab 1/2/4 + cover"
+    },
+    {
+      "label": "Trading forex",
+      "status": "hold",
+      "note": "Nunggu go dari Baba"
     }
   ]
 }
