@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-10-10T07:43:22.991533Z",
+  "generated_at": "2026-10-10T12:01:55.650404Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-10-10T07:43:22.991533Z",
+    "heartbeat_at": "2026-10-10T12:01:55.650404Z",
     "active_task": "Video quotes FP (malam)"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 54.4,
-    "memory_used_bytes": 7470841856,
-    "memory_total_bytes": 8321662976,
-    "disk_used_bytes": 55418880,
+    "cpu_percent": 1.2,
+    "memory_used_bytes": 7036436480,
+    "memory_total_bytes": 8320626688,
+    "disk_used_bytes": 96813056,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 2431,
+    "uptime_seconds": 7095,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -72,16 +72,24 @@
       "id": "cron-5",
       "title": "Video quotes FP (malam)",
       "project": "Muse Daily Ops",
-      "status": "pending",
-      "completed": false,
-      "progress_percent": 0,
+      "status": "completed",
+      "completed": true,
+      "progress_percent": 100,
       "priority": "medium",
-      "detail": "Menunggu jadwal",
-      "url": "",
+      "detail": "Tayang",
+      "url": "https://www.facebook.com/reel/1438695711734765/",
       "slot": "19:00"
     }
   ],
   "events": [
+    {
+      "id": "evt-20261010120205",
+      "type": "task",
+      "title": "Cron 'Video quotes FP (malam)' Selesai",
+      "description": "Tayang — https://www.facebook.com/reel/1438695711734765/",
+      "occurred_at": "2026-10-10T12:02:05.504142Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261010074333",
       "type": "task",
@@ -112,7 +120,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 80,
+      "progress_percent": 100,
       "task_count": 5
     }
   ],
@@ -132,13 +140,13 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "54.4%",
+      "value": "1.2%",
       "source": "/proc/stat",
       "status": "OK"
     },
     {
       "name": "RAM VM (snapshot)",
-      "value": "89.8%",
+      "value": "84.6%",
       "source": "/proc/meminfo",
       "status": "OK"
     },
