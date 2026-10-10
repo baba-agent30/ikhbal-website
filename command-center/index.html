@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Muse Command Center</title>
+<style>
+  :root{
+    --bg:#05070f;
+    --panel:rgba(10,16,30,.82);
+    --border:rgba(45,212,191,.22);
+    --teal:#2dd4bf;
+    --text:#e6edf7;
+    --muted:#8b98b3;
+    --green:#22c55e;
+    --yellow:#eab308;
+    --red:#ef4444;
+  }
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{ margin:0; padding:0; height:100%; overflow:hidden; background:var(--bg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--text); }
+  #scene{ position:fixed; inset:0; }
+  #scene canvas{ display:block; }
+
+  /* ===== Top bar ===== */
+  #topbar{
+    position:fixed; top:0; left:0; right:0; z-index:10;
+    display:flex; align-items:center; gap:14px;
+    padding:10px 16px;
+    background:var(--panel); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  #topbar .logo{ font-weight:800; letter-spacing:.4px; color:var(--teal); white-space:nowrap; }
+  #topbar nav{ display:flex; gap:14px; margin-left:8px; }
+  #topbar nav span{ font-size:13px; color:var(--muted); cursor:default; white-space:nowrap; }
+  #topbar nav span.active{ color:var(--text); font-weight:600; }
+  #topbar .spacer{ flex:1; }
+  #topbar .online{ display:flex; align-items:center; gap:7px; font-size:13px; color:var(--muted); white-space:nowrap; }
+  .dot{ width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+  .dot.green{ background:var(--green); box-shadow:0 0 8px var(--green); }
+  .dot.yellow{ background:var(--yellow); box-shadow:0 0 8px var(--yellow); }
+  .dot.red{ background:var(--red); box-shadow:0 0 8px var(--red); }
+
+  /* ===== Panel tim kiri ===== */
+  #team-panel{
+    position:fixed; z-index:10; left:12px; top:64px; width:236px;
+    background:var(--panel); backdrop-filter:blur(10px);
+    border:1px solid var(--border); border-radius:12px;
+    padding:12px; max-height:calc(100% - 190px); overflow-y:auto;
+  }
+  #team-panel h2{ margin:0 0 4px; font-size:12px; letter-spacing:1.5px; color:var(--teal); }
+  #team-panel .sub{ font-size:11px; color:var(--muted); margin-bottom:10px; }
+  .agent-row{ display:flex; align-items:center; gap:10px; padding:8px 6px; border-top:1px solid rgba(139,152,179,.12); }
+  .avatar{
+    width:36px; height:36px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:15px; color:#04121a; background:var(--teal);
+  }
+  .agent-info{ flex:1; min-width:0; }
+  .agent-info .name{ font-size:13px; font-weight:700; }
+  .agent-info .role{ font-size:11px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .agent-status{ display:flex; align-items:center; gap:6px; font-size:11px; color:var(--muted); }
+  #team-panel .foot{ margin-top:10px; padding-top:8px; border-top:1px solid rgba(139,152,179,.12);
+    font-size:11px; color:var(--muted); line-height:1.5; }
+
+  /* ===== Input titip tugas ===== */
+  #taskbar{
+    position:fixed; z-index:10; left:50%; bottom:16px; transform:translateX(-50%);
+    display:flex; gap:8px; width:min(480px, calc(100% - 24px));
+    background:var(--panel); backdrop-filter:blur(10px);
+    border:1px solid var(--border); border-radius:12px; padding:8px;
+  }
+  #taskbar input{
+    flex:1; background:rgba(5,8,16,.7); border:1px solid rgba(139,152,179,.25);
+    border-radius:8px; color:var(--text); font-size:14px; padding:10px 12px; outline:none;
+  }
+  #taskbar input:focus{ border-color:var(--teal); }
+  #taskbar button{
+    background:var(--teal); color:#04121a; border:none; border-radius:8px;
+    font-weight:700; font-size:14px; padding:0 20px; cursor:pointer;
+  }
+  #taskbar button:active{ transform:scale(.97); }
+
+  /* ===== Toast ===== */
+  #toast{
+    position:fixed; z-index:20; left:50%; bottom:84px; transform:translateX(-50%) translateY(10px);
+    background:#0d1626; border:1px solid var(--teal); color:var(--text);
+    padding:10px 18px; border-radius:10px; font-size:13px; opacity:0; pointer-events:none;
+    transition:opacity .25s, transform .25s; max-width:calc(100% - 32px); text-align:center;
+  }
+  #toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  @media (max-width:640px){
+    #topbar nav{ display:none; }
+    #team-panel{ width:188px; top:58px; padding:10px; }
+    .avatar{ width:30px; height:30px; font-size:13px; }
+    .agent-info .name{ font-size:12px; }
+  }
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<div id="scene"></div>
+
+<header id="topbar">
+  <div class="logo">◆ Command Center</div>
+  <nav>
+    <span class="active">Beranda</span><span>Tugas</span><span>Tim</span><span>Proyek</span><span>Laporan</span>
+  </nav>
+  <div class="spacer"></div>
+  <div class="online"><span class="dot green"></span>Baba • Online</div>
+</header>
+
+<aside id="team-panel">
+  <h2>TIM MUSE</h2>
+  <div class="sub">5 agen • update otomatis</div>
+  <div id="agent-list"></div>
+  <div class="foot" id="last-update">Update terakhir: menunggu data…</div>
+</aside>
+
+<div id="taskbar">
+  <input id="task-input" type="text" placeholder="Titip tugas baru ke tim…" autocomplete="off">
+  <button id="task-send">Kirim</button>
+</div>
+
+<div id="toast"></div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+/* ================= Data ================= */
+const AGENT_DEFS = [
+  { name:'Pandu', role:'Video Pagi',     slot:'07:00', accent:'#2dd4bf' },
+  { name:'Sari',  role:'Produk Digital', slot:'09:00', accent:'#38bdf8' },
+  { name:'Wira',  role:'Artikel Blog',   slot:'10:00', accent:'#a78bfa' },
+  { name:'Bagas', role:'Video Siang',    slot:'12:00', accent:'#fbbf24' },
+  { name:'Ayu',   role:'Video Malam',    slot:'19:00', accent:'#f472b6' },
+];
+let agents = AGENT_DEFS.map(a => ({ ...a, status:'pending', detail:'', url:'' }));
+
+const STATUS_COLOR = { done:0x22c55e, pending:0xeab308, failed:0xef4444 };
+const STATUS_LABEL = { done:'Selesai', pending:'Menunggu', failed:'Gagal' };
+const STATUS_DOT   = { done:'green', pending:'yellow', failed:'red' };
+
+/* ================= Renderer / Scene ================= */
+const container = document.getElementById('scene');
+const renderer = new THREE.WebGLRenderer({ antialias:true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+container.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x05070f);
+scene.fog = new THREE.Fog(0x05070f, 20, 42);
+
+const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 0.1, 100);
+camera.position.set(0, 3.8, 11);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 1.4, -1);
+controls.enableDamping = true;
+controls.dampingFactor = 0.06;
+controls.enablePan = false;
+controls.minDistance = 5;
+controls.maxDistance = 18;
+controls.minPolarAngle = 0.15;
+controls.maxPolarAngle = Math.PI/2 - 0.08;
+controls.autoRotate = true;
+controls.autoRotateSpeed = 0.55;
+let idleTimer = null;
+controls.addEventListener('start', () => { controls.autoRotate = false; if (idleTimer) clearTimeout(idleTimer); });
+controls.addEventListener('end', () => {
+  if (idleTimer) clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => { controls.autoRotate = true; }, 12000);
+});
+
+/* ================= Lampu ================= */
+scene.add(new THREE.AmbientLight(0x334155, 0.7));
+const hemi = new THREE.HemisphereLight(0x1e3a5f, 0x05070f, 0.5);
+scene.add(hemi);
+const dirLight = new THREE.DirectionalLight(0xbcd3ff, 0.9);
+dirLight.position.set(4, 9, 6);
+dirLight.castShadow = true;
+dirLight.shadow.mapSize.set(1024, 1024);
+dirLight.shadow.camera.left = -10; dirLight.shadow.camera.right = 10;
+dirLight.shadow.camera.top = 10; dirLight.shadow.camera.bottom = -10;
+scene.add(dirLight);
+
+/* ================= Ruangan ================= */
+const floorMat = new THREE.MeshStandardMaterial({ color:0x0d1220, roughness:0.95, metalness:0.05 });
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(34, 24), floorMat);
+floor.rotation.x = -Math.PI/2;
+floor.receiveShadow = true;
+scene.add(floor);
+
+const grid = new THREE.GridHelper(34, 34, 0x1e3a5f, 0x12233d);
+grid.position.y = 0.01;
+grid.material.transparent = true;
+grid.material.opacity = 0.35;
+scene.add(grid);
+
+const wallMat = new THREE.MeshStandardMaterial({ color:0x0a0f1c, roughness:1 });
+const backWall = new THREE.Mesh(new THREE.PlaneGeometry(34, 9), wallMat);
+backWall.position.set(0, 4.5, -8);
+scene.add(backWall);
+const leftWall = new THREE.Mesh(new THREE.PlaneGeometry(24, 9), wallMat);
+leftWall.rotation.y = Math.PI/2;
+leftWall.position.set(-13, 4.5, 2);
+scene.add(leftWall);
+const rightWall = new THREE.Mesh(new THREE.PlaneGeometry(24, 9), wallMat);
+rightWall.rotation.y = -Math.PI/2;
+rightWall.position.set(13, 4.5, 2);
+scene.add(rightWall);
+const ceil = new THREE.Mesh(new THREE.PlaneGeometry(34, 24),
+  new THREE.MeshStandardMaterial({ color:0x070b14, roughness:1 }));
+ceil.rotation.x = Math.PI/2;
+ceil.position.y = 7;
+scene.add(ceil);
+
+/* ================= Helper: teks canvas ================= */
+function makeCanvas(w, h){
+  const c = document.createElement('canvas');
+  c.width = w; c.height = h;
+  return [c, c.getContext('2d')];
+}
+function roundRect(ctx, x, y, w, h, r){
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.arcTo(x+w, y, x+w, y+h, r);
+  ctx.arcTo(x+w, y+h, x, y+h, r);
+  ctx.arcTo(x, y+h, x, y, r);
+  ctx.arcTo(x, y, x+w, y, r);
+  ctx.closePath();
+}
+
+/* ================= Label nama agen (sprite) ================= */
+function makeLabelSprite(name, role, accentCss){
+  const [c, ctx] = makeCanvas(512, 168);
+  roundRect(ctx, 6, 6, 500, 156, 28);
+  ctx.fillStyle = 'rgba(8,14,26,0.88)';
+  ctx.fill();
+  ctx.strokeStyle = accentCss;
+  ctx.lineWidth = 3;
+  ctx.stroke();
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '700 58px -apple-system, "Segoe UI", sans-serif';
+  ctx.fillText(name, 256, 74);
+  ctx.fillStyle = accentCss;
+  ctx.font = '500 36px -apple-system, "Segoe UI", sans-serif';
+  ctx.fillText(role, 256, 126);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  const mat = new THREE.SpriteMaterial({ map:tex, transparent:true, depthWrite:false });
+  const sp = new THREE.Sprite(mat);
+  sp.scale.set(2.3, 0.75, 1);
+  return sp;
+}
+
+/* ================= Meja + kursi + agen ================= */
+const agentRings = [];   // ring cahaya per agen (index sama dgn agents)
+const deskX = i => (i - 2) * 3.4;
+
+function buildWorkstation(i, def){
+  const g = new THREE.Group();
+  const x = deskX(i);
+  g.position.x = x;
+
+  const deskMat = new THREE.MeshStandardMaterial({ color:0x1a2440, roughness:0.7 });
+  const darkMat = new THREE.MeshStandardMaterial({ color:0x111a30, roughness:0.8 });
+
+  // meja
+  const top = new THREE.Mesh(new THREE.BoxGeometry(2.3, 0.12, 1.1), deskMat);
+  top.position.set(0, 1.0, 0.3);
+  top.castShadow = top.receiveShadow = true;
+  g.add(top);
+  for (const [lx, lz] of [[-1.05, -0.15],[1.05, -0.15],[-1.05, 0.75],[1.05, 0.75]]){
+    const leg = new THREE.Mesh(new THREE.BoxGeometry(0.09, 1.0, 0.09), darkMat);
+    leg.position.set(lx, 0.5, lz);
+    g.add(leg);
+  }
+
+  // monitor kecil di meja (menghadap agen)
+  const monStand = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.35, 0.08), darkMat);
+  monStand.position.set(0, 1.23, 0.15);
+  g.add(monStand);
+  const monScreen = new THREE.Mesh(
+    new THREE.PlaneGeometry(0.85, 0.5),
+    new THREE.MeshBasicMaterial({ color:0x0e4a44 })
+  );
+  monScreen.position.set(0, 1.55, 0.15);
+  // menghadap ke agen (+z); dari kamera terlihat punggung monitor, seperti referensi
+  g.add(monScreen);
+  const monBack = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.55, 0.05), darkMat);
+  monBack.position.set(0, 1.55, 0.12);
+  g.add(monBack);
+
+  // kursi
+  const seat = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.1, 0.72), darkMat);
+  seat.position.set(0, 0.58, 1.35);
+  seat.castShadow = true;
+  g.add(seat);
+  const backrest = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.85, 0.1), darkMat);
+  backrest.position.set(0, 1.05, 1.68);
+  backrest.castShadow = true;
+  g.add(backrest);
+  const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.55, 10), darkMat);
+  pole.position.set(0, 0.3, 1.35);
+  g.add(pole);
+
+  // figur agen (duduk, low-poly)
+  const bodyMat = new THREE.MeshStandardMaterial({ color:0x24314f, roughness:0.6 });
+  const accentMat = new THREE.MeshStandardMaterial({
+    color:new THREE.Color(def.accent), roughness:0.4,
+    emissive:new THREE.Color(def.accent), emissiveIntensity:0.25
+  });
+  const torso = new THREE.Mesh(new THREE.CapsuleGeometry(0.27, 0.55, 6, 14), bodyMat);
+  torso.position.set(0, 1.05, 1.35);
+  torso.castShadow = true;
+  g.add(torso);
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.21, 18, 14),
+    new THREE.MeshStandardMaterial({ color:0x2b3a5e, roughness:0.5 }));
+  head.position.set(0, 1.72, 1.35);
+  head.castShadow = true;
+  g.add(head);
+  // aksen bahu
+  const band = new THREE.Mesh(new THREE.TorusGeometry(0.28, 0.035, 8, 20), accentMat);
+  band.rotation.x = Math.PI/2;
+  band.position.set(0, 1.28, 1.35);
+  g.add(band);
+
+  // ring cahaya di lantai (warna ikut status)
+  const ring = new THREE.Mesh(
+    new THREE.RingGeometry(0.62, 0.78, 40),
+    new THREE.MeshBasicMaterial({ color:STATUS_COLOR.pending, transparent:true, opacity:0.95, side:THREE.DoubleSide })
+  );
+  ring.rotation.x = -Math.PI/2;
+  ring.position.set(0, 0.02, 1.35);
+  g.add(ring);
+  agentRings.push(ring);
+
+  // label melayang
+  const label = makeLabelSprite(def.name, def.role, def.accent);
+  label.position.set(0, 2.55, 1.35);
+  g.add(label);
+
+  scene.add(g);
+}
+AGENT_DEFS.forEach((def, i) => buildWorkstation(i, def));
+
+/* ================= Layar besar dinding ================= */
+const [scrCanvas, scrCtx] = makeCanvas(1024, 512);
+const scrTex = new THREE.CanvasTexture(scrCanvas);
+scrTex.colorSpace = THREE.SRGBColorSpace;
+const screenMesh = new THREE.Mesh(
+  new THREE.PlaneGeometry(9.6, 4.8),
+  new THREE.MeshBasicMaterial({ map:scrTex })
+);
+screenMesh.position.set(0, 3.4, -7.9);
+scene.add(screenMesh);
+const screenFrame = new THREE.Mesh(
+  new THREE.BoxGeometry(10.1, 5.3, 0.18),
+  new THREE.MeshStandardMaterial({ color:0x0b1224, roughness:0.6 })
+);
+screenFrame.position.set(0, 3.4, -8.02);
+scene.add(screenFrame);
+
+function wibHour(){
+  const d = new Date();
+  return (d.getUTCHours() + 7) % 24;
+}
+function greeting(){
+  const h = wibHour();
+  if (h >= 4 && h < 10) return 'Selamat pagi';
+  if (h >= 10 && h < 15) return 'Selamat siang';
+  if (h >= 15 && h < 18) return 'Selamat sore';
+  return 'Selamat malam';
+}
+
+function drawScreen(){
+  const ctx = scrCtx, W = 1024, H = 512;
+  ctx.clearRect(0, 0, W, H);
+  const grad = ctx.createLinearGradient(0, 0, 0, H);
+  grad.addColorStop(0, '#0b1a30');
+  grad.addColorStop(1, '#070d1a');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+  ctx.strokeStyle = 'rgba(45,212,191,0.5)';
+  ctx.lineWidth = 4;
+  ctx.strokeRect(8, 8, W-16, H-16);
+
+  const doneCount = agents.filter(a => a.status === 'done').length;
+  const failedCount = agents.filter(a => a.status === 'failed').length;
+  const pct = Math.round(doneCount / agents.length * 100);
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '800 64px -apple-system, "Segoe UI", sans-serif';
+  ctx.fillText(greeting() + ', Baba!', W/2, 110);
+
+  ctx.fillStyle = '#2dd4bf';
+  ctx.font = '500 30px -apple-system, "Segoe UI", sans-serif';
+  const sub = failedCount > 0 ? 'Ada tugas yang perlu perhatian.'
+    : doneCount === agents.length ? 'Semua sistem berjalan dengan baik.'
+    : 'Tim sedang bekerja…';
+  ctx.fillText(sub, W/2, 162);
+
+  // progres
+  ctx.fillStyle = '#8b98b3';
+  ctx.font = '500 30px -apple-system, "Segoe UI", sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('Tugas selesai hari ini', 90, 235);
+  ctx.textAlign = 'right';
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '800 34px -apple-system, "Segoe UI", sans-serif';
+  ctx.fillText(doneCount + ' / ' + agents.length, W-90, 238);
+
+  // bar
+  const bx = 90, bw = W-180, by = 265, bh = 34;
+  roundRect(ctx, bx, by, bw, bh, 17);
+  ctx.fillStyle = 'rgba(139,152,179,0.25)';
+  ctx.fill();
+  if (pct > 0){
+    roundRect(ctx, bx, by, bw*pct/100, bh, 17);
+    ctx.fillStyle = '#2dd4bf';
+    ctx.fill();
+  }
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#2dd4bf';
+  ctx.font = '700 30px -apple-system, "Segoe UI", sans-serif';
+  ctx.fillText(pct + '% dari target', W/2, 352);
+
+  // dot status agen
+  const dotY = 425, startX = W/2 - (agents.length-1)*70;
+  ctx.font = '700 24px -apple-system, "Segoe UI", sans-serif';
+  agents.forEach((a, i) => {
+    const x = startX + i*140;
+    const col = a.status === 'done' ? '#22c55e' : a.status === 'failed' ? '#ef4444' : '#eab308';
+    ctx.beginPath(); ctx.arc(x-32, dotY-8, 13, 0, Math.PI*2);
+    ctx.fillStyle = col; ctx.fill();
+    ctx.fillStyle = '#e6edf7';
+    ctx.textAlign = 'left';
+    ctx.fillText(a.name, x-10, dotY);
+  });
+
+  scrTex.needsUpdate = true;
+}
+drawScreen();
+
+/* ================= Lampu gantung ================= */
+function hangingLamp(x){
+  const g = new THREE.Group();
+  const cord = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 2.2, 8),
+    new THREE.MeshStandardMaterial({ color:0x1a2440 }));
+  cord.position.y = 5.9;
+  g.add(cord);
+  const shade = new THREE.Mesh(
+    new THREE.ConeGeometry(0.55, 0.6, 20, 1, true),
+    new THREE.MeshStandardMaterial({ color:0x14453f, roughness:0.6, side:THREE.DoubleSide })
+  );
+  shade.position.y = 4.7;
+  g.add(shade);
+  const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.14, 14, 10),
+    new THREE.MeshBasicMaterial({ color:0xffe6b8 }));
+  bulb.position.y = 4.55;
+  g.add(bulb);
+  const light = new THREE.PointLight(0xffd9a0, 14, 13, 2);
+  light.position.y = 4.4;
+  g.add(light);
+  g.position.x = x;
+  g.position.z = -0.5;
+  scene.add(g);
+}
+[-4.5, 0, 4.5].forEach(hangingLamp);
+
+/* ================= Tanaman pot ================= */
+function pottedPlant(x, z){
+  const g = new THREE.Group();
+  const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.34, 0.27, 0.5, 14),
+    new THREE.MeshStandardMaterial({ color:0x8a5a33, roughness:0.9 }));
+  pot.position.y = 0.25;
+  pot.castShadow = true;
+  g.add(pot);
+  const leafMat = new THREE.MeshStandardMaterial({ color:0x1f7a4d, roughness:0.9 });
+  const blobs = [[0,1.05,0,0.42],[0.25,0.8,0.1,0.3],[-0.22,0.82,-0.08,0.28]];
+  for (const [bx,by,bz,r] of blobs){
+    const s = new THREE.Mesh(new THREE.SphereGeometry(r, 12, 10), leafMat);
+    s.position.set(bx, by, bz);
+    s.castShadow = true;
+    g.add(s);
+  }
+  g.position.set(x, 0, z);
+  scene.add(g);
+}
+pottedPlant(-9.5, 4.5);
+pottedPlant(9.5, 4.5);
+pottedPlant(-9.5, -5.5);
+
+/* ================= Tulisan dinding ================= */
+(function wallText(){
+  const [c, ctx] = makeCanvas(1400, 150);
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#2dd4bf';
+  ctx.font = '800 84px -apple-system, "Segoe UI", sans-serif';
+  // spasi huruf manual
+  ctx.fillText('R U A N G  T E N U N  S E M E S T A', 700, 105);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(11, 1.18),
+    new THREE.MeshBasicMaterial({ map:tex, transparent:true }));
+  m.rotation.y = Math.PI/2;
+  m.position.set(-12.9, 4.6, 1);
+  scene.add(m);
+})();
+
+/* ================= Panel HTML: daftar agen ================= */
+const agentListEl = document.getElementById('agent-list');
+const lastUpdateEl = document.getElementById('last-update');
+
+function renderPanel(){
+  agentListEl.innerHTML = '';
+  agents.forEach(a => {
+    const row = document.createElement('div');
+    row.className = 'agent-row';
+    const initial = document.createElement('div');
+    initial.className = 'avatar';
+    initial.style.background = a.accent;
+    initial.textContent = a.name.charAt(0);
+    const info = document.createElement('div');
+    info.className = 'agent-info';
+    const nm = document.createElement('div');
+    nm.className = 'name';
+    nm.textContent = a.name + ' • ' + a.slot;
+    const rl = document.createElement('div');
+    rl.className = 'role';
+    rl.textContent = a.role + (a.detail ? ' — ' + a.detail : '');
+    info.appendChild(nm); info.appendChild(rl);
+    const st = document.createElement('div');
+    st.className = 'agent-status';
+    const dot = document.createElement('span');
+    dot.className = 'dot ' + STATUS_DOT[a.status];
+    const lbl = document.createElement('span');
+    lbl.textContent = STATUS_LABEL[a.status];
+    st.appendChild(dot); st.appendChild(lbl);
+    row.appendChild(initial); row.appendChild(info); row.appendChild(st);
+    agentListEl.appendChild(row);
+  });
+}
+renderPanel();
+
+/* ================= Update dari status.json ================= */
+function applyData(data){
+  if (!data || !Array.isArray(data.agents)) return false;
+  const byName = {};
+  data.agents.forEach(a => { byName[a.name] = a; });
+  agents.forEach((a, i) => {
+    const d = byName[a.name];
+    if (d){
+      if (['done','pending','failed'].includes(d.status)) a.status = d.status;
+      a.detail = d.detail || '';
+      a.url = d.url || '';
+    }
+    if (agentRings[i]) agentRings[i].material.color.setHex(STATUS_COLOR[a.status]);
+  });
+  renderPanel();
+  drawScreen();
+  if (data.updated_at){
+    lastUpdateEl.textContent = 'Update terakhir: ' + data.updated_at;
+  }
+  return true;
+}
+
+async function fetchStatus(){
+  try{
+    const res = await fetch('status.json', { cache:'no-store' });
+    if (!res.ok) throw new Error('http ' + res.status);
+    const data = await res.json();
+    applyData(data);
+  }catch(e){
+    lastUpdateEl.textContent = 'Update terakhir: menunggu data…';
+  }
+}
+fetchStatus();
+setInterval(fetchStatus, 60000);
+setInterval(drawScreen, 60000); // sapaan ikut jam
+
+/* ================= Toast + titip tugas ================= */
+const toastEl = document.getElementById('toast');
+let toastTimer = null;
+function toast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove('show'), 3200);
+}
+const taskInput = document.getElementById('task-input');
+function sendTask(){
+  taskInput.value = '';
+  toast('Titip tugas lewat chat WhatsApp ya bre');
+}
+document.getElementById('task-send').addEventListener('click', sendTask);
+taskInput.addEventListener('keydown', e => { if (e.key === 'Enter') sendTask(); });
+
+/* ================= Resize + loop ================= */
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+function animate(){
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+}
+animate();
+</script>
+</body>
+</html>
