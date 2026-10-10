@@ -1,5 +1,5 @@
 {
-  "updated_at": "10 Okt 2026, 14:43 WIB",
+  "updated_at": "10 Okt 2026, 19:01 WIB",
   "agents": [
     {
       "name": "Mark",
@@ -37,9 +37,9 @@
       "name": "Edison",
       "role": "Video Malam",
       "slot": "19:00",
-      "status": "pending",
-      "detail": "Menunggu jadwal",
-      "url": ""
+      "status": "done",
+      "detail": "Tayang",
+      "url": "https://www.facebook.com/reel/1438695711734765/"
     }
   ],
   "board": [
@@ -65,8 +65,8 @@
     },
     {
       "label": "Video FP malam",
-      "status": "pending",
-      "note": "Menunggu jadwal"
+      "status": "done",
+      "note": "Tayang"
     },
     {
       "label": "Novel Fizzo",
