@@ -1,0 +1,12 @@
+{
+  "status": "ok",
+  "service": "muse-observatory-api",
+  "mode": "static-build",
+  "generated_at": "2026-10-10T07:20:01.351661Z",
+  "checks": {
+    "task_source": "state.json (5 cron harian)",
+    "event_log": "observatory-events.json",
+    "token_api": "unavailable",
+    "quota_api": "unavailable"
+  }
+}
