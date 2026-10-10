@@ -139,11 +139,11 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 /* ================= Data ================= */
 const AGENT_DEFS = [
-  { name:'Pandu', role:'Video Pagi',     slot:'07:00', accent:'#2dd4bf' },
-  { name:'Sari',  role:'Produk Digital', slot:'09:00', accent:'#38bdf8' },
-  { name:'Wira',  role:'Artikel Blog',   slot:'10:00', accent:'#a78bfa' },
-  { name:'Bagas', role:'Video Siang',    slot:'12:00', accent:'#fbbf24' },
-  { name:'Ayu',   role:'Video Malam',    slot:'19:00', accent:'#f472b6' },
+  { name:'Mark',     role:'Video Pagi',     slot:'07:00', accent:'#2dd4bf' },
+  { name:'Einstein', role:'Produk Digital', slot:'09:00', accent:'#38bdf8' },
+  { name:'Tesla',    role:'Artikel Blog',   slot:'10:00', accent:'#a78bfa' },
+  { name:'Newton',   role:'Video Siang',    slot:'12:00', accent:'#fbbf24' },
+  { name:'Edison',   role:'Video Malam',    slot:'19:00', accent:'#f472b6' },
 ];
 let agents = AGENT_DEFS.map(a => ({ ...a, status:'pending', detail:'', url:'' }));
 
@@ -246,25 +246,22 @@ function roundRect(ctx, x, y, w, h, r){
 
 /* ================= Label nama agen (sprite) ================= */
 function makeLabelSprite(name, role, accentCss){
-  const [c, ctx] = makeCanvas(512, 168);
-  roundRect(ctx, 6, 6, 500, 156, 28);
-  ctx.fillStyle = 'rgba(8,14,26,0.88)';
+  const [c, ctx] = makeCanvas(384, 104);
+  roundRect(ctx, 6, 6, 372, 92, 22);
+  ctx.fillStyle = 'rgba(8,14,26,0.85)';
   ctx.fill();
   ctx.strokeStyle = accentCss;
   ctx.lineWidth = 3;
   ctx.stroke();
   ctx.textAlign = 'center';
   ctx.fillStyle = '#ffffff';
-  ctx.font = '700 58px -apple-system, "Segoe UI", sans-serif';
-  ctx.fillText(name, 256, 74);
-  ctx.fillStyle = accentCss;
-  ctx.font = '500 36px -apple-system, "Segoe UI", sans-serif';
-  ctx.fillText(role, 256, 126);
+  ctx.font = '700 52px -apple-system, "Segoe UI", sans-serif';
+  ctx.fillText(name, 192, 70);
   const tex = new THREE.CanvasTexture(c);
   tex.colorSpace = THREE.SRGBColorSpace;
   const mat = new THREE.SpriteMaterial({ map:tex, transparent:true, depthWrite:false });
   const sp = new THREE.Sprite(mat);
-  sp.scale.set(2.3, 0.75, 1);
+  sp.scale.set(1.45, 0.39, 1);
   return sp;
 }
 
@@ -352,7 +349,7 @@ function buildWorkstation(i, def){
 
   // label melayang
   const label = makeLabelSprite(def.name, def.role, def.accent);
-  label.position.set(0, 2.55, 1.35);
+  label.position.set(0, 3.0, 1.35);
   g.add(label);
 
   scene.add(g);
@@ -388,6 +385,14 @@ function greeting(){
   return 'Selamat malam';
 }
 
+const BOARD_STATUS = {
+  done:    { color:'#22c55e', label:'SELESAI' },
+  pending: { color:'#eab308', label:'MENUNGGU' },
+  failed:  { color:'#ef4444', label:'GAGAL' },
+  hold:    { color:'#f97316', label:'HOLD' },
+};
+let board = []; // diisi dari status.json: [{label, status, note}]
+
 function drawScreen(){
   const ctx = scrCtx, W = 1024, H = 512;
   ctx.clearRect(0, 0, W, H);
@@ -400,58 +405,46 @@ function drawScreen(){
   ctx.lineWidth = 4;
   ctx.strokeRect(8, 8, W-16, H-16);
 
-  const doneCount = agents.filter(a => a.status === 'done').length;
-  const failedCount = agents.filter(a => a.status === 'failed').length;
-  const pct = Math.round(doneCount / agents.length * 100);
-
   ctx.textAlign = 'center';
   ctx.fillStyle = '#ffffff';
-  ctx.font = '800 64px -apple-system, "Segoe UI", sans-serif';
-  ctx.fillText(greeting() + ', Baba!', W/2, 110);
+  ctx.font = '800 46px -apple-system, "Segoe UI", sans-serif';
+  ctx.fillText(greeting() + ', Baba!', W/2, 70);
 
+  const doneCount = board.filter(b => b.status === 'done').length;
+  const holdCount = board.filter(b => b.status === 'hold').length;
+  const failCount = board.filter(b => b.status === 'failed').length;
   ctx.fillStyle = '#2dd4bf';
-  ctx.font = '500 30px -apple-system, "Segoe UI", sans-serif';
-  const sub = failedCount > 0 ? 'Ada tugas yang perlu perhatian.'
-    : doneCount === agents.length ? 'Semua sistem berjalan dengan baik.'
-    : 'Tim sedang bekerja…';
-  ctx.fillText(sub, W/2, 162);
+  ctx.font = '500 27px -apple-system, "Segoe UI", sans-serif';
+  let sub = 'Tugas hari ini: ' + doneCount + ' selesai';
+  if (holdCount) sub += ' \u2022 ' + holdCount + ' hold';
+  if (failCount) sub += ' \u2022 ' + failCount + ' gagal';
+  if (!board.length) sub = 'Memuat data tugas\u2026';
+  ctx.fillText(sub, W/2, 114);
 
-  // progres
-  ctx.fillStyle = '#8b98b3';
-  ctx.font = '500 30px -apple-system, "Segoe UI", sans-serif';
-  ctx.textAlign = 'left';
-  ctx.fillText('Tugas selesai hari ini', 90, 235);
-  ctx.textAlign = 'right';
-  ctx.fillStyle = '#ffffff';
-  ctx.font = '800 34px -apple-system, "Segoe UI", sans-serif';
-  ctx.fillText(doneCount + ' / ' + agents.length, W-90, 238);
-
-  // bar
-  const bx = 90, bw = W-180, by = 265, bh = 34;
-  roundRect(ctx, bx, by, bw, bh, 17);
-  ctx.fillStyle = 'rgba(139,152,179,0.25)';
-  ctx.fill();
-  if (pct > 0){
-    roundRect(ctx, bx, by, bw*pct/100, bh, 17);
-    ctx.fillStyle = '#2dd4bf';
-    ctx.fill();
-  }
-  ctx.textAlign = 'center';
-  ctx.fillStyle = '#2dd4bf';
-  ctx.font = '700 30px -apple-system, "Segoe UI", sans-serif';
-  ctx.fillText(pct + '% dari target', W/2, 352);
-
-  // dot status agen
-  const dotY = 425, startX = W/2 - (agents.length-1)*70;
-  ctx.font = '700 24px -apple-system, "Segoe UI", sans-serif';
-  agents.forEach((a, i) => {
-    const x = startX + i*140;
-    const col = a.status === 'done' ? '#22c55e' : a.status === 'failed' ? '#ef4444' : '#eab308';
-    ctx.beginPath(); ctx.arc(x-32, dotY-8, 13, 0, Math.PI*2);
-    ctx.fillStyle = col; ctx.fill();
-    ctx.fillStyle = '#e6edf7';
+  // daftar tugas real
+  const rows = board.length ? board : [{ label:'Menunggu data\u2026', status:'pending', note:'' }];
+  let y = 168;
+  const rowH = 47;
+  rows.forEach(r => {
+    const st = BOARD_STATUS[r.status] || BOARD_STATUS.pending;
+    ctx.beginPath(); ctx.arc(72, y-9, 11, 0, Math.PI*2);
+    ctx.fillStyle = st.color; ctx.fill();
+    ctx.fillStyle = '#eef3fb';
+    ctx.font = '600 27px -apple-system, "Segoe UI", sans-serif';
     ctx.textAlign = 'left';
-    ctx.fillText(a.name, x-10, dotY);
+    ctx.fillText(r.label, 96, y);
+    const pillText = r.note || st.label;
+    ctx.font = '600 22px -apple-system, "Segoe UI", sans-serif';
+    const tw = ctx.measureText(pillText).width;
+    const pw = tw + 30, px = W - 58 - pw;
+    roundRect(ctx, px, y-33, pw, 37, 18);
+    ctx.fillStyle = 'rgba(255,255,255,0.06)';
+    ctx.fill();
+    ctx.strokeStyle = st.color; ctx.lineWidth = 2; ctx.stroke();
+    ctx.fillStyle = st.color;
+    ctx.textAlign = 'center';
+    ctx.fillText(pillText, px + pw/2, y-8);
+    y += rowH;
   });
 
   scrTex.needsUpdate = true;
@@ -577,6 +570,10 @@ function applyData(data){
   drawScreen();
   if (data.updated_at){
     lastUpdateEl.textContent = 'Update terakhir: ' + data.updated_at;
+  }
+  if (Array.isArray(data.board) && data.board.length){
+    board = data.board;
+    drawScreen();
   }
   return true;
 }
