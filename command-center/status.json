@@ -1,0 +1,45 @@
+{
+  "updated_at": "10 Okt 2026, 13:25 WIB",
+  "agents": [
+    {
+      "name": "Pandu",
+      "role": "Video Pagi",
+      "slot": "07:00",
+      "status": "done",
+      "detail": "Tayang",
+      "url": "https://www.facebook.com/reel/1771224030824237/"
+    },
+    {
+      "name": "Sari",
+      "role": "Produk Digital",
+      "slot": "09:00",
+      "status": "done",
+      "detail": "Kitab Saku Excel Admin",
+      "url": "http://lynk.id/ikhbalalhuzaibi/73ddy6r7mq8r"
+    },
+    {
+      "name": "Wira",
+      "role": "Artikel Blog",
+      "slot": "10:00",
+      "status": "done",
+      "detail": "Publish",
+      "url": "https://updatefaktazf.blogspot.com/2026/10/gobekli-tepe-kuil-11600-tahun-lebih-tua-dari-stonehenge.html"
+    },
+    {
+      "name": "Bagas",
+      "role": "Video Siang",
+      "slot": "12:00",
+      "status": "done",
+      "detail": "Tayang",
+      "url": "https://www.facebook.com/reel/1422173705985183/"
+    },
+    {
+      "name": "Ayu",
+      "role": "Video Malam",
+      "slot": "19:00",
+      "status": "pending",
+      "detail": "Menunggu jadwal",
+      "url": ""
+    }
+  ]
+}
