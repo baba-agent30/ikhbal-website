@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-10-11T03:37:36.490643Z",
+  "generated_at": "2026-10-11T05:00:28.207226Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-10-11T03:37:36.490643Z",
-    "active_task": "Artikel blog harian"
+    "heartbeat_at": "2026-10-11T05:00:28.207226Z",
+    "active_task": "Video quotes FP (siang)"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 30.0,
-    "memory_used_bytes": 7910748160,
+    "cpu_percent": 25.3,
+    "memory_used_bytes": 7690530816,
     "memory_total_bytes": 8321662976,
-    "disk_used_bytes": 59723776,
+    "disk_used_bytes": 109244416,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 1463,
+    "uptime_seconds": 6433,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -60,13 +60,13 @@
       "id": "cron-4",
       "title": "Video quotes FP (siang)",
       "project": "Muse Daily Ops",
-      "status": "pending",
-      "completed": false,
-      "progress_percent": 0,
+      "status": "completed",
+      "completed": true,
+      "progress_percent": 100,
       "priority": "medium",
-      "detail": "",
-      "url": "",
-      "slot": ""
+      "detail": "Tayang",
+      "url": "https://www.facebook.com/reel/1415961073329982/",
+      "slot": "12:00"
     },
     {
       "id": "cron-5",
@@ -82,6 +82,14 @@
     }
   ],
   "events": [
+    {
+      "id": "evt-20261011050036",
+      "type": "task",
+      "title": "Cron 'Video quotes FP (siang)' Selesai",
+      "description": "Tayang — https://www.facebook.com/reel/1415961073329982/",
+      "occurred_at": "2026-10-11T05:00:36.472088Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261011033747",
       "type": "task",
@@ -144,7 +152,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 60,
+      "progress_percent": 80,
       "task_count": 5
     }
   ],
@@ -164,13 +172,13 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "30.0%",
+      "value": "25.3%",
       "source": "/proc/stat",
       "status": "OK"
     },
     {
       "name": "RAM VM (snapshot)",
-      "value": "95.1%",
+      "value": "92.4%",
       "source": "/proc/meminfo",
       "status": "OK"
     },
