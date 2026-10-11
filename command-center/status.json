@@ -1,5 +1,5 @@
 {
-  "updated_at": "10 Okt 2026, 19:01 WIB",
+  "updated_at": "11 Okt 2026, 08:50 WIB",
   "agents": [
     {
       "name": "Mark",
@@ -7,39 +7,39 @@
       "slot": "07:00",
       "status": "done",
       "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1771224030824237/"
+      "url": "https://www.facebook.com/reel/1151431121160575/"
     },
     {
       "name": "Einstein",
       "role": "Produk Digital",
-      "slot": "09:00",
-      "status": "done",
-      "detail": "Kitab Saku Excel Admin",
-      "url": "http://lynk.id/ikhbalalhuzaibi/73ddy6r7mq8r"
+      "slot": "",
+      "status": "pending",
+      "detail": "",
+      "url": ""
     },
     {
       "name": "Tesla",
       "role": "Artikel Blog",
-      "slot": "10:00",
-      "status": "done",
-      "detail": "Publish",
-      "url": "https://updatefaktazf.blogspot.com/2026/10/gobekli-tepe-kuil-11600-tahun-lebih-tua-dari-stonehenge.html"
+      "slot": "",
+      "status": "pending",
+      "detail": "",
+      "url": ""
     },
     {
       "name": "Newton",
       "role": "Video Siang",
-      "slot": "12:00",
-      "status": "done",
-      "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1422173705985183/"
+      "slot": "",
+      "status": "pending",
+      "detail": "",
+      "url": ""
     },
     {
       "name": "Edison",
       "role": "Video Malam",
-      "slot": "19:00",
-      "status": "done",
-      "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1438695711734765/"
+      "slot": "",
+      "status": "pending",
+      "detail": "",
+      "url": ""
     }
   ],
   "board": [
@@ -50,23 +50,23 @@
     },
     {
       "label": "Produk digital",
-      "status": "done",
-      "note": "Kitab Saku Excel Admin"
+      "status": "pending",
+      "note": "Menunggu jadwal"
     },
     {
       "label": "Artikel blog",
-      "status": "done",
-      "note": "Publish"
+      "status": "pending",
+      "note": "Menunggu jadwal"
     },
     {
       "label": "Video FP siang",
-      "status": "done",
-      "note": "Tayang"
+      "status": "pending",
+      "note": "Menunggu jadwal"
     },
     {
       "label": "Video FP malam",
-      "status": "done",
-      "note": "Tayang"
+      "status": "pending",
+      "note": "Menunggu jadwal"
     },
     {
       "label": "Novel Fizzo",
