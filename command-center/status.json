@@ -1,5 +1,5 @@
 {
-  "updated_at": "11 Okt 2026, 19:01 WIB",
+  "updated_at": "12 Okt 2026, 07:23 WIB",
   "agents": [
     {
       "name": "Mark",
@@ -7,39 +7,39 @@
       "slot": "07:00",
       "status": "done",
       "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1151431121160575/"
+      "url": "https://www.facebook.com/reel/1109348968258310/"
     },
     {
       "name": "Einstein",
       "role": "Produk Digital",
-      "slot": "09:00",
-      "status": "done",
-      "detail": "Kalkulator Cuan Jualan Rumahan (calculator HPP/harga jual/BEP)",
+      "slot": "",
+      "status": "pending",
+      "detail": "",
       "url": ""
     },
     {
       "name": "Tesla",
       "role": "Artikel Blog",
-      "slot": "10:00",
-      "status": "done",
-      "detail": "Publish",
-      "url": "https://updatefaktazf.blogspot.com/2026/10/cara-kerja-gps-jam-atom-relativitas.html"
+      "slot": "",
+      "status": "pending",
+      "detail": "",
+      "url": ""
     },
     {
       "name": "Newton",
       "role": "Video Siang",
-      "slot": "12:00",
-      "status": "done",
-      "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1415961073329982/"
+      "slot": "",
+      "status": "pending",
+      "detail": "",
+      "url": ""
     },
     {
       "name": "Edison",
       "role": "Video Malam",
-      "slot": "19:00",
-      "status": "done",
-      "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/2186792675594190/"
+      "slot": "",
+      "status": "pending",
+      "detail": "",
+      "url": ""
     }
   ],
   "board": [
@@ -50,23 +50,23 @@
     },
     {
       "label": "Produk digital",
-      "status": "done",
-      "note": "Kalkulator Cuan Jualan Rumahan (calculator HPP/harga jual/BEP)"
+      "status": "pending",
+      "note": "Menunggu jadwal"
     },
     {
       "label": "Artikel blog",
-      "status": "done",
-      "note": "Publish"
+      "status": "pending",
+      "note": "Menunggu jadwal"
     },
     {
       "label": "Video FP siang",
-      "status": "done",
-      "note": "Tayang"
+      "status": "pending",
+      "note": "Menunggu jadwal"
     },
     {
       "label": "Video FP malam",
-      "status": "done",
-      "note": "Tayang"
+      "status": "pending",
+      "note": "Menunggu jadwal"
     },
     {
       "label": "Novel Fizzo",
