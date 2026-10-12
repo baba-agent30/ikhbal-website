@@ -1,5 +1,5 @@
 {
-  "updated_at": "12 Okt 2026, 07:23 WIB",
+  "updated_at": "12 Okt 2026, 09:11 WIB",
   "agents": [
     {
       "name": "Mark",
@@ -12,9 +12,9 @@
     {
       "name": "Einstein",
       "role": "Produk Digital",
-      "slot": "",
-      "status": "pending",
-      "detail": "",
+      "slot": "09:00",
+      "status": "done",
+      "detail": "Tantangan 30 Hari: Orderan Pertama",
       "url": ""
     },
     {
@@ -50,8 +50,8 @@
     },
     {
       "label": "Produk digital",
-      "status": "pending",
-      "note": "Menunggu jadwal"
+      "status": "done",
+      "note": "Tantangan 30 Hari: Orderan Pertama"
     },
     {
       "label": "Artikel blog",
