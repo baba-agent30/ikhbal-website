@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-10-11T12:01:18.976958Z",
+  "generated_at": "2026-10-12T00:23:44.686408Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-10-11T12:01:18.976958Z",
-    "active_task": "Video quotes FP (malam)"
+    "heartbeat_at": "2026-10-12T00:23:44.686408Z",
+    "active_task": "Video quotes FP (pagi)"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 9.9,
-    "memory_used_bytes": 7240654848,
+    "cpu_percent": 3.8,
+    "memory_used_bytes": 8089726976,
     "memory_total_bytes": 8320626688,
-    "disk_used_bytes": 81551360,
+    "disk_used_bytes": 94199808,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 5770,
+    "uptime_seconds": 9342,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -29,59 +29,67 @@
       "progress_percent": 100,
       "priority": "medium",
       "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1151431121160575/",
+      "url": "https://www.facebook.com/reel/1109348968258310/",
       "slot": "07:00"
     },
     {
       "id": "cron-2",
       "title": "Produk digital harian",
       "project": "Muse Daily Ops",
-      "status": "completed",
-      "completed": true,
-      "progress_percent": 100,
+      "status": "pending",
+      "completed": false,
+      "progress_percent": 0,
       "priority": "medium",
-      "detail": "Kalkulator Cuan Jualan Rumahan (calculator HPP/harga jual/BEP)",
+      "detail": "",
       "url": "",
-      "slot": "09:00"
+      "slot": ""
     },
     {
       "id": "cron-3",
       "title": "Artikel blog harian",
       "project": "Muse Daily Ops",
-      "status": "completed",
-      "completed": true,
-      "progress_percent": 100,
+      "status": "pending",
+      "completed": false,
+      "progress_percent": 0,
       "priority": "medium",
-      "detail": "Publish",
-      "url": "https://updatefaktazf.blogspot.com/2026/10/cara-kerja-gps-jam-atom-relativitas.html",
-      "slot": "10:00"
+      "detail": "",
+      "url": "",
+      "slot": ""
     },
     {
       "id": "cron-4",
       "title": "Video quotes FP (siang)",
       "project": "Muse Daily Ops",
-      "status": "completed",
-      "completed": true,
-      "progress_percent": 100,
+      "status": "pending",
+      "completed": false,
+      "progress_percent": 0,
       "priority": "medium",
-      "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1415961073329982/",
-      "slot": "12:00"
+      "detail": "",
+      "url": "",
+      "slot": ""
     },
     {
       "id": "cron-5",
       "title": "Video quotes FP (malam)",
       "project": "Muse Daily Ops",
-      "status": "completed",
-      "completed": true,
-      "progress_percent": 100,
+      "status": "pending",
+      "completed": false,
+      "progress_percent": 0,
       "priority": "medium",
-      "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/2186792675594190/",
-      "slot": "19:00"
+      "detail": "",
+      "url": "",
+      "slot": ""
     }
   ],
   "events": [
+    {
+      "id": "evt-20261012002351",
+      "type": "task",
+      "title": "Cron 'Video quotes FP (pagi)' Selesai",
+      "description": "Tayang — https://www.facebook.com/reel/1109348968258310/",
+      "occurred_at": "2026-10-12T00:23:51.835327Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261011120126",
       "type": "task",
@@ -160,7 +168,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 100,
+      "progress_percent": 20,
       "task_count": 5
     }
   ],
@@ -180,13 +188,13 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "9.9%",
+      "value": "3.8%",
       "source": "/proc/stat",
       "status": "OK"
     },
     {
       "name": "RAM VM (snapshot)",
-      "value": "87.0%",
+      "value": "97.2%",
       "source": "/proc/meminfo",
       "status": "OK"
     },
