@@ -2,7 +2,7 @@
   "status": "ok",
   "service": "muse-observatory-api",
   "mode": "static-build",
-  "generated_at": "2026-10-12T04:58:52.835021Z",
+  "generated_at": "2026-10-12T12:01:19.545397Z",
   "checks": {
     "task_source": "state.json (5 cron harian)",
     "event_log": "observatory-events.json",
