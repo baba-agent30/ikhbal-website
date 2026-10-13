@@ -1,5 +1,5 @@
 {
-  "updated_at": "13 Okt 2026, 09:21 WIB",
+  "updated_at": "13 Okt 2026, 10:37 WIB",
   "agents": [
     {
       "name": "Mark",
@@ -20,10 +20,10 @@
     {
       "name": "Tesla",
       "role": "Artikel Blog",
-      "slot": "",
-      "status": "pending",
-      "detail": "",
-      "url": ""
+      "slot": "10:00",
+      "status": "done",
+      "detail": "Publish",
+      "url": "https://updatefaktazf.blogspot.com/2026/10/tahun-536-matahari-meredup-18-bulan.html"
     },
     {
       "name": "Newton",
@@ -55,8 +55,8 @@
     },
     {
       "label": "Artikel blog",
-      "status": "pending",
-      "note": "Menunggu jadwal"
+      "status": "done",
+      "note": "Publish"
     },
     {
       "label": "Video FP siang",
