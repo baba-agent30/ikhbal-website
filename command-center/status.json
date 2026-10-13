@@ -1,5 +1,5 @@
 {
-  "updated_at": "13 Okt 2026, 07:36 WIB",
+  "updated_at": "13 Okt 2026, 09:21 WIB",
   "agents": [
     {
       "name": "Mark",
@@ -12,9 +12,9 @@
     {
       "name": "Einstein",
       "role": "Produk Digital",
-      "slot": "",
-      "status": "pending",
-      "detail": "",
+      "slot": "09:00",
+      "status": "done",
+      "detail": "Skin Basic: Panduan 14 Hari Skincare Pria Pemula (ebook Rp29rb)",
       "url": ""
     },
     {
@@ -50,8 +50,8 @@
     },
     {
       "label": "Produk digital",
-      "status": "pending",
-      "note": "Menunggu jadwal"
+      "status": "done",
+      "note": "Skin Basic: Panduan 14 Hari Skincare Pria Pemula (ebook Rp29rb)"
     },
     {
       "label": "Artikel blog",
