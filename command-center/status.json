@@ -1,5 +1,5 @@
 {
-  "updated_at": "14 Okt 2026, 07:19 WIB",
+  "updated_at": "14 Okt 2026, 09:06 WIB",
   "agents": [
     {
       "name": "Mark",
@@ -12,9 +12,9 @@
     {
       "name": "Einstein",
       "role": "Produk Digital",
-      "slot": "",
-      "status": "pending",
-      "detail": "",
+      "slot": "09:00",
+      "status": "done",
+      "detail": "Perkalian Kilat SD: Misi 30 Hari Jago Perkalian 1-10 (worksheet 36 hlm + kunci jawaban + carousel)",
       "url": ""
     },
     {
@@ -50,8 +50,8 @@
     },
     {
       "label": "Produk digital",
-      "status": "pending",
-      "note": "Menunggu jadwal"
+      "status": "done",
+      "note": "Perkalian Kilat SD: Misi 30 Hari Jago Perkalian 1-10 (worksheet 36 hlm + kunci jawaban + carousel)"
     },
     {
       "label": "Artikel blog",
