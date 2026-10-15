@@ -1,13 +1,13 @@
 {
-  "updated_at": "16 Okt 2026, 06:55 WIB",
+  "updated_at": "16 Okt 2026, 06:58 WIB",
   "agents": [
     {
       "name": "Mark",
       "role": "Video Pagi",
-      "slot": "",
-      "status": "pending",
-      "detail": "",
-      "url": ""
+      "slot": "07:00",
+      "status": "done",
+      "detail": "Tayang",
+      "url": "https://www.facebook.com/reel/1400958855537642/"
     },
     {
       "name": "Einstein",
@@ -45,8 +45,8 @@
   "board": [
     {
       "label": "Video FP pagi",
-      "status": "pending",
-      "note": "Menunggu jadwal"
+      "status": "done",
+      "note": "Tayang"
     },
     {
       "label": "Produk digital",
