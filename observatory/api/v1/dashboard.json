@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-10-14T12:04:26.717535Z",
+  "generated_at": "2026-10-15T04:56:38.345866Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-10-14T12:04:26.717535Z",
-    "active_task": "Video quotes FP (malam)"
+    "heartbeat_at": "2026-10-15T04:56:38.345866Z",
+    "active_task": "Video quotes FP (siang)"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 3.7,
-    "memory_used_bytes": 5904822272,
-    "memory_total_bytes": 8320602112,
-    "disk_used_bytes": 462086144,
+    "cpu_percent": 6.2,
+    "memory_used_bytes": 5926166528,
+    "memory_total_bytes": 8321638400,
+    "disk_used_bytes": 78430208,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 3823,
+    "uptime_seconds": 5100,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -29,7 +29,7 @@
       "progress_percent": 100,
       "priority": "medium",
       "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1631153341788018/",
+      "url": "https://www.facebook.com/reel/1110685444706853/",
       "slot": "07:00"
     },
     {
@@ -40,7 +40,7 @@
       "completed": true,
       "progress_percent": 100,
       "priority": "medium",
-      "detail": "Perkalian Kilat SD: Misi 30 Hari Jago Perkalian 1-10 (worksheet 36 hlm + kunci jawaban + carousel)",
+      "detail": "Kit Packing Pro: 8 Template Dokumen Packing untuk Penjual Online",
       "url": "",
       "slot": "09:00"
     },
@@ -53,7 +53,7 @@
       "progress_percent": 100,
       "priority": "medium",
       "detail": "Publish",
-      "url": "https://updatefaktazf.blogspot.com/2026/10/kenapa-hp-makin-lambat.html",
+      "url": "https://updatefaktazf.blogspot.com/2026/10/dallol-tempat-paling-asing-di-bumi.html",
       "slot": "10:00"
     },
     {
@@ -65,23 +65,55 @@
       "progress_percent": 100,
       "priority": "medium",
       "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/2812980889084428/",
+      "url": "https://www.facebook.com/reel/1083269051145955/",
       "slot": "12:00"
     },
     {
       "id": "cron-5",
       "title": "Video quotes FP (malam)",
       "project": "Muse Daily Ops",
-      "status": "completed",
-      "completed": true,
-      "progress_percent": 100,
+      "status": "pending",
+      "completed": false,
+      "progress_percent": 0,
       "priority": "medium",
-      "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1793077835072692/",
-      "slot": "19:00"
+      "detail": "",
+      "url": "",
+      "slot": ""
     }
   ],
   "events": [
+    {
+      "id": "evt-20261015045646",
+      "type": "task",
+      "title": "Cron 'Video quotes FP (siang)' Selesai",
+      "description": "Tayang — https://www.facebook.com/reel/1083269051145955/",
+      "occurred_at": "2026-10-15T04:56:46.756108Z",
+      "source": "muse-cron"
+    },
+    {
+      "id": "evt-20261015033143",
+      "type": "task",
+      "title": "Cron 'Artikel blog harian' Selesai",
+      "description": "Publish — https://updatefaktazf.blogspot.com/2026/10/dallol-tempat-paling-asing-di-bumi.html",
+      "occurred_at": "2026-10-15T03:31:43.970111Z",
+      "source": "muse-cron"
+    },
+    {
+      "id": "evt-20261015021501",
+      "type": "task",
+      "title": "Cron 'Produk digital harian' Selesai",
+      "description": "Kit Packing Pro: 8 Template Dokumen Packing untuk Penjual Online",
+      "occurred_at": "2026-10-15T02:15:01.595604Z",
+      "source": "muse-cron"
+    },
+    {
+      "id": "evt-20261014235744",
+      "type": "task",
+      "title": "Cron 'Video quotes FP (pagi)' Selesai",
+      "description": "Tayang — https://www.facebook.com/reel/1110685444706853/",
+      "occurred_at": "2026-10-14T23:57:44.159030Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261014120434",
       "type": "task",
@@ -280,7 +312,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 100,
+      "progress_percent": 80,
       "task_count": 5
     }
   ],
@@ -300,13 +332,13 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "3.7%",
+      "value": "6.2%",
       "source": "/proc/stat",
       "status": "OK"
     },
     {
       "name": "RAM VM (snapshot)",
-      "value": "71.0%",
+      "value": "71.2%",
       "source": "/proc/meminfo",
       "status": "OK"
     },
