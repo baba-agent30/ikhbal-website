@@ -1,5 +1,5 @@
 {
-  "updated_at": "14 Okt 2026, 19:04 WIB",
+  "updated_at": "15 Okt 2026, 11:56 WIB",
   "agents": [
     {
       "name": "Mark",
@@ -7,14 +7,14 @@
       "slot": "07:00",
       "status": "done",
       "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1631153341788018/"
+      "url": "https://www.facebook.com/reel/1110685444706853/"
     },
     {
       "name": "Einstein",
       "role": "Produk Digital",
       "slot": "09:00",
       "status": "done",
-      "detail": "Perkalian Kilat SD: Misi 30 Hari Jago Perkalian 1-10 (worksheet 36 hlm + kunci jawaban + carousel)",
+      "detail": "Kit Packing Pro: 8 Template Dokumen Packing untuk Penjual Online",
       "url": ""
     },
     {
@@ -23,7 +23,7 @@
       "slot": "10:00",
       "status": "done",
       "detail": "Publish",
-      "url": "https://updatefaktazf.blogspot.com/2026/10/kenapa-hp-makin-lambat.html"
+      "url": "https://updatefaktazf.blogspot.com/2026/10/dallol-tempat-paling-asing-di-bumi.html"
     },
     {
       "name": "Newton",
@@ -31,15 +31,15 @@
       "slot": "12:00",
       "status": "done",
       "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/2812980889084428/"
+      "url": "https://www.facebook.com/reel/1083269051145955/"
     },
     {
       "name": "Edison",
       "role": "Video Malam",
-      "slot": "19:00",
-      "status": "done",
-      "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1793077835072692/"
+      "slot": "",
+      "status": "pending",
+      "detail": "",
+      "url": ""
     }
   ],
   "board": [
@@ -51,7 +51,7 @@
     {
       "label": "Produk digital",
       "status": "done",
-      "note": "Perkalian Kilat SD: Misi 30 Hari Jago Perkalian 1-10 (worksheet 36 hlm + kunci jawaban + carousel)"
+      "note": "Kit Packing Pro: 8 Template Dokumen Packing untuk Penjual Online"
     },
     {
       "label": "Artikel blog",
@@ -65,8 +65,8 @@
     },
     {
       "label": "Video FP malam",
-      "status": "done",
-      "note": "Tayang"
+      "status": "pending",
+      "note": "Menunggu jadwal"
     },
     {
       "label": "Novel Fizzo",
