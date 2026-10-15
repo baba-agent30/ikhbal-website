@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-10-15T12:01:55.337107Z",
+  "generated_at": "2026-10-15T23:55:59.595475Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-10-15T12:01:55.337107Z",
-    "active_task": "Video quotes FP (malam)"
+    "heartbeat_at": "2026-10-15T23:55:59.595475Z",
+    "active_task": "Wargaku Phase 31 Tahap 6"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 78.5,
-    "memory_used_bytes": 2602061824,
+    "cpu_percent": 8.9,
+    "memory_used_bytes": 7392968704,
     "memory_total_bytes": 8320602112,
-    "disk_used_bytes": 144535552,
+    "disk_used_bytes": 127885312,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 13293,
+    "uptime_seconds": 6120,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -24,64 +24,72 @@
       "id": "cron-1",
       "title": "Video quotes FP (pagi)",
       "project": "Muse Daily Ops",
-      "status": "completed",
-      "completed": true,
-      "progress_percent": 100,
+      "status": "pending",
+      "completed": false,
+      "progress_percent": 0,
       "priority": "medium",
-      "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1110685444706853/",
-      "slot": "07:00"
+      "detail": "",
+      "url": "",
+      "slot": ""
     },
     {
       "id": "cron-2",
       "title": "Produk digital harian",
       "project": "Muse Daily Ops",
-      "status": "completed",
-      "completed": true,
-      "progress_percent": 100,
+      "status": "pending",
+      "completed": false,
+      "progress_percent": 0,
       "priority": "medium",
-      "detail": "Kit Packing Pro: 8 Template Dokumen Packing untuk Penjual Online",
+      "detail": "",
       "url": "",
-      "slot": "09:00"
+      "slot": ""
     },
     {
       "id": "cron-3",
       "title": "Artikel blog harian",
       "project": "Muse Daily Ops",
-      "status": "completed",
-      "completed": true,
-      "progress_percent": 100,
+      "status": "pending",
+      "completed": false,
+      "progress_percent": 0,
       "priority": "medium",
-      "detail": "Publish",
-      "url": "https://updatefaktazf.blogspot.com/2026/10/dallol-tempat-paling-asing-di-bumi.html",
-      "slot": "10:00"
+      "detail": "",
+      "url": "",
+      "slot": ""
     },
     {
       "id": "cron-4",
       "title": "Video quotes FP (siang)",
       "project": "Muse Daily Ops",
-      "status": "completed",
-      "completed": true,
-      "progress_percent": 100,
+      "status": "pending",
+      "completed": false,
+      "progress_percent": 0,
       "priority": "medium",
-      "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1083269051145955/",
-      "slot": "12:00"
+      "detail": "",
+      "url": "",
+      "slot": ""
     },
     {
       "id": "cron-5",
       "title": "Video quotes FP (malam)",
       "project": "Muse Daily Ops",
-      "status": "completed",
-      "completed": true,
-      "progress_percent": 100,
+      "status": "pending",
+      "completed": false,
+      "progress_percent": 0,
       "priority": "medium",
-      "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/2223555588220247/",
-      "slot": "19:00"
+      "detail": "",
+      "url": "",
+      "slot": ""
     }
   ],
   "events": [
+    {
+      "id": "evt-20261015235607",
+      "type": "task",
+      "title": "Cron 'Wargaku Phase 31 Tahap 6' Selesai",
+      "description": "Migration 026/027 + test 022 PASS, preview deployed",
+      "occurred_at": "2026-10-15T23:56:07.708321Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261015120205",
       "type": "task",
@@ -320,7 +328,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 100,
+      "progress_percent": 0,
       "task_count": 5
     }
   ],
@@ -340,13 +348,13 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "78.5%",
+      "value": "8.9%",
       "source": "/proc/stat",
       "status": "OK"
     },
     {
       "name": "RAM VM (snapshot)",
-      "value": "31.3%",
+      "value": "88.9%",
       "source": "/proc/meminfo",
       "status": "OK"
     },
