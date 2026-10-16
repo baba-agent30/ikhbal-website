@@ -1,5 +1,5 @@
 {
-  "updated_at": "16 Okt 2026, 19:01 WIB",
+  "updated_at": "17 Okt 2026, 06:57 WIB",
   "agents": [
     {
       "name": "Mark",
@@ -7,39 +7,39 @@
       "slot": "07:00",
       "status": "done",
       "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1400958855537642/"
+      "url": "https://www.facebook.com/reel/29080905298205615/"
     },
     {
       "name": "Einstein",
       "role": "Produk Digital",
-      "slot": "09:00",
-      "status": "done",
-      "detail": "StokTrack Mini: Sistem Stok & Inventaris Otomatis untuk Penjual Online (Rp29.000)",
+      "slot": "",
+      "status": "pending",
+      "detail": "",
       "url": ""
     },
     {
       "name": "Tesla",
       "role": "Artikel Blog",
-      "slot": "10:00",
-      "status": "done",
-      "detail": "Publish",
-      "url": "https://updatefaktazf.blogspot.com/2026/10/cara-kerja-qr-code-dipindai-sekejap.html"
+      "slot": "",
+      "status": "pending",
+      "detail": "",
+      "url": ""
     },
     {
       "name": "Newton",
       "role": "Video Siang",
-      "slot": "12:00",
-      "status": "done",
-      "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1107832251979632/"
+      "slot": "",
+      "status": "pending",
+      "detail": "",
+      "url": ""
     },
     {
       "name": "Edison",
       "role": "Video Malam",
-      "slot": "19:00",
-      "status": "done",
-      "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1609133677424018/"
+      "slot": "",
+      "status": "pending",
+      "detail": "",
+      "url": ""
     }
   ],
   "board": [
@@ -50,23 +50,23 @@
     },
     {
       "label": "Produk digital",
-      "status": "done",
-      "note": "StokTrack Mini: Sistem Stok & Inventaris Otomatis untuk Penjual Online (Rp29.000)"
+      "status": "pending",
+      "note": "Menunggu jadwal"
     },
     {
       "label": "Artikel blog",
-      "status": "done",
-      "note": "Publish"
+      "status": "pending",
+      "note": "Menunggu jadwal"
     },
     {
       "label": "Video FP siang",
-      "status": "done",
-      "note": "Tayang"
+      "status": "pending",
+      "note": "Menunggu jadwal"
     },
     {
       "label": "Video FP malam",
-      "status": "done",
-      "note": "Tayang"
+      "status": "pending",
+      "note": "Menunggu jadwal"
     },
     {
       "label": "Novel Fizzo",
