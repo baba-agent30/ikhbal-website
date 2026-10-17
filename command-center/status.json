@@ -1,5 +1,5 @@
 {
-  "updated_at": "17 Okt 2026, 10:12 WIB",
+  "updated_at": "17 Okt 2026, 11:56 WIB",
   "agents": [
     {
       "name": "Mark",
@@ -28,10 +28,10 @@
     {
       "name": "Newton",
       "role": "Video Siang",
-      "slot": "",
-      "status": "pending",
-      "detail": "",
-      "url": ""
+      "slot": "12:00",
+      "status": "done",
+      "detail": "Tayang",
+      "url": "https://www.facebook.com/reel/1421593593431731/"
     },
     {
       "name": "Edison",
@@ -60,8 +60,8 @@
     },
     {
       "label": "Video FP siang",
-      "status": "pending",
-      "note": "Menunggu jadwal"
+      "status": "done",
+      "note": "Tayang"
     },
     {
       "label": "Video FP malam",
