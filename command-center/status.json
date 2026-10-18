@@ -1,5 +1,5 @@
 {
-  "updated_at": "18 Okt 2026, 09:13 WIB",
+  "updated_at": "18 Okt 2026, 10:44 WIB",
   "agents": [
     {
       "name": "Mark",
@@ -20,10 +20,10 @@
     {
       "name": "Tesla",
       "role": "Artikel Blog",
-      "slot": "",
-      "status": "pending",
-      "detail": "",
-      "url": ""
+      "slot": "10:00",
+      "status": "done",
+      "detail": "Publish: Efek Mpemba: Kok Air Panas Bisa Membeku Lebih Dulu daripada Air Dingin?",
+      "url": "https://updatefaktazf.blogspot.com/2026/10/efek-mpemba-air-panas-lebih-cepat-membeku.html"
     },
     {
       "name": "Newton",
@@ -55,8 +55,8 @@
     },
     {
       "label": "Artikel blog",
-      "status": "pending",
-      "note": "Menunggu jadwal"
+      "status": "done",
+      "note": "Publish: Efek Mpemba: Kok Air Panas Bisa Membeku Lebih Dulu daripada Air Dingin?"
     },
     {
       "label": "Video FP siang",
