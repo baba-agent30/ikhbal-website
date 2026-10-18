@@ -1,5 +1,5 @@
 {
-  "updated_at": "18 Okt 2026, 06:59 WIB",
+  "updated_at": "18 Okt 2026, 09:13 WIB",
   "agents": [
     {
       "name": "Mark",
@@ -12,9 +12,9 @@
     {
       "name": "Einstein",
       "role": "Produk Digital",
-      "slot": "",
-      "status": "pending",
-      "detail": "",
+      "slot": "09:00",
+      "status": "done",
+      "detail": "Beberes Rapi 30 Hari: Planner Declutter Rumah Zona per Zona (PDF 42 hal, Rp29.000)",
       "url": ""
     },
     {
@@ -50,8 +50,8 @@
     },
     {
       "label": "Produk digital",
-      "status": "pending",
-      "note": "Menunggu jadwal"
+      "status": "done",
+      "note": "Beberes Rapi 30 Hari: Planner Declutter Rumah Zona per Zona (PDF 42 hal, Rp29.000)"
     },
     {
       "label": "Artikel blog",
