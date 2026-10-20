@@ -1,5 +1,5 @@
 {
-  "updated_at": "20 Okt 2026, 11:56 WIB",
+  "updated_at": "20 Okt 2026, 12:03 WIB",
   "agents": [
     {
       "name": "Mark",
@@ -20,10 +20,10 @@
     {
       "name": "Tesla",
       "role": "Artikel Blog",
-      "slot": "",
-      "status": "pending",
-      "detail": "",
-      "url": ""
+      "slot": "10:00",
+      "status": "done",
+      "detail": "Publish",
+      "url": "https://updatefaktazf.blogspot.com/2026/10/lupa-niat-masuk-kamar-efek-ambang-pintu.html"
     },
     {
       "name": "Newton",
@@ -55,8 +55,8 @@
     },
     {
       "label": "Artikel blog",
-      "status": "pending",
-      "note": "Menunggu jadwal"
+      "status": "done",
+      "note": "Publish"
     },
     {
       "label": "Video FP siang",
