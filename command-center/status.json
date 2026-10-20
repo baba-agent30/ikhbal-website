@@ -1,72 +1,72 @@
 {
-  "updated_at": "20 Okt 2026, 19:01 WIB",
+  "updated_at": "21 Okt 2026, 00:34 WIB",
   "agents": [
     {
       "name": "Mark",
       "role": "Video Pagi",
-      "slot": "07:00",
-      "status": "done",
-      "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1841270507298464/"
+      "slot": "",
+      "status": "pending",
+      "detail": "",
+      "url": ""
     },
     {
       "name": "Einstein",
       "role": "Produk Digital",
-      "slot": "09:00",
-      "status": "done",
-      "detail": "Audit Toko 100 Poin — checklist diagnosa toko Shopee/Tokopedia (Rp29rb)",
+      "slot": "",
+      "status": "pending",
+      "detail": "",
       "url": ""
     },
     {
       "name": "Tesla",
       "role": "Artikel Blog",
-      "slot": "10:00",
-      "status": "done",
-      "detail": "Publish",
-      "url": "https://updatefaktazf.blogspot.com/2026/10/lupa-niat-masuk-kamar-efek-ambang-pintu.html"
+      "slot": "",
+      "status": "pending",
+      "detail": "",
+      "url": ""
     },
     {
       "name": "Newton",
       "role": "Video Siang",
-      "slot": "12:00",
-      "status": "done",
-      "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1498889112093728/"
+      "slot": "",
+      "status": "pending",
+      "detail": "",
+      "url": ""
     },
     {
       "name": "Edison",
       "role": "Video Malam",
-      "slot": "19:00",
-      "status": "done",
-      "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/2093093534905546/"
+      "slot": "",
+      "status": "pending",
+      "detail": "",
+      "url": ""
     }
   ],
   "board": [
     {
       "label": "Video FP pagi",
-      "status": "done",
-      "note": "Tayang"
+      "status": "pending",
+      "note": "Menunggu jadwal"
     },
     {
       "label": "Produk digital",
-      "status": "done",
-      "note": "Audit Toko 100 Poin — checklist diagnosa toko Shopee/Tokopedia (Rp29rb)"
+      "status": "pending",
+      "note": "Menunggu jadwal"
     },
     {
       "label": "Artikel blog",
-      "status": "done",
-      "note": "Publish"
+      "status": "pending",
+      "note": "Menunggu jadwal"
     },
     {
       "label": "Video FP siang",
-      "status": "done",
-      "note": "Tayang"
+      "status": "pending",
+      "note": "Menunggu jadwal"
     },
     {
       "label": "Video FP malam",
-      "status": "done",
-      "note": "Tayang"
+      "status": "pending",
+      "note": "Menunggu jadwal"
     },
     {
       "label": "Novel Fizzo",
