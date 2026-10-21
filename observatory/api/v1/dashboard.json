@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-10-21T04:30:55.775294Z",
+  "generated_at": "2026-10-21T04:57:11.503277Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-10-21T04:30:55.775294Z",
-    "active_task": "Artikel blog harian"
+    "heartbeat_at": "2026-10-21T04:57:11.503277Z",
+    "active_task": "Video quotes FP (siang)"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 48.2,
-    "memory_used_bytes": 7497875456,
+    "cpu_percent": 10.0,
+    "memory_used_bytes": 6388281344,
     "memory_total_bytes": 8320602112,
-    "disk_used_bytes": 95412224,
+    "disk_used_bytes": 58314752,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 6755,
+    "uptime_seconds": 1430,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -60,13 +60,13 @@
       "id": "cron-4",
       "title": "Video quotes FP (siang)",
       "project": "Muse Daily Ops",
-      "status": "pending",
-      "completed": false,
-      "progress_percent": 0,
+      "status": "completed",
+      "completed": true,
+      "progress_percent": 100,
       "priority": "medium",
-      "detail": "",
-      "url": "",
-      "slot": ""
+      "detail": "Tayang",
+      "url": "https://www.facebook.com/reel/1077678895105085/",
+      "slot": "12:00"
     },
     {
       "id": "cron-5",
@@ -82,6 +82,14 @@
     }
   ],
   "events": [
+    {
+      "id": "evt-20261021045720",
+      "type": "task",
+      "title": "Cron 'Video quotes FP (siang)' Selesai",
+      "description": "Tayang — https://www.facebook.com/reel/1077678895105085/",
+      "occurred_at": "2026-10-21T04:57:20.291511Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261021043106",
       "type": "task",
@@ -553,14 +561,6 @@
       "description": "Menunggu jadwal",
       "occurred_at": "2026-10-10T07:20:14.393240Z",
       "source": "muse-cron"
-    },
-    {
-      "id": "evt-20261010071956",
-      "type": "system",
-      "title": "MUSE OBSERVATORY di-deploy",
-      "description": "Dashboard monitoring pribadi live di GitHub Pages.",
-      "occurred_at": "2026-10-10T07:19:56.812970Z",
-      "source": "muse-runtime"
     }
   ],
   "projects": [
@@ -568,7 +568,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 60,
+      "progress_percent": 80,
       "task_count": 5
     }
   ],
@@ -588,13 +588,13 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "48.2%",
+      "value": "10.0%",
       "source": "/proc/stat",
       "status": "OK"
     },
     {
       "name": "RAM VM (snapshot)",
-      "value": "90.1%",
+      "value": "76.8%",
       "source": "/proc/meminfo",
       "status": "OK"
     },
