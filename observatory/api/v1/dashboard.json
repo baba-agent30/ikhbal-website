@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-10-21T12:02:24.719968Z",
+  "generated_at": "2026-10-22T00:23:40.827485Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-10-21T12:02:24.719968Z",
-    "active_task": "Video quotes FP (malam)"
+    "heartbeat_at": "2026-10-22T00:23:40.827485Z",
+    "active_task": "Video quotes FP (pagi)"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 38.3,
-    "memory_used_bytes": 6639104000,
-    "memory_total_bytes": 8321638400,
-    "disk_used_bytes": 61145088,
+    "cpu_percent": 5.0,
+    "memory_used_bytes": 7846617088,
+    "memory_total_bytes": 8320602112,
+    "disk_used_bytes": 83574784,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 2897,
+    "uptime_seconds": 7708,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -29,59 +29,67 @@
       "progress_percent": 100,
       "priority": "medium",
       "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/856746274168813/",
+      "url": "https://www.facebook.com/reel/1731875791728127/",
       "slot": "07:00"
     },
     {
       "id": "cron-2",
       "title": "Produk digital harian",
       "project": "Muse Daily Ops",
-      "status": "completed",
-      "completed": true,
-      "progress_percent": 100,
+      "status": "pending",
+      "completed": false,
+      "progress_percent": 0,
       "priority": "medium",
-      "detail": "HargaPas Marketplace — Kalkulator Harga Jual Anti-Boncos",
+      "detail": "",
       "url": "",
-      "slot": "09:00"
+      "slot": ""
     },
     {
       "id": "cron-3",
       "title": "Artikel blog harian",
       "project": "Muse Daily Ops",
-      "status": "completed",
-      "completed": true,
-      "progress_percent": 100,
+      "status": "pending",
+      "completed": false,
+      "progress_percent": 0,
       "priority": "medium",
-      "detail": "Publish",
-      "url": "https://updatefaktazf.blogspot.com/2026/10/cincin-saturnus-lenyap-hujan-cincin-umur-muda.html",
-      "slot": "10:00"
+      "detail": "",
+      "url": "",
+      "slot": ""
     },
     {
       "id": "cron-4",
       "title": "Video quotes FP (siang)",
       "project": "Muse Daily Ops",
-      "status": "completed",
-      "completed": true,
-      "progress_percent": 100,
+      "status": "pending",
+      "completed": false,
+      "progress_percent": 0,
       "priority": "medium",
-      "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1077678895105085/",
-      "slot": "12:00"
+      "detail": "",
+      "url": "",
+      "slot": ""
     },
     {
       "id": "cron-5",
       "title": "Video quotes FP (malam)",
       "project": "Muse Daily Ops",
-      "status": "completed",
-      "completed": true,
-      "progress_percent": 100,
+      "status": "pending",
+      "completed": false,
+      "progress_percent": 0,
       "priority": "medium",
-      "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/4450360911947053/",
-      "slot": "19:00"
+      "detail": "",
+      "url": "",
+      "slot": ""
     }
   ],
   "events": [
+    {
+      "id": "evt-20261022002349",
+      "type": "task",
+      "title": "Cron 'Video quotes FP (pagi)' Selesai",
+      "description": "Tayang — https://www.facebook.com/reel/1731875791728127/",
+      "occurred_at": "2026-10-22T00:23:49.635571Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261021120235",
       "type": "task",
@@ -553,14 +561,6 @@
       "description": "Tayang — https://www.facebook.com/reel/1438695711734765/",
       "occurred_at": "2026-10-10T12:02:05.504142Z",
       "source": "muse-cron"
-    },
-    {
-      "id": "evt-20261010074333",
-      "type": "task",
-      "title": "Cron 'Video quotes FP (malam)' Menunggu",
-      "description": "Menunggu jadwal",
-      "occurred_at": "2026-10-10T07:43:33.864888Z",
-      "source": "muse-cron"
     }
   ],
   "projects": [
@@ -568,7 +568,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 100,
+      "progress_percent": 20,
       "task_count": 5
     }
   ],
@@ -588,13 +588,13 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "38.3%",
+      "value": "5.0%",
       "source": "/proc/stat",
       "status": "OK"
     },
     {
       "name": "RAM VM (snapshot)",
-      "value": "79.8%",
+      "value": "94.3%",
       "source": "/proc/meminfo",
       "status": "OK"
     },
