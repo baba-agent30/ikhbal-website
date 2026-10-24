@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-10-24T04:57:30.229194Z",
+  "generated_at": "2026-10-24T12:02:01.927880Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-10-24T04:57:30.229194Z",
-    "active_task": "Video quotes FP (siang)"
+    "heartbeat_at": "2026-10-24T12:02:01.927880Z",
+    "active_task": "Video quotes FP (malam)"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 7.6,
-    "memory_used_bytes": 6666145792,
+    "cpu_percent": 27.2,
+    "memory_used_bytes": 6584688640,
     "memory_total_bytes": 8321638400,
-    "disk_used_bytes": 56758272,
+    "disk_used_bytes": 101543936,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 1700,
+    "uptime_seconds": 3387,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -72,16 +72,24 @@
       "id": "cron-5",
       "title": "Video quotes FP (malam)",
       "project": "Muse Daily Ops",
-      "status": "pending",
-      "completed": false,
-      "progress_percent": 0,
+      "status": "completed",
+      "completed": true,
+      "progress_percent": 100,
       "priority": "medium",
-      "detail": "",
-      "url": "",
-      "slot": ""
+      "detail": "Tayang",
+      "url": "https://www.facebook.com/reel/1465002239028812/",
+      "slot": "19:00"
     }
   ],
   "events": [
+    {
+      "id": "evt-20261024120212",
+      "type": "task",
+      "title": "Cron 'Video quotes FP (malam)' Selesai",
+      "description": "Tayang — https://www.facebook.com/reel/1465002239028812/",
+      "occurred_at": "2026-10-24T12:02:12.661907Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261024045739",
       "type": "task",
@@ -553,14 +561,6 @@
       "description": "Tayang — https://www.facebook.com/reel/2153098452274673/",
       "occurred_at": "2026-10-13T04:59:49.074460Z",
       "source": "muse-cron"
-    },
-    {
-      "id": "evt-20261013033716",
-      "type": "task",
-      "title": "Cron 'Artikel blog harian' Selesai",
-      "description": "Publish — https://updatefaktazf.blogspot.com/2026/10/tahun-536-matahari-meredup-18-bulan.html",
-      "occurred_at": "2026-10-13T03:37:16.083938Z",
-      "source": "muse-cron"
     }
   ],
   "projects": [
@@ -568,7 +568,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 80,
+      "progress_percent": 100,
       "task_count": 5
     }
   ],
@@ -588,13 +588,13 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "7.6%",
+      "value": "27.2%",
       "source": "/proc/stat",
       "status": "OK"
     },
     {
       "name": "RAM VM (snapshot)",
-      "value": "80.1%",
+      "value": "79.1%",
       "source": "/proc/meminfo",
       "status": "OK"
     },
