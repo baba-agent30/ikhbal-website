@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-10-24T03:33:36.686252Z",
+  "generated_at": "2026-10-24T04:30:41.584724Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-10-24T03:33:36.686252Z",
-    "active_task": "Artikel blog harian"
+    "heartbeat_at": "2026-10-24T04:30:41.584724Z",
+    "active_task": "Produk digital harian"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 96.3,
-    "memory_used_bytes": 4376596480,
-    "memory_total_bytes": 8321634304,
-    "disk_used_bytes": 48492544,
+    "cpu_percent": 2.5,
+    "memory_used_bytes": 7746334720,
+    "memory_total_bytes": 8321638400,
+    "disk_used_bytes": 234704896,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 82,
+    "uptime_seconds": 1406,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -36,13 +36,13 @@
       "id": "cron-2",
       "title": "Produk digital harian",
       "project": "Muse Daily Ops",
-      "status": "pending",
-      "completed": false,
-      "progress_percent": 0,
+      "status": "completed",
+      "completed": true,
+      "progress_percent": 100,
       "priority": "medium",
-      "detail": "",
+      "detail": "Tegak Bersambung Kilat: 30 Hari Jago Menulis Rapi (worksheet SD kelas 1-3)",
       "url": "",
-      "slot": ""
+      "slot": "09:00"
     },
     {
       "id": "cron-3",
@@ -82,6 +82,14 @@
     }
   ],
   "events": [
+    {
+      "id": "evt-20261024043052",
+      "type": "task",
+      "title": "Cron 'Produk digital harian' Selesai",
+      "description": "Tegak Bersambung Kilat: 30 Hari Jago Menulis Rapi (worksheet SD kelas 1-3)",
+      "occurred_at": "2026-10-24T04:30:52.200350Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261024033353",
       "type": "task",
@@ -553,14 +561,6 @@
       "description": "Skin Basic: Panduan 14 Hari Skincare Pria Pemula (ebook Rp29rb)",
       "occurred_at": "2026-10-13T02:22:05.429201Z",
       "source": "muse-cron"
-    },
-    {
-      "id": "evt-20261013003646",
-      "type": "task",
-      "title": "Cron 'Video quotes FP (pagi)' Selesai",
-      "description": "Tayang — https://www.facebook.com/reel/39076848641929464/",
-      "occurred_at": "2026-10-13T00:36:46.997211Z",
-      "source": "muse-cron"
     }
   ],
   "projects": [
@@ -568,7 +568,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 40,
+      "progress_percent": 60,
       "task_count": 5
     }
   ],
@@ -588,13 +588,13 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "96.3%",
+      "value": "2.5%",
       "source": "/proc/stat",
       "status": "OK"
     },
     {
       "name": "RAM VM (snapshot)",
-      "value": "52.6%",
+      "value": "93.1%",
       "source": "/proc/meminfo",
       "status": "OK"
     },
