@@ -1,5 +1,5 @@
 {
-  "updated_at": "24 Okt 2026, 10:33 WIB",
+  "updated_at": "24 Okt 2026, 11:30 WIB",
   "agents": [
     {
       "name": "Mark",
@@ -12,9 +12,9 @@
     {
       "name": "Einstein",
       "role": "Produk Digital",
-      "slot": "",
-      "status": "pending",
-      "detail": "",
+      "slot": "09:00",
+      "status": "done",
+      "detail": "Tegak Bersambung Kilat: 30 Hari Jago Menulis Rapi (worksheet SD kelas 1-3)",
       "url": ""
     },
     {
@@ -50,8 +50,8 @@
     },
     {
       "label": "Produk digital",
-      "status": "pending",
-      "note": "Menunggu jadwal"
+      "status": "done",
+      "note": "Tegak Bersambung Kilat: 30 Hari Jago Menulis Rapi (worksheet SD kelas 1-3)"
     },
     {
       "label": "Artikel blog",
