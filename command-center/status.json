@@ -1,5 +1,5 @@
 {
-  "updated_at": "24 Okt 2026, 06:58 WIB",
+  "updated_at": "24 Okt 2026, 10:33 WIB",
   "agents": [
     {
       "name": "Mark",
@@ -20,10 +20,10 @@
     {
       "name": "Tesla",
       "role": "Artikel Blog",
-      "slot": "",
-      "status": "pending",
-      "detail": "",
-      "url": ""
+      "slot": "10:00",
+      "status": "done",
+      "detail": "Publish",
+      "url": "https://updatefaktazf.blogspot.com/2026/10/otak-cuci-diri-saat-tidur-sistem-glimfatik.html"
     },
     {
       "name": "Newton",
@@ -55,8 +55,8 @@
     },
     {
       "label": "Artikel blog",
-      "status": "pending",
-      "note": "Menunggu jadwal"
+      "status": "done",
+      "note": "Publish"
     },
     {
       "label": "Video FP siang",
