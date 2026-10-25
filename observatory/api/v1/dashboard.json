@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-10-25T04:59:21.196414Z",
+  "generated_at": "2026-10-25T12:02:16.225002Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-10-25T04:59:21.196414Z",
-    "active_task": "Video quotes FP (siang)"
+    "heartbeat_at": "2026-10-25T12:02:16.225002Z",
+    "active_task": "Video quotes FP (malam)"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 3.7,
-    "memory_used_bytes": 6651412480,
+    "cpu_percent": 31.3,
+    "memory_used_bytes": 6481498112,
     "memory_total_bytes": 8320602112,
-    "disk_used_bytes": 234459136,
+    "disk_used_bytes": 54243328,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 1544,
+    "uptime_seconds": 712,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -72,16 +72,24 @@
       "id": "cron-5",
       "title": "Video quotes FP (malam)",
       "project": "Muse Daily Ops",
-      "status": "pending",
-      "completed": false,
-      "progress_percent": 0,
+      "status": "completed",
+      "completed": true,
+      "progress_percent": 100,
       "priority": "medium",
-      "detail": "",
-      "url": "",
-      "slot": ""
+      "detail": "Tayang",
+      "url": "https://www.facebook.com/reel/1844779723606286/",
+      "slot": "19:00"
     }
   ],
   "events": [
+    {
+      "id": "evt-20261025120225",
+      "type": "task",
+      "title": "Cron 'Video quotes FP (malam)' Selesai",
+      "description": "Tayang — https://www.facebook.com/reel/1844779723606286/",
+      "occurred_at": "2026-10-25T12:02:25.070668Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261025045930",
       "type": "task",
@@ -553,14 +561,6 @@
       "description": "Tayang — https://www.facebook.com/reel/2812980889084428/",
       "occurred_at": "2026-10-14T04:56:38.403858Z",
       "source": "muse-cron"
-    },
-    {
-      "id": "evt-20261014031450",
-      "type": "task",
-      "title": "Cron 'Artikel blog harian' Selesai",
-      "description": "Publish — https://updatefaktazf.blogspot.com/2026/10/kenapa-hp-makin-lambat.html",
-      "occurred_at": "2026-10-14T03:14:50.631319Z",
-      "source": "muse-cron"
     }
   ],
   "projects": [
@@ -568,7 +568,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 80,
+      "progress_percent": 100,
       "task_count": 5
     }
   ],
@@ -588,13 +588,13 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "3.7%",
+      "value": "31.3%",
       "source": "/proc/stat",
       "status": "OK"
     },
     {
       "name": "RAM VM (snapshot)",
-      "value": "79.9%",
+      "value": "77.9%",
       "source": "/proc/meminfo",
       "status": "OK"
     },
