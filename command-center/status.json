@@ -1,5 +1,5 @@
 {
-  "updated_at": "27 Okt 2026, 19:03 WIB",
+  "updated_at": "28 Okt 2026, 06:58 WIB",
   "agents": [
     {
       "name": "Mark",
@@ -7,39 +7,39 @@
       "slot": "07:00",
       "status": "done",
       "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/4072819429516268/"
+      "url": "https://www.facebook.com/reel/1772767697341836/"
     },
     {
       "name": "Einstein",
       "role": "Produk Digital",
-      "slot": "09:00",
-      "status": "done",
-      "detail": "Prompt AI Guru Serba Bisa",
+      "slot": "",
+      "status": "pending",
+      "detail": "",
       "url": ""
     },
     {
       "name": "Tesla",
       "role": "Artikel Blog",
-      "slot": "10:00",
-      "status": "done",
-      "detail": "Publish",
-      "url": "https://updatefaktazf.blogspot.com/2026/10/axolotl-tumbuhkan-kaki-hilang-regenerasi.html"
+      "slot": "",
+      "status": "pending",
+      "detail": "",
+      "url": ""
     },
     {
       "name": "Newton",
       "role": "Video Siang",
-      "slot": "12:00",
-      "status": "done",
-      "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/29036345216018744/"
+      "slot": "",
+      "status": "pending",
+      "detail": "",
+      "url": ""
     },
     {
       "name": "Edison",
       "role": "Video Malam",
-      "slot": "19:00",
-      "status": "done",
-      "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1149523737600181/"
+      "slot": "",
+      "status": "pending",
+      "detail": "",
+      "url": ""
     }
   ],
   "board": [
@@ -50,23 +50,23 @@
     },
     {
       "label": "Produk digital",
-      "status": "done",
-      "note": "Prompt AI Guru Serba Bisa"
+      "status": "pending",
+      "note": "Menunggu jadwal"
     },
     {
       "label": "Artikel blog",
-      "status": "done",
-      "note": "Publish"
+      "status": "pending",
+      "note": "Menunggu jadwal"
     },
     {
       "label": "Video FP siang",
-      "status": "done",
-      "note": "Tayang"
+      "status": "pending",
+      "note": "Menunggu jadwal"
     },
     {
       "label": "Video FP malam",
-      "status": "done",
-      "note": "Tayang"
+      "status": "pending",
+      "note": "Menunggu jadwal"
     },
     {
       "label": "Novel Fizzo",
