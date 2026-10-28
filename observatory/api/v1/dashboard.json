@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-10-27T23:58:29.920898Z",
+  "generated_at": "2026-10-28T02:41:46.614326Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-10-27T23:58:29.920898Z",
-    "active_task": "Video quotes FP (pagi)"
+    "heartbeat_at": "2026-10-28T02:41:46.614326Z",
+    "active_task": "Produk digital harian"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 37.2,
-    "memory_used_bytes": 6846451712,
-    "memory_total_bytes": 8321638400,
-    "disk_used_bytes": 52850688,
+    "cpu_percent": 2.6,
+    "memory_used_bytes": 7867244544,
+    "memory_total_bytes": 8320602112,
+    "disk_used_bytes": 62087168,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 592,
+    "uptime_seconds": 3379,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -36,13 +36,13 @@
       "id": "cron-2",
       "title": "Produk digital harian",
       "project": "Muse Daily Ops",
-      "status": "pending",
-      "completed": false,
-      "progress_percent": 0,
+      "status": "completed",
+      "completed": true,
+      "progress_percent": 100,
       "priority": "medium",
-      "detail": "",
+      "detail": "Pindah Rapi 30 Hari — Planner & Printable Pindahan Rumah",
       "url": "",
-      "slot": ""
+      "slot": "09:00"
     },
     {
       "id": "cron-3",
@@ -82,6 +82,14 @@
     }
   ],
   "events": [
+    {
+      "id": "evt-20261028024156",
+      "type": "task",
+      "title": "Cron 'Produk digital harian' Selesai",
+      "description": "Pindah Rapi 30 Hari — Planner & Printable Pindahan Rumah",
+      "occurred_at": "2026-10-28T02:41:56.367604Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261027235841",
       "type": "task",
@@ -553,14 +561,6 @@
       "description": "Tayang — https://www.facebook.com/reel/1107832251979632/",
       "occurred_at": "2026-10-16T04:57:24.418805Z",
       "source": "muse-cron"
-    },
-    {
-      "id": "evt-20261016045029",
-      "type": "task",
-      "title": "Cron 'Wargaku Phase 32 Tahap 7' Selesai",
-      "description": "Migration 028/029 + test 023/024 PASS, preview deployed",
-      "occurred_at": "2026-10-16T04:50:29.328412Z",
-      "source": "muse-cron"
     }
   ],
   "projects": [
@@ -568,7 +568,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 20,
+      "progress_percent": 40,
       "task_count": 5
     }
   ],
@@ -588,13 +588,13 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "37.2%",
+      "value": "2.6%",
       "source": "/proc/stat",
       "status": "OK"
     },
     {
       "name": "RAM VM (snapshot)",
-      "value": "82.3%",
+      "value": "94.6%",
       "source": "/proc/meminfo",
       "status": "OK"
     },
