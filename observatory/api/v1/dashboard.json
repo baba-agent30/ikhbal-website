@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-10-28T02:41:46.614326Z",
+  "generated_at": "2026-10-28T03:43:34.447779Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-10-28T02:41:46.614326Z",
-    "active_task": "Produk digital harian"
+    "heartbeat_at": "2026-10-28T03:43:34.447779Z",
+    "active_task": "Artikel blog harian"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 2.6,
-    "memory_used_bytes": 7867244544,
+    "cpu_percent": 2.5,
+    "memory_used_bytes": 7887421440,
     "memory_total_bytes": 8320602112,
-    "disk_used_bytes": 62087168,
+    "disk_used_bytes": 77631488,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 3379,
+    "uptime_seconds": 4049,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -48,13 +48,13 @@
       "id": "cron-3",
       "title": "Artikel blog harian",
       "project": "Muse Daily Ops",
-      "status": "pending",
-      "completed": false,
-      "progress_percent": 0,
+      "status": "completed",
+      "completed": true,
+      "progress_percent": 100,
       "priority": "medium",
-      "detail": "",
-      "url": "",
-      "slot": ""
+      "detail": "Publish",
+      "url": "https://updatefaktazf.blogspot.com/2026/10/socotra-pulau-planet-lain-isolasi-20-juta-tahun.html",
+      "slot": "10:00"
     },
     {
       "id": "cron-4",
@@ -82,6 +82,14 @@
     }
   ],
   "events": [
+    {
+      "id": "evt-20261028034342",
+      "type": "task",
+      "title": "Cron 'Artikel blog harian' Selesai",
+      "description": "Publish — https://updatefaktazf.blogspot.com/2026/10/socotra-pulau-planet-lain-isolasi-20-juta-tahun.html",
+      "occurred_at": "2026-10-28T03:43:42.631662Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261028024156",
       "type": "task",
@@ -553,14 +561,6 @@
       "description": "Tayang — https://www.facebook.com/reel/1609133677424018/",
       "occurred_at": "2026-10-16T12:01:19.760182Z",
       "source": "muse-cron"
-    },
-    {
-      "id": "evt-20261016045724",
-      "type": "task",
-      "title": "Cron 'Video quotes FP (siang)' Selesai",
-      "description": "Tayang — https://www.facebook.com/reel/1107832251979632/",
-      "occurred_at": "2026-10-16T04:57:24.418805Z",
-      "source": "muse-cron"
     }
   ],
   "projects": [
@@ -568,7 +568,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 40,
+      "progress_percent": 60,
       "task_count": 5
     }
   ],
@@ -588,13 +588,13 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "2.6%",
+      "value": "2.5%",
       "source": "/proc/stat",
       "status": "OK"
     },
     {
       "name": "RAM VM (snapshot)",
-      "value": "94.6%",
+      "value": "94.8%",
       "source": "/proc/meminfo",
       "status": "OK"
     },
