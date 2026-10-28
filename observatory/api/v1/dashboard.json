@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-10-28T03:43:34.447779Z",
+  "generated_at": "2026-10-28T04:57:36.856518Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-10-28T03:43:34.447779Z",
-    "active_task": "Artikel blog harian"
+    "heartbeat_at": "2026-10-28T04:57:36.856518Z",
+    "active_task": "Video quotes FP (siang)"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 2.5,
-    "memory_used_bytes": 7887421440,
-    "memory_total_bytes": 8320602112,
-    "disk_used_bytes": 77631488,
+    "cpu_percent": 81.2,
+    "memory_used_bytes": 6609195008,
+    "memory_total_bytes": 8321638400,
+    "disk_used_bytes": 71970816,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 4049,
+    "uptime_seconds": 2902,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -60,13 +60,13 @@
       "id": "cron-4",
       "title": "Video quotes FP (siang)",
       "project": "Muse Daily Ops",
-      "status": "pending",
-      "completed": false,
-      "progress_percent": 0,
+      "status": "completed",
+      "completed": true,
+      "progress_percent": 100,
       "priority": "medium",
-      "detail": "",
-      "url": "",
-      "slot": ""
+      "detail": "Tayang",
+      "url": "https://www.facebook.com/reel/2535719690283644/",
+      "slot": "12:00"
     },
     {
       "id": "cron-5",
@@ -82,6 +82,14 @@
     }
   ],
   "events": [
+    {
+      "id": "evt-20261028045747",
+      "type": "task",
+      "title": "Cron 'Video quotes FP (siang)' Selesai",
+      "description": "Tayang — https://www.facebook.com/reel/2535719690283644/",
+      "occurred_at": "2026-10-28T04:57:47.091913Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261028034342",
       "type": "task",
@@ -553,14 +561,6 @@
       "description": "Tayang — https://www.facebook.com/reel/29080905298205615/",
       "occurred_at": "2026-10-16T23:57:11.338268Z",
       "source": "muse-cron"
-    },
-    {
-      "id": "evt-20261016120119",
-      "type": "task",
-      "title": "Cron 'Video quotes FP (malam)' Selesai",
-      "description": "Tayang — https://www.facebook.com/reel/1609133677424018/",
-      "occurred_at": "2026-10-16T12:01:19.760182Z",
-      "source": "muse-cron"
     }
   ],
   "projects": [
@@ -568,7 +568,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 60,
+      "progress_percent": 80,
       "task_count": 5
     }
   ],
@@ -588,13 +588,13 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "2.5%",
+      "value": "81.2%",
       "source": "/proc/stat",
       "status": "OK"
     },
     {
       "name": "RAM VM (snapshot)",
-      "value": "94.8%",
+      "value": "79.4%",
       "source": "/proc/meminfo",
       "status": "OK"
     },
