@@ -1,5 +1,5 @@
 {
-  "updated_at": "01 Nov 2026, 06:58 WIB",
+  "updated_at": "01 Nov 2026, 09:28 WIB",
   "agents": [
     {
       "name": "Mark",
@@ -12,9 +12,9 @@
     {
       "name": "Einstein",
       "role": "Produk Digital",
-      "slot": "",
-      "status": "pending",
-      "detail": "",
+      "slot": "09:00",
+      "status": "done",
+      "detail": "Tantangan 30 Hari Dana Darurat Rp1 Juta",
       "url": ""
     },
     {
@@ -50,8 +50,8 @@
     },
     {
       "label": "Produk digital",
-      "status": "pending",
-      "note": "Menunggu jadwal"
+      "status": "done",
+      "note": "Tantangan 30 Hari Dana Darurat Rp1 Juta"
     },
     {
       "label": "Artikel blog",
