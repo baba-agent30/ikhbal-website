@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ikhbal Alhuzaibi — Digital Goods Studio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root{
+--bg:#080b09;
+--panel:#111713;
+--lime:#c8fa72;
+--text:#f4f6ef;
+--muted:#929d94;
+--line:rgba(255,255,255,.1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+margin:0;background:var(--bg);color:var(--text);
+font-family:'DM Sans',sans-serif;
+}
+a{text-decoration:none;color:inherit}
+button{font:inherit}
+.container{width:min(1120px,calc(100% - 40px));margin:auto}
+
+/* NAVIGATION */
+.top{
+position:sticky;top:0;z-index:20;
+background:rgba(8,11,9,.88);
+backdrop-filter:blur(18px);
+border-bottom:1px solid var(--line);
+}
+.nav{
+height:75px;display:flex;align-items:center;
+justify-content:space-between;
+}
+.brand{
+font:800 20px 'Manrope',sans-serif;
+letter-spacing:-1.3px;
+}
+.brand span{color:var(--lime)}
+.brand small{
+display:block;font:9px 'DM Mono',monospace;
+letter-spacing:2px;color:var(--muted);
+margin-top:2px;
+}
+.navlinks{display:flex;align-items:center;gap:30px}
+.navlinks a{font-size:12px;color:#bdc5bd}
+.navlinks a:hover{color:var(--lime)}
+.navlinks .contact{
+border:1px solid rgba(200,250,114,.4);
+padding:11px 17px;color:var(--lime);
+border-radius:4px;
+}
+.menu{
+display:none;background:none;color:white;
+border:1px solid var(--line);padding:9px 12px;
+border-radius:5px;
+}
+
+/* HERO */
+.hero{
+min-height:650px;padding:105px 0 75px;
+position:relative;overflow:hidden;
+}
+.hero:before{
+content:"";position:absolute;
+width:600px;height:600px;right:-180px;top:-200px;
+background:radial-gradient(circle,rgba(200,250,114,.12),transparent 68%);
+pointer-events:none;
+}
+.hero-grid{
+display:grid;grid-template-columns:1fr 1fr;
+gap:40px;align-items:center;position:relative;
+}
+.eyebrow{
+font:10px 'DM Mono',monospace;
+letter-spacing:2.5px;color:var(--lime);
+text-transform:uppercase;
+}
+.eyebrow:before{content:"✳";margin-right:9px}
+h1{
+font:800 clamp(48px,6vw,76px)/.98 'Manrope',sans-serif;
+letter-spacing:-5px;margin:25px 0;
+}
+h1 span{color:var(--lime)}
+.hero p{
+font-size:14px;line-height:1.9;
+color:#a6b0a7;max-width:450px;
+}
+.buttons{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
+.btn{
+display:inline-flex;align-items:center;justify-content:center;
+padding:14px 19px;border-radius:4px;
+font-size:11px;font-weight:700;letter-spacing:.6px;
+transition:.25s;
+}
+.btn-primary{background:var(--lime);color:#11170b}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 25px #c8fa7233}
+.btn-outline{border:1px solid var(--line);color:white}
+.btn-outline:hover{border-color:var(--lime);color:var(--lime)}
+.hero-proof{
+margin-top:35px;display:flex;gap:18px;flex-wrap:wrap;
+font:9px 'DM Mono',monospace;color:var(--muted);
+}
+.hero-proof span:before{content:"●";color:var(--lime);margin-right:7px;font-size:7px}
+
+/* HERO VISUAL */
+.visual{
+min-height:410px;position:relative;
+display:grid;place-items:center;
+}
+.orbit{
+width:330px;height:330px;border-radius:50%;
+border:1px solid #c8fa7229;
+position:absolute;
+box-shadow:0 0 0 35px #c8fa7208,0 0 0 75px #c8fa7205;
+}
+.orbit:after{
+content:"";position:absolute;inset:30px;
+border:1px solid #c8fa721c;border-radius:50%;
+}
+.showcase{
+width:min(350px,90%);
+background:linear-gradient(145deg,#202a22,#101712);
+border:1px solid #c8fa7250;
+border-radius:12px;overflow:hidden;
+box-shadow:0 35px 90px #0009;
+transform:rotate(-5deg);position:relative;z-index:2;
+}
+.window{
+height:35px;border-bottom:1px solid var(--line);
+display:flex;align-items:center;padding:0 13px;gap:6px;
+}
+.window i{width:6px;height:6px;border-radius:50%;background:#647267}
+.window small{margin-left:auto;font:8px 'DM Mono';color:#8c9a8d}
+.show-content{padding:28px}
+.show-content small{font:9px 'DM Mono';letter-spacing:2px;color:var(--lime)}
+.show-content h2{
+font:800 34px/.98 'Manrope';letter-spacing:-2px;
+margin:18px 0;
+}
+.show-content h2 span{color:var(--lime)}
+.show-content p{font-size:10px;color:#929f94}
+.mini-bar{height:5px;background:#344137;border-radius:5px;margin:9px 0;width:90%}
+.mini-bar:nth-child(2){width:70%}
+.mini-bar:nth-child(3){width:82%}
+.floating{
+position:absolute;z-index:3;
+padding:13px 16px;background:#1b251d;
+border:1px solid var(--line);border-radius:6px;
+box-shadow:0 10px 30px #0008;
+}
+.floating b{display:block;font:700 11px 'Manrope'}
+.floating small{font:8px 'DM Mono';color:var(--muted)}
+.float1{right:-4px;top:55px}
+.float2{left:-3px;bottom:48px}
+
+/* MARQUEE */
+.marquee{
+border-block:1px solid var(--line);
+overflow:hidden;padding:19px 0;
+background:#0e130f;
+}
+.marquee-track{
+display:flex;justify-content:space-around;gap:40px;
+white-space:nowrap;color:#839087;
+font:10px 'DM Mono',monospace;
+letter-spacing:2px;
+}
+.marquee span{color:var(--lime)}
+
+/* SECTIONS */
+.section{padding:85px 0}
+.section-head{
+display:flex;justify-content:space-between;
+align-items:end;gap:30px;margin-bottom:35px;
+}
+.section-head h2{
+font:800 clamp(30px,4vw,43px)/1.05 'Manrope';
+letter-spacing:-2px;margin:12px 0 0;
+}
+.section-head p{
+max-width:340px;font-size:12px;
+color:var(--muted);line-height:1.8;
+}
+
+/* PRODUCT */
+.catalog{background:#0d120e;border-block:1px solid var(--line)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.filter{
+background:none;border:1px solid var(--line);
+color:#aab5ab;padding:9px 14px;
+font:9px 'DM Mono';cursor:pointer;
+border-radius:3px;
+}
+.filter.active,.filter:hover{
+background:var(--lime);color:#10170c;border-color:var(--lime);
+}
+.products{
+display:grid;grid-template-columns:repeat(3,1fr);gap:17px;
+}
+.product{
+background:var(--panel);border:1px solid var(--line);
+border-radius:7px;overflow:hidden;transition:.3s;
+}
+.product:hover{
+transform:translateY(-6px);
+border-color:#c8fa7260;
+}
+.art{
+height:225px;display:grid;place-items:center;
+background:radial-gradient(circle,#344630,#18221a 55%,#101510);
+position:relative;overflow:hidden;
+}
+.art.blue{background:radial-gradient(circle,#344b54,#182a2e 60%,#101719)}
+.art.purple{background:radial-gradient(circle,#483b53,#292232 60%,#131019)}
+.art.amber{background:radial-gradient(circle,#4a3b2a,#241c12 60%,#14100a)}
+.art.rose{background:radial-gradient(circle,#4a2e38,#241419 60%,#150f12)}
+.art.teal{background:radial-gradient(circle,#2a4440,#142322 60%,#0e1514)}
+.cover{
+width:145px;height:175px;
+background:#e9eee1;color:#182016;
+padding:17px;position:relative;
+box-shadow:12px 18px 35px #0009;
+transform:rotate(-5deg);
+}
+.cover:before{content:"";position:absolute;inset:8px;border:1px solid #bdc9b4}
+.cover small{font:7px 'DM Mono';letter-spacing:1px;position:relative}
+.cover strong{
+display:block;font:800 20px/.98 'Manrope';
+letter-spacing:-1px;margin:22px 0 10px;position:relative;
+}
+.cover strong span{color:#658d38}
+.cover i{display:block;height:4px;background:#c4d0bd;margin:8px 0;position:relative}
+.art-orb{
+position:absolute;width:125px;height:125px;
+border:1px solid #c8fa72;border-radius:30px;
+transform:rotate(35deg);
+box-shadow:0 0 40px #c8fa7240;
+}
+.meta{padding:19px}
+.category{
+font:9px 'DM Mono';letter-spacing:1.5px;
+color:var(--lime);text-transform:uppercase;
+}
+.meta h3{
+font:700 18px 'Manrope';letter-spacing:-.5px;
+margin:10px 0 7px;
+}
+.meta p{
+font-size:11px;color:var(--muted);
+line-height:1.7;min-height:38px;
+}
+.product-bottom{
+display:flex;justify-content:space-between;
+align-items:center;padding-top:14px;
+border-top:1px solid var(--line);
+}
+.price{font:700 14px 'Manrope'}
+.price .old{color:var(--muted);text-decoration:line-through;font-weight:400;font-size:11px;margin-left:6px}
+.buy{font:9px 'DM Mono';color:var(--lime)}
+
+/* FEATURES */
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:25px}
+.feature{border-top:1px solid var(--line);padding-top:22px}
+.feature-icon{
+width:38px;height:38px;border:1px solid #c8fa7244;
+border-radius:8px;display:grid;place-items:center;
+color:var(--lime);font-size:17px;
+}
+.feature h3{font:700 16px 'Manrope';margin:18px 0 8px}
+.feature p{font-size:11px;color:var(--muted);line-height:1.8}
+
+/* CTA */
+.cta{
+padding:60px 0;background:var(--lime);color:#10170b;
+}
+.cta-inner{
+display:flex;justify-content:space-between;
+align-items:center;gap:25px;
+}
+.cta h2{
+font:800 clamp(28px,4vw,43px)/1.05 'Manrope';
+letter-spacing:-2px;margin:0;
+}
+.cta p{font-size:12px;opacity:.7}
+.cta .btn{background:#10170b;color:var(--lime)}
+
+/* FAQ + FOOTER */
+.faq{max-width:760px;margin:auto}
+details{padding:19px 0;border-bottom:1px solid var(--line)}
+summary{
+cursor:pointer;list-style:none;
+display:flex;justify-content:space-between;
+font:600 13px 'Manrope';
+}
+summary:after{content:"+";color:var(--lime);font-size:18px}
+details[open] summary:after{content:"−"}
+details p{font-size:12px;color:var(--muted);line-height:1.8;margin:14px 0 0}
+footer{border-top:1px solid var(--line);padding:30px 0}
+.footer{
+display:flex;justify-content:space-between;
+align-items:center;gap:20px;flex-wrap:wrap;
+font:9px 'DM Mono';color:var(--muted);
+}
+.footer-links{display:flex;gap:20px}
+.footer a:hover{color:var(--lime)}
+
+@media(max-width:800px){
+.hero-grid{grid-template-columns:1fr}
+.visual{min-height:340px}
+.products{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+.container{width:calc(100% - 34px)}
+.nav{height:66px}
+.menu{display:block}
+.navlinks{
+display:none;position:absolute;top:66px;left:0;right:0;
+background:#111713;padding:22px;
+flex-direction:column;align-items:flex-start;
+border-bottom:1px solid var(--line);
+}
+.navlinks.open{display:flex}
+.hero{padding:65px 0 35px;min-height:auto}
+h1{font-size:54px;letter-spacing:-3px}
+.hero p{font-size:13px}
+.visual{min-height:300px}
+.orbit{width:255px;height:255px}
+.showcase{width:260px}
+.float1{right:-3px;top:25px}
+.float2{left:-3px;bottom:20px}
+.section{padding:65px 0}
+.section-head{display:block}
+.section-head p{margin-top:15px}
+.products{gap:9px}
+.art{height:155px}
+.cover{transform:scale(.78) rotate(-5deg)}
+.meta{padding:12px}
+.meta h3{font-size:14px}
+.meta p{font-size:10px;min-height:55px}
+.price{font-size:12px}
+.buy{font-size:8px}
+.features{grid-template-columns:1fr;gap:8px}
+.cta-inner{display:block}
+.cta .btn{margin-top:15px}
+.footer{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+<div class="container nav">
+<a class="brand" href="#">
+Ikhbal Alhuzaibi<span>.</span>
+<small>DIGITAL GOODS STUDIO</small>
+</a>
+<nav class="navlinks" id="navlinks">
+<a href="#products">Collection</a>
+<a href="#benefits">Why Us</a>
+<a href="#faq">FAQ</a>
+<a href="#contact" class="contact">Get in touch ↗</a>
+</nav>
+<button class="menu" id="menu">☰</button>
+</div>
+</header>
+
+<main>
+
+<section class="hero">
+<div class="container hero-grid">
+
+<div>
+<div class="eyebrow">The modern digital essentials</div>
+<h1>THINK<br>SMARTER.<br><span>WORK</span><br>BETTER.</h1>
+<p>
+Selamat datang di ruang digital kami. Temukan toolkit,
+template, dan solusi praktis yang dirancang untuk membuat
+pekerjaan lebih mudah, bisnis lebih terarah, dan produktivitas meningkat.
+</p>
+<div class="buttons">
+<a class="btn btn-primary" href="#products">EXPLORE COLLECTION ↗</a>
+<a class="btn btn-outline" href="#benefits">DISCOVER MORE</a>
+</div>
+<div class="hero-proof">
+<span>Digital products</span>
+<span>Instant access</span>
+<span>Simple to use</span>
+</div>
+</div>
+
+<div class="visual">
+<div class="orbit"></div>
+<div class="showcase">
+<div class="window"><i></i><i></i><i></i><small>DIGITAL STUDIO / 001</small></div>
+<div class="show-content">
+<small>YOUR DIGITAL WORKSPACE</small>
+<h2>LESS CHAOS.<br><span>MORE</span> PROGRESS.</h2>
+<div class="mini-bar"></div>
+<div class="mini-bar"></div>
+<div class="mini-bar"></div>
+<p>DESIGNED TO MAKE YOUR WORK FLOW BETTER.</p>
+</div>
+</div>
+<div class="floating float1">
+<b>Built for action.</b>
+<small>LESS SETUP · MORE OUTPUT</small>
+</div>
+<div class="floating float2">
+<b>01 / DIGITAL GOODS</b>
+<small>DOWNLOAD · OPEN · CREATE</small>
+</div>
+</div>
+</div>
+</section>
+
+<div class="marquee">
+<div class="container marquee-track">
+<span>✳ DIGITAL PRODUCTS</span>
+<span>✳ SMART WORKFLOW</span>
+<span>✳ CREATIVE TOOLS</span>
+<span>✳ PRODUCTIVITY</span>
+<span>✳ DIGITAL PRODUCTS</span>
+</div>
+</div>
+
+<section class="catalog section" id="products">
+<div class="container">
+<div class="section-head">
+<div>
+<div class="eyebrow">Curated collection</div>
+<h2>Tools that move<br>you forward.</h2>
+</div>
+<p>
+Koleksi 33 produk digital pilihan untuk membantu pekerjaan,
+bisnis, dan aktivitas sehari-hari menjadi lebih efisien.
+Checkout, pembayaran, dan pengiriman file lewat Lynk.id.
+</p>
+</div>
+
+<div class="filters">
+<button class="filter active" data-filter="all">ALL PRODUCTS</button>
+<button class="filter" data-filter="ebook">EBOOK</button>
+<button class="filter" data-filter="worksheet">WORKSHEET</button>
+<button class="filter" data-filter="template-dokumen">TEMPLATE DOKUMEN</button>
+<button class="filter" data-filter="spreadsheet">SPREADSHEET</button>
+<button class="filter" data-filter="planner">PLANNER</button>
+<button class="filter" data-filter="template-desain">TEMPLATE DESAIN</button>
+<button class="filter" data-filter="prompt-pack">PROMPT PACK</button>
+<button class="filter" data-filter="toolkit">TOOLKIT</button>
+<button class="filter" data-filter="checklist">CHECKLIST</button>
+<button class="filter" data-filter="challenge">CHALLENGE</button>
+<button class="filter" data-filter="database">DATABASE</button>
+<button class="filter" data-filter="decision-tool">DECISION TOOL</button>
+<button class="filter" data-filter="productivity">PRODUCTIVITY</button>
+</div>
+
+<div class="products">
+
+<article class="product" data-category="ebook">
+<div class="art">
+<div class="cover">
+<small>EBOOK / 001</small>
+<strong>FAKTA<br><span>HEWAN.</span></strong>
+<i></i><i></i><i></i>
+<small>100 FAKTA TERANEH</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Ebook / Panduan PDF</div>
+<h3>100 Fakta Hewan Teraneh di Dunia</h3>
+<p>100 fakta hewan paling aneh di dunia, dikemas ringan buat dibaca santai.</p>
+<div class="product-bottom">
+<span class="price">Rp 29.000</span>
+<a href="https://lynk.id/ikhbalalhuzaibi/g3p3l8n7v9kq" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="worksheet">
+<div class="art blue">
+<div class="cover">
+<small>WORKSHEET / 002</small>
+<strong>CALISTUNG<br><span>SERU.</span></strong>
+<i></i><i></i><i></i>
+<small>40+ LEMBAR AKTIVITAS</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Worksheet / LKPD</div>
+<h3>Worksheet Calistung — Aktivitas Seru TK &amp; PAUD</h3>
+<p>40+ lembar aktivitas calistung seru buat anak TK &amp; PAUD.</p>
+<div class="product-bottom">
+<span class="price">Rp 25.000</span>
+<a href="https://lynk.id/ikhbalalhuzaibi/6xrmk0o1k8v2" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="planner">
+<div class="art purple">
+<div class="art-orb"></div>
+<div class="cover">
+<small>PLANNER / 003</small>
+<strong>MPASI<br><span>PLANNER.</span></strong>
+<i></i><i></i><i></i>
+<small>MENU 30 HARI + TRACKER</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Planner / Printable</div>
+<h3>MPASI Planner 6–12 Bulan</h3>
+<p>Perencana menu 30 hari + tracker tumbuh kembang bayi 6–12 bulan.</p>
+<div class="product-bottom">
+<span class="price">Rp 25.000</span>
+<a href="https://lynk.id/ikhbalalhuzaibi/mnp0m5n8p2v0" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="ebook">
+<div class="art amber">
+<div class="cover">
+<small>EBOOK / 004</small>
+<strong>EXCEL<br><span>ADMIN.</span></strong>
+<i></i><i></i><i></i>
+<small>PANDUAN SAKU PRAKTIS</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Ebook / Panduan PDF</div>
+<h3>Kitab Saku Excel Admin</h3>
+<p>Panduan saku Excel buat admin: rumus &amp; trik kerja lebih cepat.</p>
+<div class="product-bottom">
+<span class="price">Rp 25.000 <span class="old">Rp 49.000</span></span>
+<a href="https://lynk.id/ikhbalalhuzaibi/n67x4r9x1vpl" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="planner">
+<div class="art rose">
+<div class="cover">
+<small>PLANNER / 005</small>
+<strong>NIKAH<br><span>TERENCANA.</span></strong>
+<i></i><i></i><i></i>
+<small>TANPA BUDGET JEBOL</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Planner / Printable</div>
+<h3>Wedding Planning Kit</h3>
+<p>Kit persiapan nikah terencana, tanpa budget jebol.</p>
+<div class="product-bottom">
+<span class="price">Rp 35.000 <span class="old">Rp 69.000</span></span>
+<a href="https://lynk.id/ikhbalalhuzaibi/2o5r9j6n6j2y" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="challenge">
+<div class="art teal">
+<div class="cover">
+<small>CHALLENGE / 006</small>
+<strong>ORDERAN<br><span>PERTAMA.</span></strong>
+<i></i><i></i><i></i>
+<small>TANTANGAN 30 HARI</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Action Plan / Challenge</div>
+<h3>Tantangan 30 Hari: Orderan Pertama</h3>
+<p>Tantangan 30 hari menuju orderan pertama.</p>
+<div class="product-bottom">
+<span class="price">Rp 25.000 <span class="old">Rp 49.000</span></span>
+<a href="https://lynk.id/ikhbalalhuzaibi/7p1mkn4k2r6n" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="ebook">
+<div class="art">
+<div class="cover">
+<small>EBOOK / 007</small>
+<strong>SKIN<br><span>BASIC.</span></strong>
+<i></i><i></i><i></i>
+<small>PANDUAN 14 HARI</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Ebook / Panduan PDF</div>
+<h3>Skin Basic: Panduan Skincare Pria Pemula</h3>
+<p>Panduan 14 hari skincare dasar buat pria pemula.</p>
+<div class="product-bottom">
+<span class="price">Rp 29.000 <span class="old">Rp 59.000</span></span>
+<a href="https://lynk.id/ikhbalalhuzaibi/9r2g7x8w5q2n" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="worksheet">
+<div class="art blue">
+<div class="cover">
+<small>WORKSHEET / 008</small>
+<strong>PERKALIAN<br><span>KILAT.</span></strong>
+<i></i><i></i><i></i>
+<small>MISI 30 HARI · SD</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Worksheet / LKPD</div>
+<h3>Perkalian Kilat SD: Misi 30 Hari</h3>
+<p>Misi 30 hari jago perkalian 1–10 buat anak SD.</p>
+<div class="product-bottom">
+<span class="price">Rp 25.000 <span class="old">Rp 49.000</span></span>
+<a href="https://lynk.id/ikhbalalhuzaibi/m3kx8p6q9w0n" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="toolkit">
+<div class="art purple">
+<div class="art-orb"></div>
+<div class="cover">
+<small>TOOLKIT / 009</small>
+<strong>KELARIN<br><span>v6.</span></strong>
+<i></i><i></i><i></i>
+<small>ADMINISTRASI UMKM</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Digital Toolkit / Bundle</div>
+<h3>KELARIN v6 — Toolkit Administrasi UMKM</h3>
+<p>Toolkit administrasi UMKM: kelola usaha lebih teratur.</p>
+<div class="product-bottom">
+<span class="price">Rp 200.000</span>
+<a href="https://lynk.id/ikhbalalhuzaibi/q8x3r5z9v0k1" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="template-dokumen">
+<div class="art amber">
+<div class="cover">
+<small>TEMPLATE / 010</small>
+<strong>CV<br><span>ATS.</span></strong>
+<i></i><i></i><i></i>
+<small>10 TEMPLATE + BONUS</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Template Dokumen</div>
+<h3>10 Template CV ATS-Friendly</h3>
+<p>10 template CV ATS-friendly + bonus surat lamaran &amp; panduan seleksi.</p>
+<div class="product-bottom">
+<span class="price">Rp 25.000</span>
+<a href="https://lynk.id/ikhbalalhuzaibi/4r1m2g8k6v3n" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="spreadsheet">
+<div class="art rose">
+<div class="cover">
+<small>SPREADSHEET / 011</small>
+<strong>BUDGET<br><span>KELUARGA.</span></strong>
+<i></i><i></i><i></i>
+<small>TRACKER 12 BULAN</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Spreadsheet / Tracker</div>
+<h3>Planner Keuangan Keluarga</h3>
+<p>Budget tracker 12 bulan (Excel + Google Sheets + panduan PDF).</p>
+<div class="product-bottom">
+<span class="price">Rp 25.000</span>
+<a href="https://lynk.id/ikhbalalhuzaibi/l7k9x0r5z2p8" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="prompt-pack">
+<div class="art teal">
+<div class="cover">
+<small>PROMPT PACK / 012</small>
+<strong>HOOK &amp;<br><span>SCRIPT.</span></strong>
+<i></i><i></i><i></i>
+<small>150 HOOK + 60 SCRIPT</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Prompt / Script / Caption Pack</div>
+<h3>Bank Hook &amp; Script Affiliate</h3>
+<p>150 hook + 60 script siap baca buat affiliate TikTok &amp; Shopee.</p>
+<div class="product-bottom">
+<span class="price">Rp 25.000</span>
+<a href="https://lynk.id/ikhbalalhuzaibi/v6q2r8x5n3p9" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="decision-tool">
+<div class="art">
+<div class="cover">
+<small>DECISION TOOL / 013</small>
+<strong>CUAN<br><span>JUALAN.</span></strong>
+<i></i><i></i><i></i>
+<small>HPP · HARGA · BEP</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Decision Tool / Calculator</div>
+<h3>Kalkulator Cuan Jualan Rumahan</h3>
+<p>Hitung HPP, harga jual &amp; BEP otomatis buat jualan rumahan.</p>
+<div class="product-bottom">
+<span class="price">Rp 29.000 <span class="old">Rp 59.000</span></span>
+<a href="https://lynk.id/ikhbalalhuzaibi/q6v1r9m3k7x0" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="spreadsheet">
+<div class="art blue">
+<div class="cover">
+<small>SPREADSHEET / 014</small>
+<strong>STOK<br><span>TRACK.</span></strong>
+<i></i><i></i><i></i>
+<small>INVENTARIS OTOMATIS</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Spreadsheet / Tracker</div>
+<h3>StokTrack Mini</h3>
+<p>Sistem stok &amp; inventaris otomatis buat penjual online.</p>
+<div class="product-bottom">
+<span class="price">Rp 29.000 <span class="old">Rp 59.000</span></span>
+<a href="https://lynk.id/ikhbalalhuzaibi/m2p7r9x3k6v0" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="prompt-pack">
+<div class="art purple">
+<div class="art-orb"></div>
+<div class="cover">
+<small>PROMPT PACK / 015</small>
+<strong>CHAT<br><span>ADMIN.</span></strong>
+<i></i><i></i><i></i>
+<small>80 TEMPLATE BALASAN</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Prompt / Script / Caption Pack</div>
+<h3>Bank Chat Admin Olshop</h3>
+<p>80 template balasan cepat WhatsApp &amp; marketplace.</p>
+<div class="product-bottom">
+<span class="price">Rp 25.000 <span class="old">Rp 49.000</span></span>
+<a href="https://lynk.id/ikhbalalhuzaibi/p9x6r2m5k8v1" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="toolkit">
+<div class="art amber">
+<div class="cover">
+<small>TOOLKIT / 016</small>
+<strong>TTS<br><span>NUSANTARA.</span></strong>
+<i></i><i></i><i></i>
+<small>136 PUZZLE · SIAP DEPLOY</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Digital Toolkit / Bundle</div>
+<h3>TTS Nusantara Premium</h3>
+<p>Game teka-teki silang Bahasa Indonesia, 136 puzzle, siap deploy.</p>
+<div class="product-bottom">
+<span class="price">Rp 99.000 <span class="old">Rp 149.000</span></span>
+<a href="https://lynk.id/ikhbalalhuzaibi/4k6p9r2x8m5q" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="planner">
+<div class="art rose">
+<div class="cover">
+<small>PLANNER / 017</small>
+<strong>BEBERES<br><span>RAPI.</span></strong>
+<i></i><i></i><i></i>
+<small>DECLUTTER 30 HARI</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Planner / Printable</div>
+<h3>Beberes Rapi 30 Hari</h3>
+<p>Planner declutter rumah zona per zona selama 30 hari.</p>
+<div class="product-bottom">
+<span class="price">Rp 29.000 <span class="old">Rp 59.000</span></span>
+<a href="https://lynk.id/ikhbalalhuzaibi/3v8p2r7x9m5q" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="template-dokumen">
+<div class="art teal">
+<div class="cover">
+<small>TEMPLATE / 018</small>
+<strong>HRD<br><span>MINI.</span></strong>
+<i></i><i></i><i></i>
+<small>12 TEMPLATE DOKUMEN</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Template Dokumen</div>
+<h3>Kit HRD Mini UMKM</h3>
+<p>12 template dokumen kepegawaian siap pakai buat UMKM.</p>
+<div class="product-bottom">
+<span class="price">Rp 35.000 <span class="old">Rp 69.000</span></span>
+<a href="https://lynk.id/ikhbalalhuzaibi/v7x2p9r4m6k8" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="checklist">
+<div class="art">
+<div class="cover">
+<small>CHECKLIST / 019</small>
+<strong>AUDIT<br><span>TOKO.</span></strong>
+<i></i><i></i><i></i>
+<small>100 POIN DIAGNOSA</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Checklist / Cheat Sheet</div>
+<h3>Audit Toko 100 Poin</h3>
+<p>Checklist 100 poin diagnosa kesehatan toko Shopee &amp; Tokopedia.</p>
+<div class="product-bottom">
+<span class="price">Rp 29.000 <span class="old">Rp 59.000</span></span>
+<a href="https://lynk.id/ikhbalalhuzaibi/q1x7r5p9k3m6" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="decision-tool">
+<div class="art blue">
+<div class="cover">
+<small>DECISION TOOL / 020</small>
+<strong>HARGA<br><span>PAS.</span></strong>
+<i></i><i></i><i></i>
+<small>ANTI-BONCOS</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Decision Tool / Calculator</div>
+<h3>HargaPas Marketplace</h3>
+<p>Kalkulator harga jual anti-boncos buat Shopee, Tokopedia &amp; TikTok Shop.</p>
+<div class="product-bottom">
+<span class="price">Rp 24.000 <span class="old">Rp 54.000</span></span>
+<a href="https://lynk.id/ikhbalalhuzaibi/r8x2p9k5m7v3" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="challenge">
+<div class="art purple">
+<div class="art-orb"></div>
+<div class="cover">
+<small>CHALLENGE / 021</small>
+<strong>SIAP<br><span>INTERVIEW.</span></strong>
+<i></i><i></i><i></i>
+<small>10 HARI · DEAL GAJI</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Action Plan / Challenge</div>
+<h3>Tantangan 10 Hari Siap Interview</h3>
+<p>Tantangan 10 hari dari dipanggil interview sampai deal gaji.</p>
+<div class="product-bottom">
+<span class="price">Rp 25.000 <span class="old">Rp 55.000</span></span>
+<a href="https://lynk.id/ikhbalalhuzaibi/v5k2r9x7m4p6" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="challenge">
+<div class="art amber">
+<div class="cover">
+<small>CHALLENGE / 022</small>
+<strong>CARI<br><span>KERJA.</span></strong>
+<i></i><i></i><i></i>
+<small>SISTEM 30 HARI</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Action Plan / Challenge</div>
+<h3>Cari Kerja 30 Hari</h3>
+<p>Sistem cari kerja terstruktur: CV, lamaran, interview &amp; negosiasi gaji.</p>
+<div class="product-bottom">
+<span class="price">Rp 25.000 <span class="old">Rp 55.000</span></span>
+<a href="https://lynk.id/ikhbalalhuzaibi/r0g3x8j7m2p5" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="checklist">
+<div class="art rose">
+<div class="cover">
+<small>CHECKLIST / 023</small>
+<strong>PRODUKTIF<br><span>HARIAN.</span></strong>
+<i></i><i></i><i></i>
+<small>15 KEBIASAAN · 30 HARI</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Checklist / Cheat Sheet</div>
+<h3>Checklist Produktivitas Harian</h3>
+<p>15 kebiasaan produktif, dilacak 30 hari sampai jadi rutinitas.</p>
+<div class="product-bottom">
+<span class="price">Rp 25.000 <span class="old">Rp 49.000</span></span>
+<a href="https://lynk.id/ikhbalalhuzaibi/y6p9n3r8q2m4" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="planner">
+<div class="art teal">
+<div class="cover">
+<small>PLANNER / 024</small>
+<strong>JURNAL<br><span>SYUKUR.</span></strong>
+<i></i><i></i><i></i>
+<small>REFLEKSI 30 HARI</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Planner / Printable</div>
+<h3>Jurnal Rasa Syukur 30 Hari</h3>
+<p>Refleksi, afirmasi &amp; tracker syukur harian selama 30 hari.</p>
+<div class="product-bottom">
+<span class="price">Rp 25.000 <span class="old">Rp 49.000</span></span>
+<a href="https://lynk.id/ikhbalalhuzaibi/v1x9k5j7q3r8" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="spreadsheet">
+<div class="art">
+<div class="cover">
+<small>SPREADSHEET / 025</small>
+<strong>KASRT<br><span>OTOMATIS.</span></strong>
+<i></i><i></i><i></i>
+<small>7 SHEET + PANDUAN</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Spreadsheet / Tracker</div>
+<h3>KasRT Otomatis</h3>
+<p>Buku kas &amp; tracker iuran warga RT/RW (spreadsheet 7 sheet + panduan).</p>
+<div class="product-bottom">
+<span class="price">Rp 29.000</span>
+<a href="https://lynk.id/ikhbalalhuzaibi/m75222ym1lde" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="prompt-pack">
+<div class="art blue">
+<div class="cover">
+<small>PROMPT PACK / 026</small>
+<strong>PROMPT<br><span>GURU.</span></strong>
+<i></i><i></i><i></i>
+<small>100 PROMPT SIAP PAKAI</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Prompt / Script / Caption Pack</div>
+<h3>Prompt AI Guru Serba Bisa</h3>
+<p>100 prompt siap pakai buat modul ajar, soal, LKPD, rapor &amp; administrasi.</p>
+<div class="product-bottom">
+<span class="price">Rp 29.000 <span class="old">Rp 59.000</span></span>
+<a href="https://lynk.id/ikhbalalhuzaibi/64d3g7v6p9q3" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="planner">
+<div class="art purple">
+<div class="art-orb"></div>
+<div class="cover">
+<small>PLANNER / 027</small>
+<strong>PINDAH<br><span>RAPI.</span></strong>
+<i></i><i></i><i></i>
+<small>PLANNER &amp; PRINTABLE</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Planner / Printable</div>
+<h3>Pindah Rapi 30 Hari</h3>
+<p>Planner &amp; printable pindahan rumah selama 30 hari.</p>
+<div class="product-bottom">
+<span class="price">Rp 29.000 <span class="old">Rp 59.000</span></span>
+<a href="https://lynk.id/ikhbalalhuzaibi/vyjlo5g604kg" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="toolkit">
+<div class="art amber">
+<div class="cover">
+<small>TOOLKIT / 028</small>
+<strong>FREELANCE<br><span>PERTAMA.</span></strong>
+<i></i><i></i><i></i>
+<small>SAMPAI DIBAYAR</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Digital Toolkit / Bundle</div>
+<h3>Kit Freelance Pertama</h3>
+<p>Panduan freelance pertama: dari tawar-menawar sampai dibayar.</p>
+<div class="product-bottom">
+<span class="price">Rp 35.000 <span class="old">Rp 69.000</span></span>
+<a href="https://lynk.id/ikhbalalhuzaibi/42xw2p1q6gz6" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="checklist">
+<div class="art rose">
+<div class="cover">
+<small>CHECKLIST / 029</small>
+<strong>BELI<br><span>RUMAH.</span></strong>
+<i></i><i></i><i></i>
+<small>80 POIN · SURVEI–SERAH TERIMA</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Checklist / Cheat Sheet</div>
+<h3>Checklist Beli Rumah Pertama</h3>
+<p>80 poin dari survei sampai serah terima rumah pertama.</p>
+<div class="product-bottom">
+<span class="price">Rp 29.000 <span class="old">Rp 59.000</span></span>
+<a href="https://lynk.id/ikhbalalhuzaibi/0gjkqngy28e0" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="decision-tool">
+<div class="art teal">
+<div class="cover">
+<small>DECISION TOOL / 030</small>
+<strong>DP &amp;<br><span>CICILAN.</span></strong>
+<i></i><i></i><i></i>
+<small>FIXED &amp; FLOATING</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Decision Tool / Calculator</div>
+<h3>Kalkulator DP &amp; Cicilan Rumah Pertama</h3>
+<p>Hitung DP, total dana awal, cicilan fixed &amp; floating rumah pertama.</p>
+<div class="product-bottom">
+<span class="price">Rp 29.000 <span class="old">Rp 59.000</span></span>
+<a href="https://lynk.id/ikhbalalhuzaibi/1oqpvrzeemxo" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="challenge">
+<div class="art">
+<div class="cover">
+<small>CHALLENGE / 031</small>
+<strong>DANA<br><span>DARURAT.</span></strong>
+<i></i><i></i><i></i>
+<small>TARGET RP1 JUTA</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Action Plan / Challenge</div>
+<h3>Tantangan 30 Hari Dana Darurat Rp1 Juta</h3>
+<p>Tantangan 30 hari kumpulin dana darurat Rp1 juta.</p>
+<div class="product-bottom">
+<span class="price">Rp 19.000 <span class="old">Rp 59.000</span></span>
+<a href="https://lynk.id/ikhbalalhuzaibi/887g4kqgj6z5" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="ebook">
+<div class="art blue">
+<div class="cover">
+<small>EBOOK / 032</small>
+<strong>SIAP<br><span>HUJAN.</span></strong>
+<i></i><i></i><i></i>
+<small>INSPEKSI 7 ZONA</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Ebook / Panduan PDF</div>
+<h3>Rumah Siap Hujan</h3>
+<p>Panduan inspeksi &amp; perawatan rumah musim hujan.</p>
+<div class="product-bottom">
+<span class="price">Rp 19.000 <span class="old">Rp 39.000</span></span>
+<a href="https://lynk.id/ikhbalalhuzaibi/d8069zo72dy2" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+<article class="product" data-category="worksheet">
+<div class="art purple">
+<div class="art-orb"></div>
+<div class="cover">
+<small>WORKSHEET / 033</small>
+<strong>UANG<br><span>JAJAN.</span></strong>
+<i></i><i></i><i></i>
+<small>SD KELAS 1–3</small>
+</div>
+</div>
+<div class="meta">
+<div class="category">Worksheet / LKPD</div>
+<h3>Jago Uang Jajan</h3>
+<p>Worksheet mengenal uang rupiah &amp; berhitung kembalian buat SD kelas 1–3.</p>
+<div class="product-bottom">
+<span class="price">Rp 19.000 <span class="old">Rp 39.000</span></span>
+<a href="https://lynk.id/ikhbalalhuzaibi/22pm099x70pj" target="_blank" rel="noopener" class="buy">BELI ↗</a>
+</div>
+</div>
+</article>
+
+</div>
+</div>
+</section>
+
+<section class="section" id="benefits">
+<div class="container">
+<div class="section-head">
+<div>
+<div class="eyebrow">The difference</div>
+<h2>Digital, without<br>the complication.</h2>
+</div>
+<p>Pengalaman memilih produk digital yang simpel, transparan, dan berorientasi pada manfaat.</p>
+</div>
+
+<div class="features">
+<div class="feature">
+<div class="feature-icon">↗</div>
+<h3>Instant Access</h3>
+<p>Produk digital dapat diakses melalui instruksi yang tersedia setelah transaksi berhasil.</p>
+</div>
+<div class="feature">
+<div class="feature-icon">⌘</div>
+<h3>Easy to Use</h3>
+<p>Dibuat dengan pendekatan sederhana agar mudah dipahami dan langsung digunakan.</p>
+</div>
+<div class="feature">
+<div class="feature-icon">✳</div>
+<h3>Made to Be Useful</h3>
+<p>Fokus pada alat yang benar-benar membantu pekerjaan dan aktivitas digital.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="cta" id="contact">
+<div class="container cta-inner">
+<div>
+<h2>Make your next move<br>a smarter one.</h2>
+<p>Find the right digital tools for your next big idea.</p>
+</div>
+<a class="btn" href="#products">EXPLORE THE COLLECTION ↗</a>
+</div>
+</section>
+
+<section class="section" id="faq">
+<div class="container">
+<div class="section-head">
+<div>
+<div class="eyebrow">Good to know</div>
+<h2>Frequently asked.</h2>
+</div>
+<p>Beberapa informasi sebelum memilih produk digital.</p>
+</div>
+<div class="faq">
+<details>
+<summary>Bagaimana cara mendapatkan produk?</summary>
+<p>Setelah transaksi berhasil, ikuti petunjuk akses atau unduhan yang tersedia pada halaman transaksi Lynk.id.</p>
+</details>
+<details>
+<summary>Apakah produk berbentuk fisik?</summary>
+<p>Tidak. Etalase ini berfokus pada produk digital seperti toolkit, template, dan file unduhan.</p>
+</details>
+<details>
+<summary>Apakah produk cocok untuk pemula?</summary>
+<p>Produk dirancang dengan pendekatan praktis. Baca detail setiap produk untuk mengetahui fitur dan kebutuhan penggunaannya.</p>
+</details>
+</div>
+</div>
+</section>
+
+</main>
+
+<footer>
+<div class="container footer">
+<div>© 2026 IKHBAL ALHUZAIBI. ALL RIGHTS RESERVED.</div>
+<div class="footer-links">
+<a href="#products">COLLECTION</a>
+<a href="#faq">FAQ</a>
+<a href="#contact">CONTACT</a>
+</div>
+</div>
+</footer>
+
+<script>
+const menu=document.getElementById('menu');
+const nav=document.getElementById('navlinks');
+
+menu.addEventListener('click',()=>{
+nav.classList.toggle('open');
+});
+
+nav.querySelectorAll('a').forEach(link=>{
+link.addEventListener('click',()=>{
+nav.classList.remove('open');
+});
+});
+
+document.querySelectorAll('.filter').forEach(button=>{
+button.addEventListener('click',()=>{
+document.querySelectorAll('.filter').forEach(item=>item.classList.remove('active'));
+button.classList.add('active');
+
+const category=button.dataset.filter;
+
+document.querySelectorAll('.product').forEach(product=>{
+product.style.display=
+category==='all'||product.dataset.category===category
+?'':'none';
+});
+});
+});
+</script>
+
+</body>
+</html>
