@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-11-06T23:58:56.041184Z",
+  "generated_at": "2026-11-07T04:57:23.013561Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-11-06T23:58:56.041184Z",
-    "active_task": "Video quotes FP (pagi)"
+    "heartbeat_at": "2026-11-07T04:57:23.013561Z",
+    "active_task": "Video quotes FP (siang)"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 38.1,
-    "memory_used_bytes": 6365138944,
-    "memory_total_bytes": 8320937984,
-    "disk_used_bytes": 825872384,
+    "cpu_percent": 1.2,
+    "memory_used_bytes": 6296580096,
+    "memory_total_bytes": 8319905792,
+    "disk_used_bytes": 139567104,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 683,
+    "uptime_seconds": 848,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -60,13 +60,13 @@
       "id": "cron-4",
       "title": "Video quotes FP (siang)",
       "project": "Muse Daily Ops",
-      "status": "pending",
-      "completed": false,
-      "progress_percent": 0,
+      "status": "completed",
+      "completed": true,
+      "progress_percent": 100,
       "priority": "medium",
-      "detail": "",
-      "url": "",
-      "slot": ""
+      "detail": "Tayang",
+      "url": "https://www.facebook.com/reel/1114885694787430/",
+      "slot": "12:00"
     },
     {
       "id": "cron-5",
@@ -82,6 +82,14 @@
     }
   ],
   "events": [
+    {
+      "id": "evt-20261107045731",
+      "type": "task",
+      "title": "Cron 'Video quotes FP (siang)' Selesai",
+      "description": "Tayang — https://www.facebook.com/reel/1114885694787430/",
+      "occurred_at": "2026-11-07T04:57:31.144964Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261106235909",
       "type": "task",
@@ -553,14 +561,6 @@
       "description": "Tayang — https://www.facebook.com/reel/1605583317177873/",
       "occurred_at": "2026-10-26T04:59:17.233825Z",
       "source": "muse-cron"
-    },
-    {
-      "id": "evt-20261026040636",
-      "type": "task",
-      "title": "Cron 'Artikel blog harian' Selesai",
-      "description": "Publish — https://updatefaktazf.blogspot.com/2026/10/kenapa-es-mengapung-anomali-air-4-derajat.html",
-      "occurred_at": "2026-10-26T04:06:36.908507Z",
-      "source": "muse-cron"
     }
   ],
   "projects": [
@@ -568,7 +568,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 20,
+      "progress_percent": 40,
       "task_count": 5
     }
   ],
@@ -588,13 +588,13 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "38.1%",
+      "value": "1.2%",
       "source": "/proc/stat",
       "status": "OK"
     },
     {
       "name": "RAM VM (snapshot)",
-      "value": "76.5%",
+      "value": "75.7%",
       "source": "/proc/meminfo",
       "status": "OK"
     },
