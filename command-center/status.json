@@ -1,5 +1,5 @@
 {
-  "updated_at": "09 Nov 2026, 11:57 WIB",
+  "updated_at": "10 Nov 2026, 08:11 WIB",
   "agents": [
     {
       "name": "Mark",
@@ -7,31 +7,31 @@
       "slot": "07:00",
       "status": "done",
       "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1129930769735133/"
+      "url": "https://www.facebook.com/reel/1442977858012307/"
     },
     {
       "name": "Einstein",
       "role": "Produk Digital",
-      "slot": "09:00",
-      "status": "done",
-      "detail": "Skripsi Tuntas 90 Hari — Planner & Printable Mahasiswa Akhir",
+      "slot": "",
+      "status": "pending",
+      "detail": "",
       "url": ""
     },
     {
       "name": "Tesla",
       "role": "Artikel Blog",
-      "slot": "10:00",
-      "status": "done",
-      "detail": "Publish",
-      "url": "https://updatefaktazf.blogspot.com/2026/11/suara-bloop-monster-laut-retakan-es-antartika.html"
+      "slot": "",
+      "status": "pending",
+      "detail": "",
+      "url": ""
     },
     {
       "name": "Newton",
       "role": "Video Siang",
-      "slot": "12:00",
-      "status": "done",
-      "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1678886837201554/"
+      "slot": "",
+      "status": "pending",
+      "detail": "",
+      "url": ""
     },
     {
       "name": "Edison",
@@ -50,18 +50,18 @@
     },
     {
       "label": "Produk digital",
-      "status": "done",
-      "note": "Skripsi Tuntas 90 Hari — Planner & Printable Mahasiswa Akhir"
+      "status": "pending",
+      "note": "Menunggu jadwal"
     },
     {
       "label": "Artikel blog",
-      "status": "done",
-      "note": "Publish"
+      "status": "pending",
+      "note": "Menunggu jadwal"
     },
     {
       "label": "Video FP siang",
-      "status": "done",
-      "note": "Tayang"
+      "status": "pending",
+      "note": "Menunggu jadwal"
     },
     {
       "label": "Video FP malam",
