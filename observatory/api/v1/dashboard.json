@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-11-10T23:58:59.857991Z",
+  "generated_at": "2026-11-11T03:11:44.347515Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-11-10T23:58:59.857991Z",
-    "active_task": "Video quotes FP (pagi)"
+    "heartbeat_at": "2026-11-11T03:11:44.347515Z",
+    "active_task": "Artikel blog harian"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 39.4,
-    "memory_used_bytes": 6562422784,
-    "memory_total_bytes": 8320925696,
-    "disk_used_bytes": 830570496,
+    "cpu_percent": 54.0,
+    "memory_used_bytes": 7721594880,
+    "memory_total_bytes": 8319897600,
+    "disk_used_bytes": 993812480,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 692,
+    "uptime_seconds": 6656,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -48,13 +48,13 @@
       "id": "cron-3",
       "title": "Artikel blog harian",
       "project": "Muse Daily Ops",
-      "status": "pending",
-      "completed": false,
-      "progress_percent": 0,
+      "status": "completed",
+      "completed": true,
+      "progress_percent": 100,
       "priority": "medium",
-      "detail": "",
-      "url": "",
-      "slot": ""
+      "detail": "Publish",
+      "url": "https://updatefaktazf.blogspot.com/2026/11/kenapa-kucing-selalu-mendarat-dengan-kaki.html",
+      "slot": "10:00"
     },
     {
       "id": "cron-4",
@@ -82,6 +82,14 @@
     }
   ],
   "events": [
+    {
+      "id": "evt-20261111031152",
+      "type": "task",
+      "title": "Cron 'Artikel blog harian' Selesai",
+      "description": "Publish — https://updatefaktazf.blogspot.com/2026/11/kenapa-kucing-selalu-mendarat-dengan-kaki.html",
+      "occurred_at": "2026-11-11T03:11:52.944654Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261110235910",
       "type": "task",
@@ -553,14 +561,6 @@
       "description": "Tayang — https://www.facebook.com/reel/1828764628390511/",
       "occurred_at": "2026-10-29T23:59:00.880745Z",
       "source": "muse-cron"
-    },
-    {
-      "id": "evt-20261029120211",
-      "type": "task",
-      "title": "Cron 'Video quotes FP (malam)' Selesai",
-      "description": "Tayang — https://www.facebook.com/reel/2169222767802229/",
-      "occurred_at": "2026-10-29T12:02:11.826523Z",
-      "source": "muse-cron"
     }
   ],
   "projects": [
@@ -568,7 +568,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 20,
+      "progress_percent": 40,
       "task_count": 5
     }
   ],
@@ -588,13 +588,13 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "39.4%",
+      "value": "54.0%",
       "source": "/proc/stat",
       "status": "OK"
     },
     {
       "name": "RAM VM (snapshot)",
-      "value": "78.9%",
+      "value": "92.8%",
       "source": "/proc/meminfo",
       "status": "OK"
     },
