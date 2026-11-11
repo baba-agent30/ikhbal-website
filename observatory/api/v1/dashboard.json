@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-11-11T12:01:57.005687Z",
+  "generated_at": "2026-11-11T23:58:20.794831Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-11-11T12:01:57.005687Z",
-    "active_task": "Video quotes FP (malam)"
+    "heartbeat_at": "2026-11-11T23:58:20.794831Z",
+    "active_task": "Video quotes FP (pagi)"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 1.9,
-    "memory_used_bytes": 5842452480,
+    "cpu_percent": 13.7,
+    "memory_used_bytes": 6729142272,
     "memory_total_bytes": 8319897600,
-    "disk_used_bytes": 930648064,
+    "disk_used_bytes": 139472896,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 2870,
+    "uptime_seconds": 627,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -29,59 +29,67 @@
       "progress_percent": 100,
       "priority": "medium",
       "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/2281162626172683/",
+      "url": "https://www.facebook.com/reel/1428521682326811/",
       "slot": "07:00"
     },
     {
       "id": "cron-2",
       "title": "Produk digital harian",
       "project": "Muse Daily Ops",
-      "status": "completed",
-      "completed": true,
-      "progress_percent": 100,
+      "status": "pending",
+      "completed": false,
+      "progress_percent": 0,
       "priority": "medium",
-      "detail": "Tas Bersalin Siap — Checklist 100 Poin Persiapan Melahirkan",
+      "detail": "",
       "url": "",
-      "slot": "09:00"
+      "slot": ""
     },
     {
       "id": "cron-3",
       "title": "Artikel blog harian",
       "project": "Muse Daily Ops",
-      "status": "completed",
-      "completed": true,
-      "progress_percent": 100,
+      "status": "pending",
+      "completed": false,
+      "progress_percent": 0,
       "priority": "medium",
-      "detail": "Publish",
-      "url": "https://updatefaktazf.blogspot.com/2026/11/kenapa-kucing-selalu-mendarat-dengan-kaki.html",
-      "slot": "10:00"
+      "detail": "",
+      "url": "",
+      "slot": ""
     },
     {
       "id": "cron-4",
       "title": "Video quotes FP (siang)",
       "project": "Muse Daily Ops",
-      "status": "completed",
-      "completed": true,
-      "progress_percent": 100,
+      "status": "pending",
+      "completed": false,
+      "progress_percent": 0,
       "priority": "medium",
-      "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1189195913634425/",
-      "slot": "12:00"
+      "detail": "",
+      "url": "",
+      "slot": ""
     },
     {
       "id": "cron-5",
       "title": "Video quotes FP (malam)",
       "project": "Muse Daily Ops",
-      "status": "completed",
-      "completed": true,
-      "progress_percent": 100,
+      "status": "pending",
+      "completed": false,
+      "progress_percent": 0,
       "priority": "medium",
-      "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1116621931281763/",
-      "slot": "19:00"
+      "detail": "",
+      "url": "",
+      "slot": ""
     }
   ],
   "events": [
+    {
+      "id": "evt-20261111235828",
+      "type": "task",
+      "title": "Cron 'Video quotes FP (pagi)' Selesai",
+      "description": "Tayang — https://www.facebook.com/reel/1428521682326811/",
+      "occurred_at": "2026-11-11T23:58:28.655083Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261111120206",
       "type": "task",
@@ -553,14 +561,6 @@
       "description": "Tayang — https://www.facebook.com/reel/1092197687024958/",
       "occurred_at": "2026-10-30T12:01:49.824380Z",
       "source": "muse-cron"
-    },
-    {
-      "id": "evt-20261030053826",
-      "type": "task",
-      "title": "Cron 'Artikel blog harian' Selesai",
-      "description": "Publish — https://updatefaktazf.blogspot.com/2026/10/petra-kota-dipahat-tebing-rahasia-air-gurun.html",
-      "occurred_at": "2026-10-30T05:38:26.760826Z",
-      "source": "muse-cron"
     }
   ],
   "projects": [
@@ -568,7 +568,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 100,
+      "progress_percent": 20,
       "task_count": 5
     }
   ],
@@ -588,13 +588,13 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "1.9%",
+      "value": "13.7%",
       "source": "/proc/stat",
       "status": "OK"
     },
     {
       "name": "RAM VM (snapshot)",
-      "value": "70.2%",
+      "value": "80.9%",
       "source": "/proc/meminfo",
       "status": "OK"
     },
