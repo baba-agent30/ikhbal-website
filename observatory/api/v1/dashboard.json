@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-11-12T02:13:24.206761Z",
+  "generated_at": "2026-11-12T03:32:09.236950Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-11-12T02:13:24.206761Z",
-    "active_task": "Produk digital harian"
+    "heartbeat_at": "2026-11-12T03:32:09.236950Z",
+    "active_task": "Artikel blog harian"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 43.8,
-    "memory_used_bytes": 7551905792,
-    "memory_total_bytes": 8319893504,
-    "disk_used_bytes": 73650176,
+    "cpu_percent": 17.5,
+    "memory_used_bytes": 7619321856,
+    "memory_total_bytes": 8320933888,
+    "disk_used_bytes": 93741056,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 1073,
+    "uptime_seconds": 3544,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -48,13 +48,13 @@
       "id": "cron-3",
       "title": "Artikel blog harian",
       "project": "Muse Daily Ops",
-      "status": "pending",
-      "completed": false,
-      "progress_percent": 0,
+      "status": "completed",
+      "completed": true,
+      "progress_percent": 100,
       "priority": "medium",
-      "detail": "",
-      "url": "",
-      "slot": ""
+      "detail": "Publish",
+      "url": "https://updatefaktazf.blogspot.com/2026/11/kenapa-microwave-memanaskan-makanan-wadah-tetap-dingin.html",
+      "slot": "10:00"
     },
     {
       "id": "cron-4",
@@ -82,6 +82,14 @@
     }
   ],
   "events": [
+    {
+      "id": "evt-20261112033219",
+      "type": "task",
+      "title": "Cron 'Artikel blog harian' Selesai",
+      "description": "Publish — https://updatefaktazf.blogspot.com/2026/11/kenapa-microwave-memanaskan-makanan-wadah-tetap-dingin.html",
+      "occurred_at": "2026-11-12T03:32:19.836020Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261112021335",
       "type": "task",
@@ -553,14 +561,6 @@
       "description": "Kalkulator DP & Cicilan Rumah Pertama",
       "occurred_at": "2026-10-31T02:37:48.098859Z",
       "source": "muse-cron"
-    },
-    {
-      "id": "evt-20261030235859",
-      "type": "task",
-      "title": "Cron 'Video quotes FP (pagi)' Selesai",
-      "description": "Tayang — https://www.facebook.com/reel/1058247980600138/",
-      "occurred_at": "2026-10-30T23:58:59.733149Z",
-      "source": "muse-cron"
     }
   ],
   "projects": [
@@ -568,7 +568,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 40,
+      "progress_percent": 60,
       "task_count": 5
     }
   ],
@@ -588,13 +588,13 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "43.8%",
+      "value": "17.5%",
       "source": "/proc/stat",
       "status": "OK"
     },
     {
       "name": "RAM VM (snapshot)",
-      "value": "90.8%",
+      "value": "91.6%",
       "source": "/proc/meminfo",
       "status": "OK"
     },
