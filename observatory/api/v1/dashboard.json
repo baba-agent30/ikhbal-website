@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-11-15T04:57:22.060856Z",
+  "generated_at": "2026-11-15T12:01:54.175695Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-11-15T04:57:22.060856Z",
-    "active_task": "Video quotes FP (siang)"
+    "heartbeat_at": "2026-11-15T12:01:54.175695Z",
+    "active_task": "Video quotes FP (malam)"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 27.0,
-    "memory_used_bytes": 6361542656,
-    "memory_total_bytes": 8320933888,
-    "disk_used_bytes": 741154816,
+    "cpu_percent": 34.8,
+    "memory_used_bytes": 6393348096,
+    "memory_total_bytes": 8319893504,
+    "disk_used_bytes": 833523712,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 1363,
+    "uptime_seconds": 226,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -72,16 +72,24 @@
       "id": "cron-5",
       "title": "Video quotes FP (malam)",
       "project": "Muse Daily Ops",
-      "status": "pending",
-      "completed": false,
-      "progress_percent": 0,
+      "status": "completed",
+      "completed": true,
+      "progress_percent": 100,
       "priority": "medium",
-      "detail": "",
-      "url": "",
-      "slot": ""
+      "detail": "Tayang",
+      "url": "https://www.facebook.com/reel/1140381628691755/",
+      "slot": "19:00"
     }
   ],
   "events": [
+    {
+      "id": "evt-20261115120204",
+      "type": "task",
+      "title": "Cron 'Video quotes FP (malam)' Selesai",
+      "description": "Tayang — https://www.facebook.com/reel/1140381628691755/",
+      "occurred_at": "2026-11-15T12:02:04.917311Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261115045730",
       "type": "task",
@@ -553,14 +561,6 @@
       "description": "Tayang — https://www.facebook.com/reel/1435623818675680/",
       "occurred_at": "2026-11-03T04:58:48.759294Z",
       "source": "muse-cron"
-    },
-    {
-      "id": "evt-20261103032614",
-      "type": "task",
-      "title": "Cron 'Artikel blog harian' Selesai",
-      "description": "Publish — https://updatefaktazf.blogspot.com/2026/11/kenapa-jari-keriput-di-air-perintah-saraf.html",
-      "occurred_at": "2026-11-03T03:26:14.579429Z",
-      "source": "muse-cron"
     }
   ],
   "projects": [
@@ -568,7 +568,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 80,
+      "progress_percent": 100,
       "task_count": 5
     }
   ],
@@ -588,13 +588,13 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "27.0%",
+      "value": "34.8%",
       "source": "/proc/stat",
       "status": "OK"
     },
     {
       "name": "RAM VM (snapshot)",
-      "value": "76.5%",
+      "value": "76.8%",
       "source": "/proc/meminfo",
       "status": "OK"
     },
