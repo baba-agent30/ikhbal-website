@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-11-16T02:53:06.389049Z",
+  "generated_at": "2026-11-16T03:23:39.194871Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-11-16T02:53:06.389049Z",
-    "active_task": "Produk digital harian"
+    "heartbeat_at": "2026-11-16T03:23:39.194871Z",
+    "active_task": "Artikel blog harian"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 1.9,
-    "memory_used_bytes": 7004647424,
+    "cpu_percent": 8.7,
+    "memory_used_bytes": 7612469248,
     "memory_total_bytes": 8320929792,
-    "disk_used_bytes": 85106688,
+    "disk_used_bytes": 103460864,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 3993,
+    "uptime_seconds": 5825,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -48,13 +48,13 @@
       "id": "cron-3",
       "title": "Artikel blog harian",
       "project": "Muse Daily Ops",
-      "status": "pending",
-      "completed": false,
-      "progress_percent": 0,
+      "status": "completed",
+      "completed": true,
+      "progress_percent": 100,
       "priority": "medium",
-      "detail": "",
-      "url": "",
-      "slot": ""
+      "detail": "Publish",
+      "url": "https://updatefaktazf.blogspot.com/2026/11/venus-planet-terpanas-bukan-paling-dekat-matahari.html",
+      "slot": "10:00"
     },
     {
       "id": "cron-4",
@@ -82,6 +82,14 @@
     }
   ],
   "events": [
+    {
+      "id": "evt-20261116032352",
+      "type": "task",
+      "title": "Cron 'Artikel blog harian' Selesai",
+      "description": "Publish — https://updatefaktazf.blogspot.com/2026/11/venus-planet-terpanas-bukan-paling-dekat-matahari.html",
+      "occurred_at": "2026-11-16T03:23:52.356989Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261116025319",
       "type": "task",
@@ -553,14 +561,6 @@
       "description": "Berkas Motor Bekas",
       "occurred_at": "2026-11-04T02:19:39.131224Z",
       "source": "muse-cron"
-    },
-    {
-      "id": "evt-20261103235901",
-      "type": "task",
-      "title": "Cron 'Video quotes FP (pagi)' Selesai",
-      "description": "Tayang — https://www.facebook.com/reel/2318415539011025/",
-      "occurred_at": "2026-11-03T23:59:01.629003Z",
-      "source": "muse-cron"
     }
   ],
   "projects": [
@@ -568,7 +568,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 40,
+      "progress_percent": 60,
       "task_count": 5
     }
   ],
@@ -588,13 +588,13 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "1.9%",
+      "value": "8.7%",
       "source": "/proc/stat",
       "status": "OK"
     },
     {
       "name": "RAM VM (snapshot)",
-      "value": "84.2%",
+      "value": "91.5%",
       "source": "/proc/meminfo",
       "status": "OK"
     },
