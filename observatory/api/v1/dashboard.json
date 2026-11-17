@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-11-17T04:31:03.941836Z",
+  "generated_at": "2026-11-17T04:56:57.992810Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-11-17T04:31:03.941836Z",
-    "active_task": "Produk digital harian"
+    "heartbeat_at": "2026-11-17T04:56:57.992810Z",
+    "active_task": "Video quotes FP (siang)"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 0.6,
-    "memory_used_bytes": 7668469760,
+    "cpu_percent": 1.2,
+    "memory_used_bytes": 1467973632,
     "memory_total_bytes": 8319897600,
-    "disk_used_bytes": 76627968,
+    "disk_used_bytes": 83795968,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 3774,
+    "uptime_seconds": 5329,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -60,13 +60,13 @@
       "id": "cron-4",
       "title": "Video quotes FP (siang)",
       "project": "Muse Daily Ops",
-      "status": "pending",
-      "completed": false,
-      "progress_percent": 0,
+      "status": "completed",
+      "completed": true,
+      "progress_percent": 100,
       "priority": "medium",
-      "detail": "",
-      "url": "",
-      "slot": ""
+      "detail": "Tayang",
+      "url": "https://www.facebook.com/reel/1445146313796988/",
+      "slot": "12:00"
     },
     {
       "id": "cron-5",
@@ -82,6 +82,14 @@
     }
   ],
   "events": [
+    {
+      "id": "evt-20261117045705",
+      "type": "task",
+      "title": "Cron 'Video quotes FP (siang)' Selesai",
+      "description": "Tayang — https://www.facebook.com/reel/1445146313796988/",
+      "occurred_at": "2026-11-17T04:57:05.935010Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261117043111",
       "type": "task",
@@ -553,14 +561,6 @@
       "description": "Publish — https://updatefaktazf.blogspot.com/2026/11/kenapa-air-laut-asin-sungai-tawar.html",
       "occurred_at": "2026-11-05T03:05:10.106429Z",
       "source": "muse-cron"
-    },
-    {
-      "id": "evt-20261105021334",
-      "type": "task",
-      "title": "Cron 'Produk digital harian' Selesai",
-      "description": "BonTrack: Tracker Piutang Warung & UMKM",
-      "occurred_at": "2026-11-05T02:13:34.375060Z",
-      "source": "muse-cron"
     }
   ],
   "projects": [
@@ -568,7 +568,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 60,
+      "progress_percent": 80,
       "task_count": 5
     }
   ],
@@ -588,13 +588,13 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "0.6%",
+      "value": "1.2%",
       "source": "/proc/stat",
       "status": "OK"
     },
     {
       "name": "RAM VM (snapshot)",
-      "value": "92.2%",
+      "value": "17.6%",
       "source": "/proc/meminfo",
       "status": "OK"
     },
