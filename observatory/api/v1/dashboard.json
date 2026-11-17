@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-11-16T23:58:38.017560Z",
+  "generated_at": "2026-11-17T03:29:28.368470Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-11-16T23:58:38.017560Z",
-    "active_task": "Video quotes FP (pagi)"
+    "heartbeat_at": "2026-11-17T03:29:28.368470Z",
+    "active_task": "Artikel blog harian"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 25.6,
-    "memory_used_bytes": 6329212928,
+    "cpu_percent": 10.1,
+    "memory_used_bytes": 6415679488,
     "memory_total_bytes": 8319897600,
-    "disk_used_bytes": 175222784,
+    "disk_used_bytes": 51081216,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 248,
+    "uptime_seconds": 79,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -48,13 +48,13 @@
       "id": "cron-3",
       "title": "Artikel blog harian",
       "project": "Muse Daily Ops",
-      "status": "pending",
-      "completed": false,
-      "progress_percent": 0,
+      "status": "completed",
+      "completed": true,
+      "progress_percent": 100,
       "priority": "medium",
-      "detail": "",
-      "url": "",
-      "slot": ""
+      "detail": "Publish",
+      "url": "https://updatefaktazf.blogspot.com/2026/11/perpustakaan-alexandria-tidak-terbakar-satu-malam.html",
+      "slot": "10:00"
     },
     {
       "id": "cron-4",
@@ -82,6 +82,14 @@
     }
   ],
   "events": [
+    {
+      "id": "evt-20261117032936",
+      "type": "task",
+      "title": "Cron 'Artikel blog harian' Selesai",
+      "description": "Publish — https://updatefaktazf.blogspot.com/2026/11/perpustakaan-alexandria-tidak-terbakar-satu-malam.html",
+      "occurred_at": "2026-11-17T03:29:36.374097Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261116235845",
       "type": "task",
@@ -553,14 +561,6 @@
       "description": "Tayang — https://www.facebook.com/reel/1850028159341481/",
       "occurred_at": "2026-11-04T23:58:22.153376Z",
       "source": "muse-cron"
-    },
-    {
-      "id": "evt-20261104120640",
-      "type": "task",
-      "title": "Cron 'Video quotes FP (malam)' Selesai",
-      "description": "Tayang — https://www.facebook.com/reel/1641490994085744/",
-      "occurred_at": "2026-11-04T12:06:40.064917Z",
-      "source": "muse-cron"
     }
   ],
   "projects": [
@@ -568,7 +568,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 20,
+      "progress_percent": 40,
       "task_count": 5
     }
   ],
@@ -588,13 +588,13 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "25.6%",
+      "value": "10.1%",
       "source": "/proc/stat",
       "status": "OK"
     },
     {
       "name": "RAM VM (snapshot)",
-      "value": "76.1%",
+      "value": "77.1%",
       "source": "/proc/meminfo",
       "status": "OK"
     },
