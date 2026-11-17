@@ -1,5 +1,5 @@
 {
-  "updated_at": "17 Nov 2026, 10:29 WIB",
+  "updated_at": "17 Nov 2026, 11:31 WIB",
   "agents": [
     {
       "name": "Mark",
@@ -12,9 +12,9 @@
     {
       "name": "Einstein",
       "role": "Produk Digital",
-      "slot": "",
-      "status": "pending",
-      "detail": "",
+      "slot": "09:00",
+      "status": "done",
+      "detail": "Liburan Akhir Tahun Tanpa Drama — Planner Liburan Keluarga 7 Hari",
       "url": ""
     },
     {
@@ -50,8 +50,8 @@
     },
     {
       "label": "Produk digital",
-      "status": "pending",
-      "note": "Menunggu jadwal"
+      "status": "done",
+      "note": "Liburan Akhir Tahun Tanpa Drama — Planner Liburan Keluarga 7 Hari"
     },
     {
       "label": "Artikel blog",
