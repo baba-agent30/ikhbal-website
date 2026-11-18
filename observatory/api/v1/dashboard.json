@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-11-18T03:27:54.806086Z",
+  "generated_at": "2026-11-18T04:56:53.482941Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-11-18T03:27:54.806086Z",
-    "active_task": "Artikel blog harian"
+    "heartbeat_at": "2026-11-18T04:56:53.482941Z",
+    "active_task": "Video quotes FP (siang)"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 1.3,
-    "memory_used_bytes": 7570350080,
-    "memory_total_bytes": 8320933888,
-    "disk_used_bytes": 907395072,
+    "cpu_percent": 59.0,
+    "memory_used_bytes": 6134886400,
+    "memory_total_bytes": 8319897600,
+    "disk_used_bytes": 777347072,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 5588,
+    "uptime_seconds": 307,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -60,13 +60,13 @@
       "id": "cron-4",
       "title": "Video quotes FP (siang)",
       "project": "Muse Daily Ops",
-      "status": "pending",
-      "completed": false,
-      "progress_percent": 0,
+      "status": "completed",
+      "completed": true,
+      "progress_percent": 100,
       "priority": "medium",
-      "detail": "",
-      "url": "",
-      "slot": ""
+      "detail": "Tayang",
+      "url": "https://www.facebook.com/reel/1821996099013273/",
+      "slot": "12:00"
     },
     {
       "id": "cron-5",
@@ -82,6 +82,14 @@
     }
   ],
   "events": [
+    {
+      "id": "evt-20261118045702",
+      "type": "task",
+      "title": "Cron 'Video quotes FP (siang)' Selesai",
+      "description": "Tayang — https://www.facebook.com/reel/1821996099013273/",
+      "occurred_at": "2026-11-18T04:57:02.608129Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261118032804",
       "type": "task",
@@ -553,14 +561,6 @@
       "description": "Publish — https://updatefaktazf.blogspot.com/2026/11/foto-dihapus-tidak-benar-benar-hilang-internet.html",
       "occurred_at": "2026-11-06T03:16:18.608647Z",
       "source": "muse-cron"
-    },
-    {
-      "id": "evt-20261106024203",
-      "type": "task",
-      "title": "Cron 'Produk digital harian' Selesai",
-      "description": "Prompt AI Karyawan Kantoran",
-      "occurred_at": "2026-11-06T02:42:03.647086Z",
-      "source": "muse-cron"
     }
   ],
   "projects": [
@@ -568,7 +568,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 60,
+      "progress_percent": 80,
       "task_count": 5
     }
   ],
@@ -588,13 +588,13 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "1.3%",
+      "value": "59.0%",
       "source": "/proc/stat",
       "status": "OK"
     },
     {
       "name": "RAM VM (snapshot)",
-      "value": "91.0%",
+      "value": "73.7%",
       "source": "/proc/meminfo",
       "status": "OK"
     },
