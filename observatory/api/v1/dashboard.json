@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-11-20T12:02:12.726091Z",
+  "generated_at": "2026-11-20T23:57:43.793629Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-11-20T12:02:12.726091Z",
-    "active_task": "Video quotes FP (malam)"
+    "heartbeat_at": "2026-11-20T23:57:43.793629Z",
+    "active_task": "Video quotes FP (pagi)"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 12.5,
-    "memory_used_bytes": 6317129728,
-    "memory_total_bytes": 8320933888,
-    "disk_used_bytes": 57143296,
+    "cpu_percent": 32.5,
+    "memory_used_bytes": 6314164224,
+    "memory_total_bytes": 8319889408,
+    "disk_used_bytes": 142426112,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 1168,
+    "uptime_seconds": 1392,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -29,7 +29,7 @@
       "progress_percent": 100,
       "priority": "medium",
       "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1414634443907510/",
+      "url": "https://www.facebook.com/reel/1010203512151817/",
       "slot": "07:00"
     },
     {
@@ -48,40 +48,48 @@
       "id": "cron-3",
       "title": "Artikel blog harian",
       "project": "Muse Daily Ops",
-      "status": "completed",
-      "completed": true,
-      "progress_percent": 100,
+      "status": "pending",
+      "completed": false,
+      "progress_percent": 0,
       "priority": "medium",
-      "detail": "Publish",
-      "url": "https://updatefaktazf.blogspot.com/2026/11/tidak-bisa-membayangkan-gambar-di-kepala-afantasia.html",
-      "slot": "10:00"
+      "detail": "",
+      "url": "",
+      "slot": ""
     },
     {
       "id": "cron-4",
       "title": "Video quotes FP (siang)",
       "project": "Muse Daily Ops",
-      "status": "completed",
-      "completed": true,
-      "progress_percent": 100,
+      "status": "pending",
+      "completed": false,
+      "progress_percent": 0,
       "priority": "medium",
-      "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/4837431799876640/",
-      "slot": "12:00"
+      "detail": "",
+      "url": "",
+      "slot": ""
     },
     {
       "id": "cron-5",
       "title": "Video quotes FP (malam)",
       "project": "Muse Daily Ops",
-      "status": "completed",
-      "completed": true,
-      "progress_percent": 100,
+      "status": "pending",
+      "completed": false,
+      "progress_percent": 0,
       "priority": "medium",
-      "detail": "Tayang",
-      "url": "https://www.facebook.com/reel/1462787559280571/",
-      "slot": "19:00"
+      "detail": "",
+      "url": "",
+      "slot": ""
     }
   ],
   "events": [
+    {
+      "id": "evt-20261120235751",
+      "type": "task",
+      "title": "Cron 'Video quotes FP (pagi)' Selesai",
+      "description": "Tayang — https://www.facebook.com/reel/1010203512151817/",
+      "occurred_at": "2026-11-20T23:57:51.211542Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261120120221",
       "type": "task",
@@ -553,14 +561,6 @@
       "description": "Skripsi Tuntas 90 Hari — Planner & Printable Mahasiswa Akhir",
       "occurred_at": "2026-11-09T02:51:07.942863Z",
       "source": "muse-cron"
-    },
-    {
-      "id": "evt-20261108235858",
-      "type": "task",
-      "title": "Cron 'Video quotes FP (pagi)' Selesai",
-      "description": "Tayang — https://www.facebook.com/reel/1129930769735133/",
-      "occurred_at": "2026-11-08T23:58:58.592030Z",
-      "source": "muse-cron"
     }
   ],
   "projects": [
@@ -568,7 +568,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 80,
+      "progress_percent": 20,
       "task_count": 5
     }
   ],
@@ -588,7 +588,7 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "12.5%",
+      "value": "32.5%",
       "source": "/proc/stat",
       "status": "OK"
     },
