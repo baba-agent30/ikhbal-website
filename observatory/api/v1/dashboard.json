@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-11-22T23:57:56.337181Z",
+  "generated_at": "2026-11-23T03:58:42.789403Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-11-22T23:57:56.337181Z",
-    "active_task": "Video quotes FP (pagi)"
+    "heartbeat_at": "2026-11-23T03:58:42.789403Z",
+    "active_task": "Artikel blog harian"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 4.4,
-    "memory_used_bytes": 6262210560,
+    "cpu_percent": 1.3,
+    "memory_used_bytes": 6733340672,
     "memory_total_bytes": 8319897600,
-    "disk_used_bytes": 55054336,
+    "disk_used_bytes": 918114304,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 718,
+    "uptime_seconds": 404,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -48,13 +48,13 @@
       "id": "cron-3",
       "title": "Artikel blog harian",
       "project": "Muse Daily Ops",
-      "status": "pending",
-      "completed": false,
-      "progress_percent": 0,
+      "status": "completed",
+      "completed": true,
+      "progress_percent": 100,
       "priority": "medium",
-      "detail": "",
-      "url": "",
-      "slot": ""
+      "detail": "Publish",
+      "url": "https://updatefaktazf.blogspot.com/2026/11/bola-petir-bola-api-misterius-badai-petir.html",
+      "slot": "10:00"
     },
     {
       "id": "cron-4",
@@ -82,6 +82,14 @@
     }
   ],
   "events": [
+    {
+      "id": "evt-20261123035855",
+      "type": "task",
+      "title": "Cron 'Artikel blog harian' Selesai",
+      "description": "Publish — https://updatefaktazf.blogspot.com/2026/11/bola-petir-bola-api-misterius-badai-petir.html",
+      "occurred_at": "2026-11-23T03:58:55.084509Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261122235804",
       "type": "task",
@@ -553,14 +561,6 @@
       "description": "Tayang — https://www.facebook.com/reel/2976889912668743/",
       "occurred_at": "2026-11-10T04:58:45.054694Z",
       "source": "muse-cron"
-    },
-    {
-      "id": "evt-20261110033651",
-      "type": "task",
-      "title": "Cron 'Artikel blog harian' Selesai",
-      "description": "Publish — https://updatefaktazf.blogspot.com/2026/11/kenapa-langit-berwarna-biru-penjelasan-fisika.html",
-      "occurred_at": "2026-11-10T03:36:51.617454Z",
-      "source": "muse-cron"
     }
   ],
   "projects": [
@@ -568,7 +568,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 20,
+      "progress_percent": 40,
       "task_count": 5
     }
   ],
@@ -588,13 +588,13 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "4.4%",
+      "value": "1.3%",
       "source": "/proc/stat",
       "status": "OK"
     },
     {
       "name": "RAM VM (snapshot)",
-      "value": "75.3%",
+      "value": "80.9%",
       "source": "/proc/meminfo",
       "status": "OK"
     },
