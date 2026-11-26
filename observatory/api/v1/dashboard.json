@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-11-25T23:58:10.106633Z",
+  "generated_at": "2026-11-26T03:19:56.616337Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-11-25T23:58:10.106633Z",
-    "active_task": "Video quotes FP (pagi)"
+    "heartbeat_at": "2026-11-26T03:19:56.616337Z",
+    "active_task": "Artikel blog harian"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 1.9,
-    "memory_used_bytes": 6370582528,
+    "cpu_percent": 12.4,
+    "memory_used_bytes": 7561072640,
     "memory_total_bytes": 8319897600,
-    "disk_used_bytes": 142770176,
+    "disk_used_bytes": 902369280,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 1511,
+    "uptime_seconds": 2289,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -48,13 +48,13 @@
       "id": "cron-3",
       "title": "Artikel blog harian",
       "project": "Muse Daily Ops",
-      "status": "pending",
-      "completed": false,
-      "progress_percent": 0,
+      "status": "completed",
+      "completed": true,
+      "progress_percent": 100,
       "priority": "medium",
-      "detail": "",
-      "url": "",
-      "slot": ""
+      "detail": "Publish",
+      "url": "https://updatefaktazf.blogspot.com/2026/11/burung-hantu-memutar-kepala-270-derajat-rahasia-leher.html",
+      "slot": "10:00"
     },
     {
       "id": "cron-4",
@@ -82,6 +82,14 @@
     }
   ],
   "events": [
+    {
+      "id": "evt-20261126032005",
+      "type": "task",
+      "title": "Cron 'Artikel blog harian' Selesai",
+      "description": "Publish — https://updatefaktazf.blogspot.com/2026/11/burung-hantu-memutar-kepala-270-derajat-rahasia-leher.html",
+      "occurred_at": "2026-11-26T03:20:05.762854Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261125235817",
       "type": "task",
@@ -553,14 +561,6 @@
       "description": "Tayang — https://www.facebook.com/reel/1693020565546603/",
       "occurred_at": "2026-11-12T23:57:50.928738Z",
       "source": "muse-cron"
-    },
-    {
-      "id": "evt-20261112120214",
-      "type": "task",
-      "title": "Cron 'Video quotes FP (malam)' Selesai",
-      "description": "Tayang — https://www.facebook.com/reel/1119163204300071/",
-      "occurred_at": "2026-11-12T12:02:14.081337Z",
-      "source": "muse-cron"
     }
   ],
   "projects": [
@@ -568,7 +568,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 20,
+      "progress_percent": 40,
       "task_count": 5
     }
   ],
@@ -588,13 +588,13 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "1.9%",
+      "value": "12.4%",
       "source": "/proc/stat",
       "status": "OK"
     },
     {
       "name": "RAM VM (snapshot)",
-      "value": "76.6%",
+      "value": "90.9%",
       "source": "/proc/meminfo",
       "status": "OK"
     },
