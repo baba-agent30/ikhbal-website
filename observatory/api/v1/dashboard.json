@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-11-26T23:58:40.387716Z",
+  "generated_at": "2026-11-27T03:21:40.583402Z",
   "mode": "static-build",
   "agent": {
     "status": "online",
     "model": "Muse Spark",
     "runtime_id": "muse-vm",
-    "heartbeat_at": "2026-11-26T23:58:40.387716Z",
-    "active_task": "Video quotes FP (pagi)"
+    "heartbeat_at": "2026-11-27T03:21:40.583402Z",
+    "active_task": "Artikel blog harian"
   },
   "tokens": null,
   "resources": {
-    "cpu_percent": 13.6,
-    "memory_used_bytes": 6465581056,
-    "memory_total_bytes": 8319893504,
-    "disk_used_bytes": 198725632,
+    "cpu_percent": 8.2,
+    "memory_used_bytes": 7390355456,
+    "memory_total_bytes": 8320933888,
+    "disk_used_bytes": 849604608,
     "disk_total_bytes": 8053063680,
-    "uptime_seconds": 1230,
+    "uptime_seconds": 2060,
     "source": "snapshot /proc saat build (VM ephemeral)",
     "note": "VM bersifat ephemeral (diganti berkala oleh runtime); angka ini snapshot sesaat, bukan monitoring kontinu."
   },
@@ -48,13 +48,13 @@
       "id": "cron-3",
       "title": "Artikel blog harian",
       "project": "Muse Daily Ops",
-      "status": "pending",
-      "completed": false,
-      "progress_percent": 0,
+      "status": "completed",
+      "completed": true,
+      "progress_percent": 100,
       "priority": "medium",
-      "detail": "",
-      "url": "",
-      "slot": ""
+      "detail": "Publish",
+      "url": "https://updatefaktazf.blogspot.com/2026/11/layar-oled-burn-in-penyebab-dan-cara-mencegah.html",
+      "slot": "10:00"
     },
     {
       "id": "cron-4",
@@ -82,6 +82,14 @@
     }
   ],
   "events": [
+    {
+      "id": "evt-20261127032153",
+      "type": "task",
+      "title": "Cron 'Artikel blog harian' Selesai",
+      "description": "Publish — https://updatefaktazf.blogspot.com/2026/11/layar-oled-burn-in-penyebab-dan-cara-mencegah.html",
+      "occurred_at": "2026-11-27T03:21:53.374277Z",
+      "source": "muse-cron"
+    },
     {
       "id": "evt-20261126235848",
       "type": "task",
@@ -553,14 +561,6 @@
       "description": "Tayang — https://www.facebook.com/reel/1644258530587396/",
       "occurred_at": "2026-11-13T12:02:06.540428Z",
       "source": "muse-cron"
-    },
-    {
-      "id": "evt-20261113045731",
-      "type": "task",
-      "title": "Cron 'Video quotes FP (siang)' Selesai",
-      "description": "Tayang — https://www.facebook.com/reel/998515082777578/",
-      "occurred_at": "2026-11-13T04:57:31.305962Z",
-      "source": "muse-cron"
     }
   ],
   "projects": [
@@ -568,7 +568,7 @@
       "name": "Muse Daily Ops",
       "description": "5 cron harian: 3 video FP, produk digital, artikel blog",
       "status": "active",
-      "progress_percent": 20,
+      "progress_percent": 40,
       "task_count": 5
     }
   ],
@@ -588,13 +588,13 @@
     },
     {
       "name": "CPU VM (snapshot)",
-      "value": "13.6%",
+      "value": "8.2%",
       "source": "/proc/stat",
       "status": "OK"
     },
     {
       "name": "RAM VM (snapshot)",
-      "value": "77.7%",
+      "value": "88.8%",
       "source": "/proc/meminfo",
       "status": "OK"
     },
