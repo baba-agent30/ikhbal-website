@@ -97,18 +97,23 @@ const Store = {
   load() {
     try {
       const raw = localStorage.getItem(DB_KEY);
-      if (!raw) { this.db = this.seed(); this.save(); return this.db; }
+      // DB baru (HP/browser pertama kali buka): JANGAN save() — seed TIDAK BOLEH
+      // menimpa cloud. Tandai fresh supaya pullOrPush() NARIK dari cloud, bukan dorong.
+      // (Bug v7: seed langsung save+push dan menimpa PIN/data yang sudah diubah di HP lain.)
+      if (!raw) { this.db = this.seed(); this._freshSeed = true; localStorage.setItem(DB_KEY, JSON.stringify(this.db)); return this.db; }
       const parsed = JSON.parse(raw);
       if (!parsed || !Array.isArray(parsed.products)) throw new Error('db rusak');
       this.db = parsed;
-      // DB lama belum punya cap sinkron — beri cap "sekarang" sekali (tulis langsung,
+      // DB lama belum punya cap sinkron — beri cap TANGGAL LAMA sekali (tulis langsung,
       // tanpa Store.save supaya tidak menaikkan cap di setiap buka aplikasi).
-      if (!this.db.updatedAt) { this.db.updatedAt = new Date().toISOString(); localStorage.setItem(DB_KEY, JSON.stringify(this.db)); }
+      // Jangan cap "sekarang": itu bikin data lama dianggap terbaru dan menimpa cloud (bug v7).
+      if (!this.db.updatedAt) { this.db.updatedAt = '1970-01-01T00:00:00.000Z'; localStorage.setItem(DB_KEY, JSON.stringify(this.db)); }
       this.migrate();
       return this.db;
     } catch (e) {
       this.db = this.seed();
-      this.save();
+      this._freshSeed = true;
+      localStorage.setItem(DB_KEY, JSON.stringify(this.db));
       return this.db;
     }
   },
@@ -126,7 +131,9 @@ const Store = {
     });
     // PIN admin diganti ke 0606 (perintah user 28 Nov 2026) — hanya bila masih PIN lama 1234.
     if (this.db.pin === '1234') { this.db.pin = '0606'; changed = true; }
-    if (changed) this.save();
+    // Tulis langsung tanpa save(): migrasi TIDAK BOLEH menaikkan cap updatedAt atau
+    // menjadwalkan push — kalau tidak, data lama di HP ini menimpa cloud (bug v7).
+    if (changed) localStorage.setItem(DB_KEY, JSON.stringify(this.db));
   },
 
   save() {
@@ -888,7 +895,7 @@ function renderAdmin(view, tab) {
     view.innerHTML = `
       <div class="panel pin-box">
         <h2>Admin K-SEP</h2>
-        <p class="muted">Masukkan PIN admin untuk melanjutkan.<br>PIN admin: <strong>0606</strong> (bisa diubah di Pengaturan).</p>
+        <p class="muted">Masukkan PIN admin untuk melanjutkan.<br>PIN bisa diubah di Pengaturan.</p>
         <form id="pinForm">
           <label for="pinInput">PIN</label>
           <input id="pinInput" type="password" inputmode="numeric" maxlength="12" placeholder="••••" required>
@@ -1487,6 +1494,7 @@ const SB = {
   },
 
   async pullOrPush() {
+    try {
     const c = this.client;
     const [sRes, pRes, oRes] = await Promise.all([
       c.from('ksep_settings').select('key,value'),
@@ -1499,14 +1507,27 @@ const SB = {
     const cloudEmpty = !sRes.data.length && !pRes.data.length && !oRes.data.length;
     const cloudAt = settings.updatedAt || '';
     const localAt = Store.db.updatedAt || '';
-    if (cloudEmpty || localAt > cloudAt) {
-      // Cloud kosong atau lokal lebih baru → dorong lokal ke cloud.
-      await this.pushAll();
+    const freshSeed = !!Store._freshSeed; // DB baru dari seed (HP/browser pertama kali buka)
+    if (cloudEmpty) {
+      // Cloud kosong (perangkat pertama) → dorong lokal ke cloud.
+      await this.pushAll(true);
+    } else if (freshSeed) {
+      // HP baru pertama kali buka: JANGAN dorong seed ke cloud — tarik data cloud.
+      // (Bug v7: seed langsung push dan menimpa PIN/data yang sudah diubah.)
+      this.applyCloud(pRes.data || [], oRes.data || [], settings);
+    } else if (localAt > cloudAt) {
+      // Lokal lebih baru → dorong lokal ke cloud.
+      await this.pushAll(true);
     } else if (cloudAt > localAt) {
       // Cloud lebih baru → timpa lokal dengan data cloud.
       this.applyCloud(pRes.data || [], oRes.data || [], settings);
     }
+    Store._freshSeed = false;
     return true;
+    } finally {
+      // Sinkron selesai (berhasil/gagal/timeout di luar) — lepas penanda seed.
+      Store._freshSeed = false;
+    }
   },
 
   applyCloud(pRows, oRows, settings) {
@@ -1523,9 +1544,12 @@ const SB = {
     localStorage.setItem(DB_KEY, JSON.stringify(db));
   },
 
-  async pushAll() {
+  async pushAll(force = false) {
     const c = this.client;
     if (!c) return false;
+    // Jangan dorong selama sinkron awal belum selesai (HP baru, lokal masih seed) —
+    // push dari pullOrPush sendiri lolos lewat force=true.
+    if (Store._freshSeed && !force) return false;
     try {
       const db = Store.db;
       const pRows = db.products.map((p) => this.productToRow(p));
