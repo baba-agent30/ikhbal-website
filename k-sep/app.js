@@ -248,6 +248,11 @@ function stockBadge(p) {
     : '<span class="badge out">Habis</span>';
 }
 
+function initialOf(name) {
+  const clean = String(name || '').replace(/^CONTOH\s*[—-]\s*/i, '').trim();
+  return (clean.charAt(0) || 'K').toUpperCase();
+}
+
 function renderKatalog(view) {
   const products = Store.products(true);
   view.innerHTML = `
@@ -267,8 +272,9 @@ function renderKatalog(view) {
     <p class="muted">Pilih aroma favoritmu, lalu pesan langsung dari halaman ini.</p>
     ${products.length === 0 ? '<div class="empty">Belum ada parfum aktif. Silakan cek kembali nanti.</div>' : ''}
     <div class="grid">
-      ${products.map((p) => `
+      ${products.map((p, i) => `
         <article class="card">
+          <div class="card-cover cover-${i % 3}"><span>${esc(initialOf(p.name))}</span></div>
           <div class="card-body">
             <div>${stockBadge(p)} ${p.isContoh ? '<span class="badge contoh">Contoh</span>' : ''}</div>
             <h3>${esc(p.name)}</h3>
@@ -397,6 +403,7 @@ const ADMIN_TABS = [
   ['dashboard', 'Dashboard'], ['produk', 'Produk'], ['orderan', 'Orderan'],
   ['stok', 'Stok'], ['riwayat', 'Riwayat'], ['rekapan', 'Rekapan'], ['pengaturan', 'Pengaturan']
 ];
+let orderFilter = 'Semua'; // filter orderan yang aktif — dipertahankan saat pindah aksi
 const adminUnlocked = () => sessionStorage.getItem('ksep_admin_unlocked') === '1';
 
 function renderAdmin(view, tab) {
@@ -438,13 +445,16 @@ function renderAdmin(view, tab) {
 
   view.innerHTML = `
     <h1>Admin K-SEP</h1>
-    <div class="tabs">
+    <div class="tabs" id="adminTabs">
       ${ADMIN_TABS.map(([t, label]) => `<button class="tab ${t === tab ? 'active' : ''}" data-tab="${t}">${label}</button>`).join('')}
     </div>
     <div id="adminBody">${body}</div>
     <p><button class="btn btn-ghost btn-sm" id="btnLogout">Keluar Admin (kunci)</button></p>`;
 
-  $$('.tab').forEach((b) => b.addEventListener('click', () => { location.hash = '#/admin/' + b.dataset.tab; }));
+  $$('#adminTabs .tab', view).forEach((b) => b.addEventListener('click', () => {
+    if (!b.dataset.tab) return; // chip filter tidak punya data-tab — jangan navigasi
+    location.hash = '#/admin/' + b.dataset.tab;
+  }));
   $('#btnLogout').addEventListener('click', () => {
     sessionStorage.removeItem('ksep_admin_unlocked');
     location.hash = '#/katalog';
@@ -562,7 +572,7 @@ function adminOrderan() {
   Store.db.orders.forEach((o) => { counts[o.status] = (counts[o.status] || 0) + 1; });
   return `
     <div class="tabs" id="statusFilter">
-      ${['Semua', 'Baru', 'Diproses', 'Selesai', 'Batal'].map((s) => `<button class="tab ${s === 'Semua' ? 'active' : ''}" data-status="${s}">${s}${s !== 'Semua' && counts[s] ? ' (' + counts[s] + ')' : ''}</button>`).join('')}
+      ${['Semua', 'Baru', 'Diproses', 'Selesai', 'Batal'].map((s) => `<button class="tab ${s === orderFilter ? 'active' : ''}" data-status="${s}">${s}${s !== 'Semua' && counts[s] ? ' (' + counts[s] + ')' : ''}</button>`).join('')}
     </div>
     <div id="orderList"></div>`;
 }
@@ -773,11 +783,12 @@ function bindAdmin(view, tab) {
     }));
   }
   if (tab === 'orderan') {
-    renderOrderList(view, 'Semua');
+    renderOrderList(view, orderFilter);
     $$('#statusFilter .tab', view).forEach((b) => b.addEventListener('click', () => {
+      orderFilter = b.dataset.status;
       $$('#statusFilter .tab', view).forEach((x) => x.classList.remove('active'));
       b.classList.add('active');
-      renderOrderList(view, b.dataset.status);
+      renderOrderList(view, orderFilter);
     }));
   }
   if (tab === 'stok') {
