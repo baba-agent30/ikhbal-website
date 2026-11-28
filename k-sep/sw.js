@@ -1,5 +1,5 @@
 /* K-SEP Parfum — Service Worker (app shell, cache-first) */
-const CACHE = 'ksep-v2'; // naikkan tiap deploy supaya HP yang sudah install ambil file baru
+const CACHE = 'ksep-v3'; // naikkan tiap deploy supaya HP yang sudah install ambil file baru
 const ASSETS = [
   './',
   './index.html',
@@ -8,7 +8,12 @@ const ASSETS = [
   './manifest.webmanifest',
   './icon-192.png',
   './icon-512.png',
-  './hero.jpg'
+  './hero.jpg',
+  './hero-dark.jpg',
+  './produk-melati.jpg',
+  './produk-oud.jpg',
+  './produk-citrus.jpg',
+  './satin.jpg'
 ];
 
 self.addEventListener('install', (event) => {

@@ -51,19 +51,23 @@ const Store = {
       version: 1,
       pin: '1234',
       orderSeq: 0,
+      testimonials: [],
+      promo: { active: false, title: 'Promo Spesial Hari Ini!', discount: 30, note: 'Untuk semua varian parfum premium', endsAt: '' },
       products: [
         {
           id: uid() + 'a', name: 'CONTOH — Melati Pagi', active: true, isContoh: true,
+          image: 'produk-melati.jpg', badge: '',
           notes: 'Melati, jeruk, musk lembut. Aroma segar dan feminin, cocok dipakai siang hari.',
           sizes: {
             '20': { price: 25000, stock: 5 },
             '30': { price: 35000, stock: 4 },
-            '50': { price: 55000, stock: 3 },
+            '50': { price: 55000, stock: 3, compare: 75000 },
             '100': { price: 95000, stock: 2 }
           }
         },
         {
           id: uid() + 'b', name: 'CONTOH — Oud Malam', active: true, isContoh: true,
+          image: 'produk-oud.jpg', badge: '',
           notes: 'Oud, amber, vanila. Aroma berat dan mewah, tahan lama untuk acara malam.',
           sizes: {
             '20': { price: 35000, stock: 3 },
@@ -74,6 +78,7 @@ const Store = {
         },
         {
           id: uid() + 'c', name: 'CONTOH — Citrus Segar', active: true, isContoh: true,
+          image: 'produk-citrus.jpg', badge: '',
           notes: 'Lemon, bergamot, mint. Aroma citrus yang segar dan energik.',
           sizes: {
             '20': { price: 20000, stock: 8 },
@@ -153,17 +158,41 @@ const Store = {
 
   createOrder(o) {
     // ADAPTER: ganti fungsi ini untuk Supabase (insert order + kurangi stok via RPC)
-    const p = this.getProduct(o.productId);
-    if (!p) throw new Error('Parfum tidak ditemukan');
-    const slot = p.sizes[o.size];
-    if (!slot) throw new Error('Ukuran tidak tersedia');
-    if (slot.stock < o.qty) throw new Error('Stok tidak cukup (sisa ' + slot.stock + ')');
-    slot.stock -= o.qty;
+    const order = this.createOrderMulti([{ productId: o.productId, size: o.size, qty: o.qty }], {
+      customerName: o.customerName, wa: o.wa, note: o.note || ''
+    });
+    return order;
+  },
+
+  createOrderMulti(items, customer) {
+    // Order gabungan (keranjang): items = [{productId, size, qty}]
+    if (!items || items.length === 0) throw new Error('Keranjang kosong');
+    const lines = items.map((it) => {
+      const p = this.getProduct(it.productId);
+      if (!p) throw new Error('Parfum tidak ditemukan');
+      const slot = p.sizes[it.size];
+      if (!slot) throw new Error('Ukuran tidak tersedia');
+      if (slot.stock < it.qty) throw new Error('Stok ' + p.name + ' ' + it.size + ' ml tidak cukup (sisa ' + slot.stock + ')');
+      return {
+        productId: p.id, productName: p.name, size: it.size, qty: it.qty,
+        unitPrice: slot.price, total: slot.price * it.qty,
+        points: (POINTS[it.size] || 0) * it.qty
+      };
+    });
+    lines.forEach((ln) => {
+      const p = this.getProduct(ln.productId);
+      p.sizes[ln.size].stock -= ln.qty;
+    });
+    const first = lines[0];
     const order = {
-      id: uid(), no: this.nextOrderNo(), productId: p.id, productName: p.name,
-      size: o.size, qty: o.qty, unitPrice: slot.price, total: slot.price * o.qty,
-      points: (POINTS[o.size] || 0) * o.qty,
-      customerName: o.customerName, wa: o.wa, note: o.note || '',
+      id: uid(), no: this.nextOrderNo(),
+      items: lines,
+      // Field lama dipertahankan supaya order lama tetap tampil:
+      productId: first.productId, productName: first.productName,
+      size: first.size, qty: first.qty, unitPrice: first.unitPrice,
+      total: lines.reduce((a, x) => a + x.total, 0),
+      points: lines.reduce((a, x) => a + x.points, 0),
+      customerName: customer.customerName, wa: customer.wa, note: customer.note || '',
       status: 'Baru', createdAt: new Date().toISOString()
     };
     this.db.orders.unshift(order);
@@ -178,8 +207,11 @@ const Store = {
     if (o.status === next) return o;
     if (o.status === 'Batal') throw new Error('Order yang sudah Batal tidak bisa diubah');
     if (next === 'Batal' && o.status !== 'Batal') {
-      const p = this.getProduct(o.productId);
-      if (p && p.sizes[o.size]) p.sizes[o.size].stock += o.qty; // kembalikan stok
+      const lines = o.items && o.items.length ? o.items : [o];
+      lines.forEach((ln) => {
+        const p = this.getProduct(ln.productId);
+        if (p && p.sizes[ln.size]) p.sizes[ln.size].stock += ln.qty; // kembalikan stok
+      });
     }
     o.status = next;
     this.save();
@@ -216,20 +248,87 @@ const Store = {
     const income = selesai.reduce((a, o) => a + o.total, 0);
     const perProduct = {};
     selesai.forEach((o) => {
-      perProduct[o.productName] = perProduct[o.productName] || { qty: 0, income: 0 };
-      perProduct[o.productName].qty += o.qty;
-      perProduct[o.productName].income += o.total;
+      const lines = o.items && o.items.length ? o.items : [o];
+      lines.forEach((ln) => {
+        perProduct[ln.productName] = perProduct[ln.productName] || { qty: 0, income: 0 };
+        perProduct[ln.productName].qty += ln.qty;
+        perProduct[ln.productName].income += ln.total;
+      });
     });
     const best = Object.entries(perProduct).sort((a, b) => b[1].qty - a[1].qty)[0] || null;
     return { total: list.length, selesai: selesai.length, income, best, perProduct, list };
   }
 };
 
+/* ---------------- Keranjang (lokal pengunjung, bukan data toko) ---------------- */
+const CART_KEY = 'ksep_cart_v1';
+const Cart = {
+  items: [],
+  load() {
+    try { this.items = JSON.parse(localStorage.getItem(CART_KEY) || '[]') || []; }
+    catch (e) { this.items = []; }
+    this.items = this.items.filter((it) => it && it.productId && it.size && it.qty > 0);
+    return this.items;
+  },
+  save() { localStorage.setItem(CART_KEY, JSON.stringify(this.items)); },
+  key(productId, size) { return productId + ':' + size; },
+  add(productId, size, qty) {
+    const p = Store.getProduct(productId);
+    if (!p) return { ok: false, msg: 'Parfum tidak ditemukan' };
+    const slot = p.sizes[size];
+    if (!slot || slot.stock <= 0) return { ok: false, msg: 'Ukuran ini sedang habis' };
+    const k = this.key(productId, size);
+    const ex = this.items.find((it) => it.key === k);
+    const inCart = ex ? ex.qty : 0;
+    if (inCart + qty > slot.stock) return { ok: false, msg: 'Stok tersisa ' + slot.stock + ' botol (di keranjang sudah ' + inCart + ')' };
+    if (ex) ex.qty += qty; else this.items.push({ key: k, productId, size, qty });
+    this.save();
+    return { ok: true };
+  },
+  setQty(k, qty) {
+    const it = this.items.find((x) => x.key === k);
+    if (!it) return;
+    const p = Store.getProduct(it.productId);
+    const slot = p && p.sizes[it.size];
+    const max = slot ? slot.stock : 0;
+    if (qty <= 0) { this.items = this.items.filter((x) => x.key !== k); }
+    else it.qty = Math.min(qty, Math.max(1, max));
+    this.save();
+  },
+  remove(k) { this.items = this.items.filter((x) => x.key !== k); this.save(); },
+  clear() { this.items = []; this.save(); },
+  count() { return this.items.reduce((a, it) => a + it.qty, 0); },
+  lines() {
+    return this.items.map((it) => {
+      const p = Store.getProduct(it.productId);
+      const slot = p && p.sizes[it.size];
+      return { ...it, product: p, price: slot ? slot.price : 0, total: slot ? slot.price * it.qty : 0 };
+    }).filter((ln) => ln.product);
+  },
+  total() { return this.lines().reduce((a, ln) => a + ln.total, 0); }
+};
+Cart.load();
+
+/* Promo aktif? Hanya tampil bila admin mengaktifkan + tanggal berakhir masih di depan. */
+function activePromo() {
+  const pr = Store.db.promo || {};
+  if (!pr.active || !pr.endsAt) return null;
+  const end = new Date(pr.endsAt);
+  if (isNaN(end.getTime()) || end.getTime() <= Date.now()) return null;
+  return pr;
+}
+let promoTimer = null;
+function stopPromoTimer() { if (promoTimer) { clearInterval(promoTimer); promoTimer = null; } }
+
 /* ---------------- Router ---------------- */
 function route() {
   const h = location.hash || '#/katalog';
   const parts = h.replace(/^#\//, '').split('/');
   const page = parts[0] || 'katalog';
+  const isLanding = page === 'katalog' || page === 'produk';
+  document.body.classList.toggle('landing', isLanding);
+  stopPromoTimer();
+  closeCart();
   $$('.topnav a').forEach((a) => a.classList.toggle('active', a.dataset.nav === page || (page === 'produk' && a.dataset.nav === 'katalog')));
   const view = $('#view');
   window.scrollTo(0, 0);
@@ -240,7 +339,9 @@ function route() {
 }
 window.addEventListener('hashchange', route);
 
-/* ---------------- Katalog (publik) ---------------- */
+/* ---------------- Landing (publik) — gaya RoyalScent: gelap + emas + krem ---------------- */
+let catalogQuery = '';
+
 function stockBadge(p) {
   const anyReady = SIZES.some((s) => p.sizes[s] && p.sizes[s].stock > 0);
   return anyReady
@@ -253,46 +354,362 @@ function initialOf(name) {
   return (clean.charAt(0) || 'K').toUpperCase();
 }
 
-function renderKatalog(view) {
-  const products = Store.products(true);
-  view.innerHTML = `
-    <section class="hero">
-      <img src="hero.jpg" alt="K-SEP Parfum">
-      <div class="hero-overlay">
-        <h1>K-SEP Parfum</h1>
-        <p>Parfum isi ulang premium — wangi tahan 8–12 jam, 100% original quality.</p>
-        <p class="cta-line">TEMUKAN AROMA MU, TINGGALKAN KESAN MU.</p>
+function cheapestInStock(p) {
+  let best = null;
+  SIZES.forEach((s) => {
+    const slot = p.sizes[s];
+    if (slot && slot.stock > 0 && (!best || slot.price < best.price)) {
+      best = { size: s, price: slot.price, compare: slot.compare || 0 };
+    }
+  });
+  return best;
+}
+
+function productVisual(p, i) {
+  if (p.image) return `<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy">`;
+  return `<div class="card-cover cover-${i % 3}"><span>${esc(initialOf(p.name))}</span></div>`;
+}
+
+function landingNav() {
+  return `
+  <header class="lnav">
+    <div class="wrap lnav-inner">
+      <a class="lnav-brand" href="#/katalog">
+        <img src="icon-192.png" alt="K-SEP" class="lnav-logo">
+        <span class="lnav-brand-text"><strong>K-SEP</strong><small>Premium Scent, Your Signature</small></span>
+      </a>
+      <nav class="lnav-links">
+        <button data-scroll="sec-beranda" class="active">Beranda</button>
+        <button data-scroll="sec-katalog">Katalog</button>
+        <button data-scroll="sec-tentang">Tentang Kami</button>
+        <button data-scroll="sec-testimoni">Testimoni</button>
+        <button data-scroll="sec-faq">FAQ</button>
+        <a href="#/admin" class="lnav-admin">Admin</a>
+      </nav>
+      <div class="lnav-actions">
+        <button class="lnav-icon" id="btnSearchToggle" aria-label="Cari">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+        </button>
+        <button class="lnav-icon" id="btnCartOpen" aria-label="Keranjang">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <span class="cart-count" style="display:none">0</span>
+        </button>
+        <button class="btn lx-btn-gold lnav-order" data-scroll="sec-katalog">Order Sekarang &rarr;</button>
       </div>
-    </section>
-    <div class="info-strip">
-      <div class="info-card"><h3>Poin Customer</h3><p>Ukuran 20 ml = 5 poin, 30 ml = 10 poin, 50 ml = 15 poin, 100 ml = 20 poin. Kumpulkan ${POINTS_TARGET} poin, dapat potongan ${rupiah(POINTS_REWARD)}.</p></div>
-      <div class="info-card"><h3>Open Reseller</h3><p>Join reseller K-SEP dan dapatkan harga khusus. Hubungi admin untuk info lengkap.</p></div>
     </div>
-    <h2>Katalog Parfum</h2>
-    <p class="muted">Pilih aroma favoritmu, lalu pesan langsung dari halaman ini.</p>
-    ${products.length === 0 ? '<div class="empty">Belum ada parfum aktif. Silakan cek kembali nanti.</div>' : ''}
-    <div class="grid">
-      ${products.map((p, i) => `
-        <article class="card">
-          <div class="card-cover cover-${i % 3}"><span>${esc(initialOf(p.name))}</span></div>
-          <div class="card-body">
-            <div>${stockBadge(p)} ${p.isContoh ? '<span class="badge contoh">Contoh</span>' : ''}</div>
-            <h3>${esc(p.name)}</h3>
-            <p class="card-notes">${esc(p.notes)}</p>
-            <div class="price-row">
-              ${SIZES.map((s) => {
-                const slot = p.sizes[s];
-                if (!slot) return '';
-                return slot.stock > 0
-                  ? `<span class="chip">${s} ml — ${rupiah(slot.price)}</span>`
-                  : `<span class="chip out">${s} ml — Habis</span>`;
-              }).join('')}
-            </div>
-            <p class="points">Poin: ${SIZES.map((s) => s + ' ml = ' + POINTS[s]).join(' • ')}</p>
-            <a class="btn btn-primary" href="#/produk/${p.id}">Lihat &amp; Pesan</a>
+  </header>`;
+}
+
+function scrollToId(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function updateCartBadge() {
+  const n = Cart.count();
+  $$('.cart-count').forEach((el) => {
+    el.textContent = n;
+    el.style.display = n ? '' : 'none';
+  });
+}
+
+function openVideo() {
+  const m = $('#videoModal');
+  const v = $('#videoPlayer');
+  m.classList.add('open');
+  if (v) { v.currentTime = 0; v.play().catch(() => {}); }
+}
+function closeVideo() {
+  const m = $('#videoModal');
+  const v = $('#videoPlayer');
+  if (v) v.pause();
+  m.classList.remove('open');
+}
+
+function openCart() { renderCartDrawer(); $('#cartDrawer').classList.add('open'); $('#cartOverlay').classList.add('open'); }
+function closeCart() {
+  const d = $('#cartDrawer'); if (d) d.classList.remove('open');
+  const o = $('#cartOverlay'); if (o) o.classList.remove('open');
+}
+
+function renderCartDrawer() {
+  const box = $('#cartItems');
+  const lines = Cart.lines();
+  if (lines.length === 0) {
+    box.innerHTML = '<div class="empty">Keranjang masih kosong.<br>Pilih parfum favoritmu di katalog.</div>';
+  } else {
+    box.innerHTML = lines.map((ln) => `
+      <div class="cart-item">
+        <div class="cart-item-info">
+          <strong>${esc(ln.product.name)}</strong><br>
+          <span class="muted">${esc(ln.size)} ml — ${rupiah(ln.price)} / botol</span>
+        </div>
+        <div class="cart-qty">
+          <button data-dec="${ln.key}" aria-label="Kurangi">&minus;</button>
+          <span>${ln.qty}</span>
+          <button data-inc="${ln.key}" aria-label="Tambah">+</button>
+        </div>
+        <div class="cart-item-total">${rupiah(ln.total)}</div>
+        <button class="cart-remove" data-del="${ln.key}" aria-label="Hapus">&times;</button>
+      </div>`).join('');
+  }
+  $('#cartTotal').textContent = rupiah(Cart.total());
+  $('#cartPoints').textContent = Cart.lines().reduce((a, ln) => a + (POINTS[ln.size] || 0) * ln.qty, 0) + ' poin';
+  $('#cartCheckout').style.display = lines.length ? '' : 'none';
+  $$('#cartItems [data-inc]').forEach((b) => b.addEventListener('click', () => { Cart.setQty(b.dataset.inc, (Cart.items.find((x) => x.key === b.dataset.inc) || {}).qty + 1 || 1); afterCartChange(); }));
+  $$('#cartItems [data-dec]').forEach((b) => b.addEventListener('click', () => { Cart.setQty(b.dataset.dec, (Cart.items.find((x) => x.key === b.dataset.dec) || {}).qty - 1 || 0); afterCartChange(); }));
+  $$('#cartItems [data-del]').forEach((b) => b.addEventListener('click', () => { Cart.remove(b.dataset.del); afterCartChange(); }));
+}
+function afterCartChange() { renderCartDrawer(); updateCartBadge(); }
+
+function bindCartCheckout() {
+  const form = $('#cartCheckoutForm');
+  if (!form || form.dataset.bound) return;
+  form.dataset.bound = '1';
+  form.addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    const nama = $('#cNama').value.trim();
+    const wa = $('#cWa').value.trim();
+    const note = $('#cNote').value.trim();
+    if (!nama || !wa) { toast('Isi nama dan nomor WhatsApp'); return; }
+    if (Cart.lines().length === 0) { toast('Keranjang kosong'); return; }
+    try {
+      const items = Cart.lines().map((ln) => ({ productId: ln.productId, size: ln.size, qty: ln.qty }));
+      const order = Store.createOrderMulti(items, { customerName: nama, wa, note });
+      Cart.clear();
+      updateCartBadge();
+      $('#cartItems').innerHTML = `
+        <div class="confirm">
+          <h2>Pesanan Diterima!</h2>
+          <p>Nomor order: <strong>${esc(order.no)}</strong></p>
+          <p>Total: <strong>${rupiah(order.total)}</strong> • Poin: <strong>${order.points} poin</strong></p>
+          <p class="muted">Admin K-SEP akan menghubungimu lewat WhatsApp untuk konfirmasi dan pembayaran. Terima kasih!</p>
+        </div>`;
+      $('#cartCheckout').style.display = 'none';
+      form.reset();
+    } catch (e) { toast(e.message); }
+  });
+}
+
+function startPromoCountdown(endMs) {
+  const tick = () => {
+    let diff = Math.max(0, endMs - Date.now());
+    const h = Math.floor(diff / 3600000); diff -= h * 3600000;
+    const m = Math.floor(diff / 60000); diff -= m * 60000;
+    const s = Math.floor(diff / 1000);
+    const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = String(v).padStart(2, '0'); };
+    set('cd-h', h); set('cd-m', m); set('cd-s', s);
+    if (endMs - Date.now() <= 0) { stopPromoTimer(); }
+  };
+  tick();
+  promoTimer = setInterval(tick, 1000);
+}
+
+function renderProductGrid(view) {
+  const q = catalogQuery.trim().toLowerCase();
+  const products = Store.products(true).filter((p) => !q || p.name.toLowerCase().includes(q) || (p.notes || '').toLowerCase().includes(q));
+  const grid = $('#productGrid', view);
+  const empty = $('#searchEmpty', view);
+  if (products.length === 0) {
+    grid.innerHTML = '';
+    empty.hidden = false;
+    return;
+  }
+  empty.hidden = true;
+  grid.innerHTML = products.map((p, i) => {
+    const cheap = cheapestInStock(p);
+    const anyReady = !!cheap;
+    return `
+    <article class="lx-card">
+      <a class="lx-card-img" href="#/produk/${p.id}">
+        ${productVisual(p, i)}
+        ${p.badge ? `<span class="lx-badge">${esc(p.badge)}</span>` : ''}
+        ${!anyReady ? '<span class="lx-badge lx-badge-out">Habis</span>' : ''}
+        ${p.isContoh ? '<span class="lx-badge lx-badge-contoh">Contoh</span>' : ''}
+      </a>
+      <div class="lx-card-body">
+        <h3><a href="#/produk/${p.id}">${esc(p.name)}</a></h3>
+        <p class="lx-card-notes">${esc(p.notes)}</p>
+        <p class="lx-price">${anyReady
+          ? `<strong>${rupiah(cheap.price)}</strong>${cheap.compare ? ` <s>${rupiah(cheap.compare)}</s>` : ''} <span class="lx-from">mulai ${cheap.size} ml</span>`
+          : '<strong class="lx-out">Stok habis</strong>'}</p>
+        <div class="lx-sizes">${SIZES.map((s) => {
+          const slot = p.sizes[s];
+          if (!slot) return '';
+          return slot.stock > 0
+            ? `<span class="lx-size">${s} ml</span>`
+            : `<span class="lx-size lx-size-out">${s} ml</span>`;
+        }).join('')}</div>
+        <button class="btn lx-btn-gold lx-btn-cart" data-add="${p.id}" ${anyReady ? '' : 'disabled'}>
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          Tambah ke Keranjang
+        </button>
+      </div>
+    </article>`;
+  }).join('');
+  $$('[data-add]', grid).forEach((b) => b.addEventListener('click', () => {
+    const p = Store.getProduct(b.dataset.add);
+    const cheap = p && cheapestInStock(p);
+    if (!cheap) { toast('Stok habis'); return; }
+    const r = Cart.add(p.id, cheap.size, 1);
+    if (!r.ok) { toast(r.msg); return; }
+    toast(p.name.replace(/^CONTOH\s*[—-]\s*/i, '') + ' ' + cheap.size + ' ml masuk keranjang');
+    updateCartBadge();
+  }));
+}
+
+function bindLanding(view) {
+  $$('[data-scroll]', view).forEach((b) => b.addEventListener('click', () => scrollToId(b.dataset.scroll)));
+  const searchBtn = $('#btnSearchToggle', view);
+  if (searchBtn) searchBtn.addEventListener('click', () => {
+    const bar = $('#searchBar', view);
+    bar.hidden = !bar.hidden;
+    if (!bar.hidden) $('#searchInput', view).focus();
+  });
+  const searchInput = $('#searchInput', view);
+  if (searchInput) searchInput.addEventListener('input', () => {
+    catalogQuery = searchInput.value;
+    renderProductGrid(view);
+  });
+  const cartBtn = $('#btnCartOpen', view);
+  if (cartBtn) cartBtn.addEventListener('click', openCart);
+  const vidBtn = $('#btnWatchVideo', view);
+  if (vidBtn) vidBtn.addEventListener('click', openVideo);
+  updateCartBadge();
+  const pr = activePromo();
+  if (pr) startPromoCountdown(new Date(pr.endsAt).getTime());
+}
+
+function renderKatalog(view) {
+  const pr = activePromo();
+  const testimonials = (Store.db.testimonials || []).filter((t) => t && t.name && t.text);
+  view.innerHTML = `
+  ${landingNav()}
+  <section class="lx-hero" id="sec-beranda">
+    <div class="wrap lx-hero-inner">
+      <div class="lx-hero-text">
+        <p class="lx-eyebrow">Premium Parfum</p>
+        <h1>Tampil Lebih<br><em>Percaya Diri</em><br>di Setiap <em>Momen</em></h1>
+        <p class="lx-sub">Parfum isi ulang premium &mdash; wangi tahan 8&ndash;12 jam, 100% original quality.</p>
+        <div class="lx-hero-cta">
+          <button class="btn lx-btn-gold" data-scroll="sec-katalog">Belanja Sekarang &rarr;</button>
+          <button class="btn lx-btn-outline" id="btnWatchVideo">&#9654; Lihat Video</button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="lx-trust">
+    <div class="wrap lx-trust-grid">
+      <div class="lx-trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+        <div><strong>100% Original</strong><span>Garansi Kualitas</span></div>
+      </div>
+      <div class="lx-trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg>
+        <div><strong>Tahan 8&ndash;12 Jam</strong><span>Wangi Sepanjang Hari</span></div>
+      </div>
+      <div class="lx-trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        <div><strong>Sistem Poin</strong><span>50 Poin = Potongan Rp10rb</span></div>
+      </div>
+      <div class="lx-trust-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+        <div><strong>Open Reseller</strong><span>Harga Khusus Reseller</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="lx-catalog" id="sec-katalog">
+    <div class="wrap">
+      <h2 class="lx-sec-title"><span class="lx-line"></span>Katalog Parfum<span class="lx-line"></span></h2>
+      <p class="lx-sec-sub">Temukan aroma terbaik untuk gaya hidup Anda</p>
+      <div class="lx-search" id="searchBar" hidden>
+        <input id="searchInput" type="search" placeholder="Cari parfum... (contoh: oud, melati)" value="${esc(catalogQuery)}">
+      </div>
+      <div class="lx-grid" id="productGrid"></div>
+      <div class="empty" id="searchEmpty" hidden>Tidak ada parfum yang cocok dengan pencarianmu.</div>
+    </div>
+  </section>
+  ${pr ? `
+  <section class="lx-promo">
+    <div class="wrap lx-promo-inner">
+      <div class="lx-promo-text">
+        <p class="lx-promo-eyebrow">${esc(pr.title)}</p>
+        <h2>Diskon <span>${esc(String(pr.discount))}%</span></h2>
+        <p>${esc(pr.note)}</p>
+        <button class="btn lx-btn-gold" data-scroll="sec-katalog">Belanja Sekarang &rarr;</button>
+      </div>
+      <div class="lx-countdown">
+        <p>Promo berakhir dalam:</p>
+        <div class="lx-cd-boxes">
+          <div class="lx-cd-box"><b id="cd-h">00</b><span>Jam</span></div>
+          <div class="lx-cd-box"><b id="cd-m">00</b><span>Menit</span></div>
+          <div class="lx-cd-box"><b id="cd-s">00</b><span>Detik</span></div>
+        </div>
+      </div>
+    </div>
+  </section>` : ''}
+  <section class="lx-about" id="sec-tentang">
+    <div class="wrap">
+      <h2 class="lx-sec-title"><span class="lx-line"></span>Tentang K-SEP<span class="lx-line"></span></h2>
+      <p class="lx-sec-sub">Parfum isi ulang premium, segar sepanjang hari</p>
+      <p class="lx-about-text">K-SEP Parfum adalah parfum isi ulang premium dalam ukuran 20, 30, 50, dan 100 ml. Setiap botol diisi dengan aroma pilihan yang wanginya tahan 8&ndash;12 jam. Belanja di sini juga mengumpulkan poin: setiap botol memberi 5&ndash;20 poin, dan 50 poin bisa ditukar potongan Rp10.000. Mau jualan juga? Kami open reseller &mdash; hubungi admin untuk harga khusus.</p>
+      <div class="lx-about-cards">
+        <div class="lx-about-card"><strong>4 Ukuran</strong><span>20 / 30 / 50 / 100 ml</span></div>
+        <div class="lx-about-card"><strong>Sistem Poin</strong><span>50 poin = Rp10rb off</span></div>
+        <div class="lx-about-card"><strong>Open Reseller</strong><span>Harga khusus reseller</span></div>
+      </div>
+    </div>
+  </section>
+  ${testimonials.length ? `
+  <section class="lx-testi" id="sec-testimoni">
+    <div class="wrap">
+      <h2 class="lx-sec-title"><span class="lx-line"></span>Apa Kata Pelanggan?<span class="lx-line"></span></h2>
+      <p class="lx-sec-sub">Kepuasan Anda adalah prioritas kami</p>
+      <div class="lx-testi-row">
+        ${testimonials.map((t) => `
+        <div class="lx-testi-card">
+          <div class="lx-testi-head">
+            <span class="lx-avatar">${esc((t.name || '?').trim().charAt(0).toUpperCase())}</span>
+            <div><strong>${esc(t.name)}</strong><br><span class="lx-stars">${'★'.repeat(Math.max(1, Math.min(5, t.rating || 5)))}${'☆'.repeat(5 - Math.max(1, Math.min(5, t.rating || 5)))}</span></div>
           </div>
-        </article>`).join('')}
-    </div>`;
+          <p>&ldquo;${esc(t.text)}&rdquo;</p>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>` : ''}
+  <section class="lx-faq" id="sec-faq">
+    <div class="wrap">
+      <h2 class="lx-sec-title"><span class="lx-line"></span>Pertanyaan Umum<span class="lx-line"></span></h2>
+      <p class="lx-sec-sub">Yang sering ditanyakan tentang K-SEP Parfum</p>
+      <div class="lx-faq-list">
+        <details><summary>Apakah parfumnya original?</summary><p>Ya. K-SEP memakai bibit parfum kualitas premium 100% original quality &mdash; bukan campuran asal. Wanginya tahan 8&ndash;12 jam.</p></details>
+        <details><summary>Bagaimana cara memesan?</summary><p>Pilih parfum di katalog, klik &ldquo;Tambah ke Keranjang&rdquo;, lalu buka keranjang dan isi nama + nomor WhatsApp. Admin akan menghubungimu untuk konfirmasi dan pembayaran.</p></details>
+        <details><summary>Bagaimana sistem poin bekerja?</summary><p>Setiap botol memberi poin: 20 ml = 5 poin, 30 ml = 10 poin, 50 ml = 15 poin, 100 ml = 20 poin. Kumpulkan 50 poin untuk potongan Rp10.000.</p></details>
+        <details><summary>Apakah bisa jadi reseller?</summary><p>Bisa. K-SEP open reseller dengan harga khusus. Hubungi admin lewat WhatsApp untuk info lengkap.</p></details>
+        <details><summary>Ukuran apa saja yang tersedia?</summary><p>Tersedia 20, 30, 50, dan 100 ml. Stok tiap ukuran tampil di halaman produk &mdash; kalau habis, tombolnya tidak bisa diklik.</p></details>
+      </div>
+    </div>
+  </section>
+  <section class="lx-cta">
+    <div class="wrap lx-cta-inner">
+      <div>
+        <h2>Jangan Tunggu Lagi!</h2>
+        <p>Dapatkan parfum favorit Anda sekarang juga!</p>
+      </div>
+      <button class="btn lx-btn-gold lx-btn-big" data-scroll="sec-katalog">Belanja Sekarang &rarr;</button>
+    </div>
+  </section>
+  <footer class="lx-footer">
+    <div class="wrap lx-footer-inner">
+      <div>
+        <strong>K-SEP Parfum</strong><br>
+        <span class="muted">Premium Scent, Your Signature &mdash; TEMUKAN AROMA MU, TINGGALKAN KESAN MU.</span>
+      </div>
+      <a href="#/admin">Admin</a>
+    </div>
+  </footer>`;
+  renderProductGrid(view);
+  bindLanding(view);
 }
 
 /* ---------------- Detail + Form Order ---------------- */
@@ -304,9 +721,12 @@ function renderDetail(view, productId) {
   }
   const available = SIZES.filter((s) => p.sizes[s] && p.sizes[s].stock > 0);
   view.innerHTML = `
+  ${landingNav()}
+  <div class="wrap lx-detail">
     <p><a href="#/katalog">&larr; Kembali ke Katalog</a></p>
+    <div class="lx-detail-img">${productVisual(p, 0)}</div>
     <div class="panel">
-      <div>${stockBadge(p)} ${p.isContoh ? '<span class="badge contoh">Contoh</span>' : ''}</div>
+      <div>${stockBadge(p)} ${p.isContoh ? '<span class="badge contoh">Contoh</span>' : ''} ${p.badge ? '<span class="badge contoh">' + esc(p.badge) + '</span>' : ''}</div>
       <h1>${esc(p.name)}</h1>
       <p class="muted">${esc(p.notes)}</p>
       <h3>Pilih Ukuran</h3>
@@ -344,9 +764,11 @@ function renderDetail(view, productId) {
       <textarea id="fNote" maxlength="300" placeholder="Contoh: tolong dibungkus hadiah, antar jam 5 sore, dll."></textarea>
       <p class="hint">Catatan ini akan diteruskan ke admin dan tampil di daftar orderan.</p>
       <p><button class="btn btn-primary btn-block" type="submit" ${available.length === 0 ? 'disabled' : ''}>Pesan Sekarang</button></p>
+      <p><button class="btn btn-ghost btn-block" type="button" id="btnAddCartDetail" ${available.length === 0 ? 'disabled' : ''}>+ Tambah ke Keranjang</button></p>
       ${available.length === 0 ? '<p class="muted">Semua ukuran sedang habis. Silakan cek parfum lain.</p>' : ''}
     </form>
-    <div id="orderResult"></div>`;
+    <div id="orderResult"></div>
+  </div>`;
 
   const form = $('#orderForm');
   const updateTotal = () => {
@@ -368,6 +790,16 @@ function renderDetail(view, productId) {
   });
   $('#fQty').addEventListener('input', updateTotal);
   updateTotal();
+
+  $('#btnAddCartDetail').addEventListener('click', () => {
+    const size = (document.querySelector('input[name="size"]:checked') || {}).value;
+    const qty = Math.max(1, parseInt($('#fQty').value, 10) || 1);
+    if (!size) { toast('Pilih ukuran dulu'); return; }
+    const r = Cart.add(p.id, size, qty);
+    if (!r.ok) { toast(r.msg); return; }
+    toast(p.name.replace(/^CONTOH\s*[—-]\s*/i, '') + ' ' + size + ' ml masuk keranjang');
+    updateCartBadge();
+  });
 
   form.addEventListener('submit', (ev) => {
     ev.preventDefault();
@@ -396,6 +828,8 @@ function renderDetail(view, productId) {
       toast(e.message);
     }
   });
+
+  bindLanding(view);
 }
 
 /* ---------------- Admin ---------------- */
@@ -482,16 +916,18 @@ function adminDashboard() {
 
 function orderCard(o, showActions) {
   const waNum = o.wa.replace(/[^0-9]/g, '').replace(/^0/, '62');
+  const lines = o.items && o.items.length ? o.items : [o];
+  const linesHtml = lines.map((ln) => esc(ln.productName) + ' — ' + esc(ln.size) + ' ml × ' + ln.qty + ' = ' + rupiah(ln.total) + ' • ' + ln.points + ' poin').join('<br>');
   return `<div class="item" data-order="${o.id}">
     <div class="item-head">
-      <div><strong>${esc(o.no)}</strong> — ${esc(o.productName)}<br>
-      <span class="muted">${esc(o.size)} ml × ${o.qty} = ${rupiah(o.total)} • ${o.points} poin</span></div>
+      <div><strong>${esc(o.no)}</strong>${lines.length > 1 ? ' <span class="muted">(' + lines.length + ' item)</span>' : ''}<br>
+      <span class="muted">${linesHtml}</span></div>
       <span class="status ${o.status}">${o.status}</span>
     </div>
-    <div class="item-meta">Customer: ${esc(o.customerName)} (${esc(o.wa)})
+    <div class="item-meta">Total: <strong>${rupiah(o.total)}</strong> • Poin: ${o.points}<br>Customer: ${esc(o.customerName)} (${esc(o.wa)})
 Tanggal: ${fmtDate(o.createdAt)}${o.note ? '\nCatatan: ' + esc(o.note) : ''}</div>
     <div class="btn-row" style="margin-top:.6rem">
-      <a class="btn btn-ghost btn-sm" target="_blank" rel="noopener" href="https://wa.me/${waNum}?text=${encodeURIComponent('Halo ' + o.customerName + ', order K-SEP ' + o.no + ' (' + o.productName + ' ' + o.size + ' ml x' + o.qty + ') sudah kami terima. Total ' + rupiah(o.total) + '. Terima kasih!')}">Chat WA</a>
+      <a class="btn btn-ghost btn-sm" target="_blank" rel="noopener" href="https://wa.me/${waNum}?text=${encodeURIComponent('Halo ' + o.customerName + ', order K-SEP ' + o.no + ' total ' + rupiah(o.total) + ' sudah kami terima. Terima kasih!')}">Chat WA</a>
       ${showActions ? orderActions(o) : ''}
     </div>
   </div>`;
@@ -551,6 +987,10 @@ function productForm(p) {
       <input id="pfName" required maxlength="80" value="${esc(p.name)}" placeholder="Contoh: Melati Pagi">
       <label for="pfNotes">Deskripsi / notes aroma</label>
       <textarea id="pfNotes" maxlength="300" placeholder="Contoh: Melati, jeruk, musk lembut.">${esc(p.notes)}</textarea>
+      <label for="pfImage">Foto produk (URL gambar, opsional)</label>
+      <input id="pfImage" maxlength="300" value="${esc(p.image || '')}" placeholder="Contoh: produk-melati.jpg atau https://...">
+      <label for="pfBadge">Label / badge (opsional)</label>
+      <input id="pfBadge" maxlength="30" value="${esc(p.badge || '')}" placeholder="Contoh: Best Seller">
       <label><input type="checkbox" id="pfActive" style="width:auto" ${p.active ? 'checked' : ''}> Tampilkan di katalog (aktif)</label>
       ${SIZES.map((s) => `
         <fieldset><legend>${s} ml</legend>
@@ -558,6 +998,8 @@ function productForm(p) {
             <div><label>Harga (Rp)</label><input type="number" min="0" step="500" data-price="${s}" value="${p.sizes[s].price}"></div>
             <div><label>Stok (botol)</label><input type="number" min="0" step="1" data-stock="${s}" value="${p.sizes[s].stock}"></div>
           </div>
+          <label>Harga coret / sebelum diskon (Rp, opsional)</label>
+          <input type="number" min="0" step="500" data-compare="${s}" value="${p.sizes[s].compare || ''}" placeholder="Kosongkan bila tidak ada diskon">
         </fieldset>`).join('')}
       <div class="btn-row">
         <button class="btn btn-primary" type="submit">Simpan</button>
@@ -723,6 +1165,42 @@ function adminPengaturan() {
       </form>
     </div>
     <div class="panel">
+      <h3>Promo Banner (Landing Page)</h3>
+      <p class="muted">Banner diskon + hitung mundur hanya tampil di katalog bila diaktifkan dan tanggal berakhirnya masih di depan. Isi hanya promo yang benar-benar berlaku.</p>
+      <form id="promoForm">
+        <label><input type="checkbox" id="prActive" style="width:auto" ${(Store.db.promo || {}).active ? 'checked' : ''}> Tampilkan banner promo</label>
+        <label for="prTitle">Judul promo</label>
+        <input id="prTitle" maxlength="60" value="${esc((Store.db.promo || {}).title || 'Promo Spesial Hari Ini!')}">
+        <div class="field-row">
+          <div><label for="prDiscount">Diskon (%)</label><input id="prDiscount" type="number" min="1" max="90" value="${(Store.db.promo || {}).discount || 30}"></div>
+          <div><label for="prEnds">Berakhir pada</label><input id="prEnds" type="datetime-local" value="${esc(((Store.db.promo || {}).endsAt || '').slice(0, 16))}"></div>
+        </div>
+        <label for="prNote">Catatan promo</label>
+        <input id="prNote" maxlength="100" value="${esc((Store.db.promo || {}).note || 'Untuk semua varian parfum premium')}">
+        <p><button class="btn btn-navy" type="submit">Simpan Promo</button></p>
+      </form>
+    </div>
+    <div class="panel">
+      <h3>Testimoni Pelanggan</h3>
+      <p class="muted">Bagian testimoni di landing page hanya muncul bila ada testimoni di sini. Tambahkan hanya testimoni asli dari pelanggan.</p>
+      <div class="list" style="margin-bottom:.8rem">
+        ${(Store.db.testimonials || []).map((t, i) => `
+          <div class="item"><div class="item-head"><div><strong>${esc(t.name)}</strong> — ${'★'.repeat(t.rating || 5)}<br><span class="muted">${esc(t.text)}</span></div>
+          <button class="btn btn-danger btn-sm" data-deltesti="${i}">Hapus</button></div></div>`).join('') || '<div class="empty">Belum ada testimoni.</div>'}
+      </div>
+      <form id="testiForm">
+        <label for="tsName">Nama pelanggan</label>
+        <input id="tsName" required maxlength="60" placeholder="Contoh: Andi Pratama">
+        <div class="field-row">
+          <div><label for="tsRating">Bintang</label>
+            <select id="tsRating"><option value="5">5 — Sangat puas</option><option value="4">4 — Puas</option><option value="3">3 — Cukup</option></select>
+          </div>
+          <div><label for="tsText">Testimoni</label><input id="tsText" required maxlength="200" placeholder="Kata-kata pelanggan"></div>
+        </div>
+        <p><button class="btn btn-navy" type="submit">Tambah Testimoni</button></p>
+      </form>
+    </div>
+    <div class="panel">
       <h3>Backup &amp; Pulihkan Data</h3>
       <p class="muted">Data tersimpan lokal di perangkat ini. Backup berkala supaya tidak hilang.</p>
       <div class="btn-row">
@@ -822,6 +1300,38 @@ function bindAdmin(view, tab) {
     $('#rcPeriod', view).addEventListener('change', () => renderRekapan(view));
   }
   if (tab === 'pengaturan') {
+    $('#promoForm', view).addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      const endsAt = $('#prEnds', view).value;
+      const discount = Math.max(1, Math.min(90, parseInt($('#prDiscount', view).value, 10) || 0));
+      Store.db.promo = {
+        active: $('#prActive', view).checked,
+        title: $('#prTitle', view).value.trim() || 'Promo Spesial Hari Ini!',
+        discount,
+        note: $('#prNote', view).value.trim(),
+        endsAt: endsAt ? new Date(endsAt).toISOString() : ''
+      };
+      Store.save();
+      toast('Promo disimpan');
+      route();
+    });
+    $('#testiForm', view).addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      const name = $('#tsName', view).value.trim();
+      const text = $('#tsText', view).value.trim();
+      if (!name || !text) { toast('Isi nama dan testimoni'); return; }
+      Store.db.testimonials = Store.db.testimonials || [];
+      Store.db.testimonials.push({ name, text, rating: parseInt($('#tsRating', view).value, 10) || 5 });
+      Store.save();
+      toast('Testimoni ditambahkan');
+      route();
+    });
+    $$('[data-deltesti]', view).forEach((b) => b.addEventListener('click', () => {
+      Store.db.testimonials.splice(parseInt(b.dataset.deltesti, 10), 1);
+      Store.save();
+      toast('Testimoni dihapus');
+      route();
+    }));
     $('#pinChangeForm', view).addEventListener('submit', (ev) => {
       ev.preventDefault();
       const oldPin = $('#pinOld', view).value;
@@ -868,12 +1378,16 @@ function bindProductForm(view, existing) {
     const p = existing || { id: uid(), isContoh: false };
     p.name = $('#pfName', view).value.trim();
     p.notes = $('#pfNotes', view).value.trim();
+    p.image = $('#pfImage', view).value.trim();
+    p.badge = $('#pfBadge', view).value.trim();
     p.active = $('#pfActive', view).checked;
     p.sizes = {};
     SIZES.forEach((s) => {
+      const cmp = parseInt($(`[data-compare="${s}"]`, view).value, 10) || 0;
       p.sizes[s] = {
         price: Math.max(0, parseInt($(`[data-price="${s}"]`, view).value, 10) || 0),
-        stock: Math.max(0, parseInt($(`[data-stock="${s}"]`, view).value, 10) || 0)
+        stock: Math.max(0, parseInt($(`[data-stock="${s}"]`, view).value, 10) || 0),
+        compare: cmp > 0 ? cmp : 0
       };
     });
     if (!p.name) { toast('Nama parfum wajib diisi'); return; }
@@ -886,6 +1400,15 @@ function bindProductForm(view, existing) {
 /* ---------------- Init ---------------- */
 Store.load();
 route();
+const _btnCartClose = $('#btnCartClose');
+if (_btnCartClose) _btnCartClose.addEventListener('click', closeCart);
+const _cartOverlay = $('#cartOverlay');
+if (_cartOverlay) _cartOverlay.addEventListener('click', closeCart);
+const _btnVideoClose = $('#btnVideoClose');
+if (_btnVideoClose) _btnVideoClose.addEventListener('click', closeVideo);
+const _videoModal = $('#videoModal');
+if (_videoModal) _videoModal.addEventListener('click', (e) => { if (e.target === _videoModal) closeVideo(); });
+bindCartCheckout();
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js').catch(() => {});

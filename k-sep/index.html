@@ -33,6 +33,38 @@
 
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
+<div id="cartOverlay" class="cart-overlay"></div>
+<aside id="cartDrawer" class="cart-drawer" aria-label="Keranjang belanja">
+  <div class="cart-head">
+    <h2>Keranjang</h2>
+    <button class="cart-close" id="btnCartClose" aria-label="Tutup">&times;</button>
+  </div>
+  <div id="cartItems" class="cart-items"></div>
+  <div class="cart-summary">
+    <div class="cart-row"><span>Total</span><strong id="cartTotal">Rp 0</strong></div>
+    <div class="cart-row muted"><span>Poin didapat</span><span id="cartPoints">0 poin</span></div>
+  </div>
+  <div id="cartCheckout">
+    <form id="cartCheckoutForm">
+      <label for="cNama">Nama</label>
+      <input id="cNama" required maxlength="80" placeholder="Nama kamu" autocomplete="name">
+      <label for="cWa">Nomor WhatsApp</label>
+      <input id="cWa" required inputmode="tel" maxlength="20" placeholder="Contoh: 081234567890" autocomplete="tel">
+      <label for="cNote">Catatan Pesanan</label>
+      <textarea id="cNote" maxlength="300" placeholder="Contoh: tolong dibungkus hadiah, antar jam 5 sore"></textarea>
+      <p><button class="btn btn-primary btn-block" type="submit">Buat Pesanan &rarr;</button></p>
+      <p class="hint">Admin K-SEP akan menghubungimu lewat WhatsApp untuk konfirmasi dan pembayaran.</p>
+    </form>
+  </div>
+</aside>
+
+<div id="videoModal" class="video-modal">
+  <div class="video-box">
+    <button class="video-close" id="btnVideoClose" aria-label="Tutup">&times;</button>
+    <video id="videoPlayer" src="video.mp4" controls playsinline preload="none"></video>
+  </div>
+</div>
+
 <script src="app.js"></script>
 </body>
 </html>
