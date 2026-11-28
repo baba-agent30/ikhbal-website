@@ -1,5 +1,5 @@
 /* K-SEP Parfum — Service Worker (app shell, cache-first) */
-const CACHE = 'ksep-v1';
+const CACHE = 'ksep-v2'; // naikkan tiap deploy supaya HP yang sudah install ambil file baru
 const ASSETS = [
   './',
   './index.html',
