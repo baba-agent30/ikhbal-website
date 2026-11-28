@@ -50,13 +50,14 @@ const Store = {
     return {
       version: 1,
       pin: '1234',
+      waAdmin: '',
       orderSeq: 0,
       testimonials: [],
       promo: { active: false, title: 'Promo Spesial Hari Ini!', discount: 30, note: 'Untuk semua varian parfum premium', endsAt: '' },
       products: [
         {
           id: uid() + 'a', name: 'CONTOH — Melati Pagi', active: true, isContoh: true,
-          image: 'produk-botol.jpg', badge: '',
+          image: 'produk-botol.jpg', badge: '', tag: 'Segar & Feminin',
           notes: 'Melati, jeruk, musk lembut. Aroma segar dan feminin, cocok dipakai siang hari.',
           sizes: {
             '20': { price: 25000, stock: 5 },
@@ -67,7 +68,7 @@ const Store = {
         },
         {
           id: uid() + 'b', name: 'CONTOH — Oud Malam', active: true, isContoh: true,
-          image: 'produk-botol.jpg', badge: '',
+          image: 'produk-botol.jpg', badge: '', tag: 'Berat & Mewah',
           notes: 'Oud, amber, vanila. Aroma berat dan mewah, tahan lama untuk acara malam.',
           sizes: {
             '20': { price: 35000, stock: 3 },
@@ -78,7 +79,7 @@ const Store = {
         },
         {
           id: uid() + 'c', name: 'CONTOH — Citrus Segar', active: true, isContoh: true,
-          image: 'produk-botol.jpg', badge: '',
+          image: 'produk-botol.jpg', badge: '', tag: 'Segar & Energik',
           notes: 'Lemon, bergamot, mint. Aroma citrus yang segar dan energik.',
           sizes: {
             '20': { price: 20000, stock: 8 },
@@ -159,7 +160,7 @@ const Store = {
   createOrder(o) {
     // ADAPTER: ganti fungsi ini untuk Supabase (insert order + kurangi stok via RPC)
     const order = this.createOrderMulti([{ productId: o.productId, size: o.size, qty: o.qty }], {
-      customerName: o.customerName, wa: o.wa, note: o.note || ''
+      customerName: o.customerName, wa: o.wa, note: o.note || '', address: o.address || ''
     });
     return order;
   },
@@ -192,7 +193,7 @@ const Store = {
       size: first.size, qty: first.qty, unitPrice: first.unitPrice,
       total: lines.reduce((a, x) => a + x.total, 0),
       points: lines.reduce((a, x) => a + x.points, 0),
-      customerName: customer.customerName, wa: customer.wa, note: customer.note || '',
+      customerName: customer.customerName, wa: customer.wa, note: customer.note || '', address: customer.address || '',
       status: 'Baru', createdAt: new Date().toISOString()
     };
     this.db.orders.unshift(order);
@@ -462,6 +463,25 @@ function renderCartDrawer() {
 }
 function afterCartChange() { renderCartDrawer(); updateCartBadge(); }
 
+/* Link konfirmasi WA ala versi zip: order tersimpan di admin + customer bisa
+   langsung chat WA admin. Nomor admin diisi di Pengaturan (kosong = tombol sembunyi). */
+function waAdminNum() {
+  return (Store.db.waAdmin || '').replace(/[^0-9]/g, '').replace(/^0/, '62');
+}
+function waOrderText(order) {
+  const lines = (order.items && order.items.length ? order.items : [order])
+    .map((ln) => '- ' + ln.productName + ' ' + ln.size + ' ml x' + ln.qty + ' = ' + rupiah(ln.total));
+  return 'Halo K-SEP Parfum, saya mau pesan (' + order.no + '):\n' + lines.join('\n') +
+    '\nTotal: ' + rupiah(order.total) + '\nNama: ' + order.customerName +
+    (order.address ? '\nAlamat: ' + order.address : '') +
+    (order.note ? '\nCatatan: ' + order.note : '');
+}
+function waCheckoutBtn(order) {
+  const n = waAdminNum();
+  if (!n) return '<p class="muted">Nomor WhatsApp admin belum diisi (Pengaturan) — admin akan menghubungimu.</p>';
+  return '<p><a class="btn btn-wa btn-block" target="_blank" rel="noopener" href="https://wa.me/' + n + '?text=' + encodeURIComponent(waOrderText(order)) + '">Konfirmasi via WhatsApp</a></p>';
+}
+
 function bindCartCheckout() {
   const form = $('#cartCheckoutForm');
   if (!form || form.dataset.bound) return;
@@ -471,11 +491,12 @@ function bindCartCheckout() {
     const nama = $('#cNama').value.trim();
     const wa = $('#cWa').value.trim();
     const note = $('#cNote').value.trim();
+    const address = $('#cAlamat').value.trim();
     if (!nama || !wa) { toast('Isi nama dan nomor WhatsApp'); return; }
     if (Cart.lines().length === 0) { toast('Keranjang kosong'); return; }
     try {
       const items = Cart.lines().map((ln) => ({ productId: ln.productId, size: ln.size, qty: ln.qty }));
-      const order = Store.createOrderMulti(items, { customerName: nama, wa, note });
+      const order = Store.createOrderMulti(items, { customerName: nama, wa, note, address });
       Cart.clear();
       updateCartBadge();
       $('#cartItems').innerHTML = `
@@ -484,6 +505,7 @@ function bindCartCheckout() {
           <p>Nomor order: <strong>${esc(order.no)}</strong></p>
           <p>Total: <strong>${rupiah(order.total)}</strong> • Poin: <strong>${order.points} poin</strong></p>
           <p class="muted">Admin K-SEP akan menghubungimu lewat WhatsApp untuk konfirmasi dan pembayaran. Terima kasih!</p>
+          ${waCheckoutBtn(order)}
         </div>`;
       $('#cartCheckout').style.display = 'none';
       form.reset();
@@ -529,6 +551,7 @@ function renderProductGrid(view) {
       </a>
       <div class="lx-card-body">
         <h3><a href="#/produk/${p.id}">${esc(p.name)}</a></h3>
+        ${p.tag ? `<p class="lx-card-tag">${esc(p.tag)}</p>` : ''}
         <p class="lx-card-notes">${esc(p.notes)}</p>
         <p class="lx-price">${anyReady
           ? `<strong>${rupiah(cheap.price)}</strong>${cheap.compare ? ` <s>${rupiah(cheap.compare)}</s>` : ''} <span class="lx-from">mulai ${cheap.size} ml</span>`
@@ -752,6 +775,8 @@ function renderDetail(view, productId) {
       </div>
       <label for="fNote">Catatan Pesanan</label>
       <textarea id="fNote" maxlength="300" placeholder="Contoh: tolong dibungkus hadiah, antar jam 5 sore, dll."></textarea>
+      <label for="fAlamat">Alamat (opsional)</label>
+      <textarea id="fAlamat" maxlength="300" rows="2" placeholder="Contoh: Jl. Melati No. 12, Tambun Selatan"></textarea>
       <p class="hint">Catatan ini akan diteruskan ke admin dan tampil di daftar orderan.</p>
       <p><button class="btn btn-primary btn-block" type="submit" ${available.length === 0 ? 'disabled' : ''}>Pesan Sekarang</button></p>
       <p><button class="btn btn-ghost btn-block" type="button" id="btnAddCartDetail" ${available.length === 0 ? 'disabled' : ''}>+ Tambah ke Keranjang</button></p>
@@ -798,10 +823,11 @@ function renderDetail(view, productId) {
     const nama = $('#fNama').value.trim();
     const wa = $('#fWa').value.trim();
     const note = $('#fNote').value.trim();
+    const address = $('#fAlamat').value.trim();
     if (!size) { toast('Pilih ukuran dulu'); return; }
     if (!nama || !wa) { toast('Isi nama dan nomor WhatsApp'); return; }
     try {
-      const order = Store.createOrder({ productId: p.id, size, qty, customerName: nama, wa, note });
+      const order = Store.createOrder({ productId: p.id, size, qty, customerName: nama, wa, note, address });
       $('#orderResult').innerHTML = `
         <div class="confirm">
           <h2>Pesanan Diterima!</h2>
@@ -809,6 +835,7 @@ function renderDetail(view, productId) {
           <p>${esc(order.productName)} — ${esc(order.size)} ml × ${order.qty} = <strong>${rupiah(order.total)}</strong></p>
           <p>Poin yang kamu dapat: <strong>${order.points} poin</strong>. Kumpulkan ${POINTS_TARGET} poin untuk potongan ${rupiah(POINTS_REWARD)}.</p>
           <p class="muted">Admin K-SEP akan menghubungimu lewat WhatsApp untuk konfirmasi dan pembayaran. Terima kasih!</p>
+          ${waCheckoutBtn(order)}
           <p><a class="btn btn-navy btn-block" href="#/katalog">Kembali ke Katalog</a></p>
         </div>`;
       form.reset();
@@ -915,7 +942,7 @@ function orderCard(o, showActions) {
       <span class="status ${o.status}">${o.status}</span>
     </div>
     <div class="item-meta">Total: <strong>${rupiah(o.total)}</strong> • Poin: ${o.points}<br>Customer: ${esc(o.customerName)} (${esc(o.wa)})
-Tanggal: ${fmtDate(o.createdAt)}${o.note ? '\nCatatan: ' + esc(o.note) : ''}</div>
+Tanggal: ${fmtDate(o.createdAt)}${o.address ? '<br>Alamat: ' + esc(o.address) : ''}${o.note ? '\nCatatan: ' + esc(o.note) : ''}</div>
     <div class="btn-row" style="margin-top:.6rem">
       <a class="btn btn-ghost btn-sm" target="_blank" rel="noopener" href="https://wa.me/${waNum}?text=${encodeURIComponent('Halo ' + o.customerName + ', order K-SEP ' + o.no + ' total ' + rupiah(o.total) + ' sudah kami terima. Terima kasih!')}">Chat WA</a>
       ${showActions ? orderActions(o) : ''}
@@ -975,6 +1002,8 @@ function productForm(p) {
       <h3>${isNew ? 'Tambah Parfum Baru' : 'Edit Parfum'}</h3>
       <label for="pfName">Nama parfum</label>
       <input id="pfName" required maxlength="80" value="${esc(p.name)}" placeholder="Contoh: Melati Pagi">
+      <label for="pfTag">Tagline singkat (opsional, tampil di kartu)</label>
+      <input id="pfTag" maxlength="40" value="${esc(p.tag || '')}" placeholder="Contoh: Segar & Feminin">
       <label for="pfNotes">Deskripsi / notes aroma</label>
       <textarea id="pfNotes" maxlength="300" placeholder="Contoh: Melati, jeruk, musk lembut.">${esc(p.notes)}</textarea>
       <label for="pfImage">Foto produk (URL gambar, opsional)</label>
@@ -1152,6 +1181,15 @@ function adminPengaturan() {
         <label for="pinNew">PIN baru (4–12 digit)</label>
         <input id="pinNew" type="password" inputmode="numeric" maxlength="12" required>
         <p><button class="btn btn-navy" type="submit">Simpan PIN Baru</button></p>
+      </form>
+    </div>
+    <div class="panel">
+      <h3>Nomor WhatsApp Admin</h3>
+      <p class="muted">Dipakai tombol "Konfirmasi via WhatsApp" setelah customer checkout. Isi nomor Ade (contoh: 081234567890). Kosong = tombol tidak tampil.</p>
+      <form id="waAdminForm">
+        <label for="waAdminInput">Nomor WhatsApp admin</label>
+        <input id="waAdminInput" inputmode="tel" maxlength="20" value="${esc(Store.db.waAdmin || '')}" placeholder="Contoh: 081234567890">
+        <p><button class="btn btn-navy" type="submit">Simpan Nomor WA</button></p>
       </form>
     </div>
     <div class="panel">
@@ -1333,6 +1371,12 @@ function bindAdmin(view, tab) {
       toast('PIN berhasil diubah');
       ev.target.reset();
     });
+    $('#waAdminForm', view).addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      Store.db.waAdmin = $('#waAdminInput', view).value.trim();
+      Store.save();
+      toast('Nomor WhatsApp admin disimpan');
+    });
     $('#btnExport', view).addEventListener('click', () => {
       download('ksep-backup-' + todayStr() + '.json', Store.exportJSON(), 'application/json');
       toast('Backup JSON diunduh');
@@ -1367,6 +1411,7 @@ function bindProductForm(view, existing) {
     ev.preventDefault();
     const p = existing || { id: uid(), isContoh: false };
     p.name = $('#pfName', view).value.trim();
+    p.tag = $('#pfTag', view).value.trim();
     p.notes = $('#pfNotes', view).value.trim();
     p.image = $('#pfImage', view).value.trim();
     p.badge = $('#pfBadge', view).value.trim();
