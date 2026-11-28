@@ -56,7 +56,7 @@ const Store = {
       products: [
         {
           id: uid() + 'a', name: 'CONTOH — Melati Pagi', active: true, isContoh: true,
-          image: 'produk-melati.jpg', badge: '',
+          image: 'produk-botol.jpg', badge: '',
           notes: 'Melati, jeruk, musk lembut. Aroma segar dan feminin, cocok dipakai siang hari.',
           sizes: {
             '20': { price: 25000, stock: 5 },
@@ -67,7 +67,7 @@ const Store = {
         },
         {
           id: uid() + 'b', name: 'CONTOH — Oud Malam', active: true, isContoh: true,
-          image: 'produk-oud.jpg', badge: '',
+          image: 'produk-botol.jpg', badge: '',
           notes: 'Oud, amber, vanila. Aroma berat dan mewah, tahan lama untuk acara malam.',
           sizes: {
             '20': { price: 35000, stock: 3 },
@@ -78,7 +78,7 @@ const Store = {
         },
         {
           id: uid() + 'c', name: 'CONTOH — Citrus Segar', active: true, isContoh: true,
-          image: 'produk-citrus.jpg', badge: '',
+          image: 'produk-botol.jpg', badge: '',
           notes: 'Lemon, bergamot, mint. Aroma citrus yang segar dan energik.',
           sizes: {
             '20': { price: 20000, stock: 8 },
@@ -547,15 +547,7 @@ function renderProductGrid(view) {
       </div>
     </article>`;
   }).join('');
-  $$('[data-add]', grid).forEach((b) => b.addEventListener('click', () => {
-    const p = Store.getProduct(b.dataset.add);
-    const cheap = p && cheapestInStock(p);
-    if (!cheap) { toast('Stok habis'); return; }
-    const r = Cart.add(p.id, cheap.size, 1);
-    if (!r.ok) { toast(r.msg); return; }
-    toast(p.name.replace(/^CONTOH\s*[—-]\s*/i, '') + ' ' + cheap.size + ' ml masuk keranjang');
-    updateCartBadge();
-  }));
+  /* Tombol [data-add] TIDAK di-bind di sini — ditangani delegasi klik di Init (tetap jalan walau grid di-render ulang habis cari). */
 }
 
 function bindLanding(view) {
@@ -571,8 +563,6 @@ function bindLanding(view) {
     catalogQuery = searchInput.value;
     renderProductGrid(view);
   });
-  const cartBtn = $('#btnCartOpen', view);
-  if (cartBtn) cartBtn.addEventListener('click', openCart);
   const vidBtn = $('#btnWatchVideo', view);
   if (vidBtn) vidBtn.addEventListener('click', openVideo);
   updateCartBadge();
@@ -1404,6 +1394,27 @@ const _btnCartClose = $('#btnCartClose');
 if (_btnCartClose) _btnCartClose.addEventListener('click', closeCart);
 const _cartOverlay = $('#cartOverlay');
 if (_cartOverlay) _cartOverlay.addEventListener('click', closeCart);
+
+/* Tambah ukuran termurah yang masih ready ke keranjang. */
+function addCheapestToCart(productId) {
+  const p = Store.getProduct(productId);
+  const cheap = p && cheapestInStock(p);
+  if (!cheap) { toast('Stok habis'); return; }
+  const r = Cart.add(p.id, cheap.size, 1);
+  if (!r.ok) { toast(r.msg); return; }
+  toast(p.name.replace(/^CONTOH\s*[—-]\s*/i, '') + ' ' + cheap.size + ' ml masuk keranjang');
+  updateCartBadge();
+}
+
+/* Delegasi klik keranjang di document — nempel permanen, tidak hilang saat katalog
+   di-render ulang (habis cari / pindah halaman). Ini perbaikan bug "tekan keranjang
+   tidak bisa": binding langsung di tiap render bisa lepas, delegasi tidak. */
+document.addEventListener('click', (ev) => {
+  const t = ev.target && ev.target.closest ? ev.target.closest('#btnCartOpen, [data-add]') : null;
+  if (!t) return;
+  if (t.id === 'btnCartOpen') { openCart(); return; }
+  if (t.dataset && t.dataset.add) addCheapestToCart(t.dataset.add);
+});
 const _btnVideoClose = $('#btnVideoClose');
 if (_btnVideoClose) _btnVideoClose.addEventListener('click', closeVideo);
 const _videoModal = $('#videoModal');
