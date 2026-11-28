@@ -49,7 +49,8 @@ const Store = {
   seed() {
     return {
       version: 1,
-      pin: '1234',
+      updatedAt: new Date().toISOString(), // cap sinkron Supabase (last-write-wins)
+      pin: '0606',
       waAdmin: '',
       orderSeq: 0,
       testimonials: [],
@@ -100,6 +101,9 @@ const Store = {
       const parsed = JSON.parse(raw);
       if (!parsed || !Array.isArray(parsed.products)) throw new Error('db rusak');
       this.db = parsed;
+      // DB lama belum punya cap sinkron — beri cap "sekarang" sekali (tulis langsung,
+      // tanpa Store.save supaya tidak menaikkan cap di setiap buka aplikasi).
+      if (!this.db.updatedAt) { this.db.updatedAt = new Date().toISOString(); localStorage.setItem(DB_KEY, JSON.stringify(this.db)); }
       this.migrate();
       return this.db;
     } catch (e) {
@@ -120,12 +124,17 @@ const Store = {
     (this.db.products || []).forEach((p) => {
       if (!p.image || OLD_IMGS.includes(p.image)) { p.image = 'produk-botol.jpg'; changed = true; }
     });
+    // PIN admin diganti ke 0606 (perintah user 28 Nov 2026) — hanya bila masih PIN lama 1234.
+    if (this.db.pin === '1234') { this.db.pin = '0606'; changed = true; }
     if (changed) this.save();
   },
 
   save() {
-    // ADAPTER: ganti fungsi ini untuk Supabase (upsert ke tabel ksep_db)
+    // Cap waktu perubahan lokal — dipakai sinkron Supabase (last-write-wins).
+    // ADAPTER Supabase v2: push cloud dijadwalkan SB.schedulePush() di bawah.
+    this.db.updatedAt = new Date().toISOString();
     localStorage.setItem(DB_KEY, JSON.stringify(this.db));
+    if (typeof SB !== 'undefined' && SB.schedulePush) SB.schedulePush();
   },
 
   resetToSeed() {
@@ -142,7 +151,8 @@ const Store = {
     if (!parsed || !Array.isArray(parsed.products) || !Array.isArray(parsed.orders)) {
       throw new Error('File bukan backup K-SEP yang valid');
     }
-    if (typeof parsed.pin !== 'string') parsed.pin = '1234';
+    if (typeof parsed.pin !== 'string') parsed.pin = '0606';
+    parsed.updatedAt = new Date().toISOString(); // impor dihitung sebagai perubahan terbaru
     this.db = parsed;
     this.save();
   },
@@ -878,7 +888,7 @@ function renderAdmin(view, tab) {
     view.innerHTML = `
       <div class="panel pin-box">
         <h2>Admin K-SEP</h2>
-        <p class="muted">Masukkan PIN admin untuk melanjutkan.<br>PIN awal: <strong>1234</strong> (bisa diubah di Pengaturan).</p>
+        <p class="muted">Masukkan PIN admin untuk melanjutkan.<br>PIN admin: <strong>0606</strong> (bisa diubah di Pengaturan).</p>
         <form id="pinForm">
           <label for="pinInput">PIN</label>
           <input id="pinInput" type="password" inputmode="numeric" maxlength="12" placeholder="••••" required>
@@ -1447,9 +1457,162 @@ function bindProductForm(view, existing) {
   });
 }
 
+/* ---------------- Supabase v2 — sinkron antar perangkat ----------------
+   Data (produk, orderan, pengaturan) tersimpan di Supabase proyek k-sep-parfum
+   (https://dmvetkfiepfpalgdhqog.supabase.co) sekaligus di localStorage sebagai
+   cache/offline. Sinkron last-write-wins pakai cap updatedAt: saat aplikasi
+   dibuka, yang lebih baru (lokal vs cloud) yang menang. Perubahan lokal
+   di-push otomatis ~800 mdtk setelah disimpan; bila offline, push tertunda
+   sampai aplikasi dibuka lagi dalam keadaan online.
+   Kunci anon BOLEH publik (desain Supabase) — yang menjaga adalah RLS.
+   CATATAN: PIN admin hanya gerbang di sisi aplikasi, bukan keamanan server. */
+const SB_URL = 'https://dmvetkfiepfpalgdhqog.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRtdmV0a2ZpZXBmcGFsZ2RocW9nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU4MzE3MDUsImV4cCI6MjExMTQwNzcwNX0.ok21VRPkttgQvZe3lWQBTaPiDOyteynJvUvuUg_d_lU';
+
+const SB = {
+  client: null,
+  online: false,
+  _pushTimer: null,
+
+  async init() {
+    try {
+      if (!window.supabase || !SB_URL || !SB_KEY) return false;
+      this.client = window.supabase.createClient(SB_URL, SB_KEY);
+      const work = this.pullOrPush();
+      const timeout = new Promise((res) => setTimeout(() => res('timeout'), 4000));
+      const r = await Promise.race([work, timeout]);
+      this.online = r !== 'timeout';
+      return this.online;
+    } catch (e) { this.online = false; return false; }
+  },
+
+  async pullOrPush() {
+    const c = this.client;
+    const [sRes, pRes, oRes] = await Promise.all([
+      c.from('ksep_settings').select('key,value'),
+      c.from('ksep_products').select('*'),
+      c.from('ksep_orders').select('*').order('created_at', { ascending: false }).limit(500)
+    ]);
+    if (sRes.error || pRes.error || oRes.error) throw new Error('gagal baca cloud');
+    const settings = {};
+    (sRes.data || []).forEach((r) => { settings[r.key] = r.value; });
+    const cloudEmpty = !sRes.data.length && !pRes.data.length && !oRes.data.length;
+    const cloudAt = settings.updatedAt || '';
+    const localAt = Store.db.updatedAt || '';
+    if (cloudEmpty || localAt > cloudAt) {
+      // Cloud kosong atau lokal lebih baru → dorong lokal ke cloud.
+      await this.pushAll();
+    } else if (cloudAt > localAt) {
+      // Cloud lebih baru → timpa lokal dengan data cloud.
+      this.applyCloud(pRes.data || [], oRes.data || [], settings);
+    }
+    return true;
+  },
+
+  applyCloud(pRows, oRows, settings) {
+    const db = Store.db;
+    db.products = pRows.map((r) => this.rowToProduct(r));
+    db.orders = oRows.map((r) => this.rowToOrder(r));
+    if (typeof settings.pin === 'string') db.pin = settings.pin;
+    if (typeof settings.waAdmin === 'string') db.waAdmin = settings.waAdmin;
+    if (settings.promo && typeof settings.promo === 'object') db.promo = settings.promo;
+    if (Array.isArray(settings.testimonials)) db.testimonials = settings.testimonials;
+    if (typeof settings.orderSeq === 'number') db.orderSeq = settings.orderSeq;
+    db.updatedAt = settings.updatedAt || db.updatedAt || new Date().toISOString();
+    // Tulis langsung ke localStorage (tanpa Store.save) supaya tidak memicu push balik.
+    localStorage.setItem(DB_KEY, JSON.stringify(db));
+  },
+
+  async pushAll() {
+    const c = this.client;
+    if (!c) return false;
+    try {
+      const db = Store.db;
+      const pRows = db.products.map((p) => this.productToRow(p));
+      const oRows = db.orders.map((o) => this.orderToRow(o));
+      const sRows = [
+        { key: 'pin', value: db.pin },
+        { key: 'waAdmin', value: db.waAdmin || '' },
+        { key: 'promo', value: db.promo || {} },
+        { key: 'testimonials', value: db.testimonials || [] },
+        { key: 'orderSeq', value: db.orderSeq || 0 },
+        { key: 'updatedAt', value: db.updatedAt || new Date().toISOString() }
+      ];
+      const [pe, oe, se] = await Promise.all([
+        pRows.length ? c.from('ksep_products').upsert(pRows) : Promise.resolve({ error: null }),
+        oRows.length ? c.from('ksep_orders').upsert(oRows) : Promise.resolve({ error: null }),
+        c.from('ksep_settings').upsert(sRows)
+      ]);
+      if (pe.error || oe.error || se.error) throw new Error('gagal tulis cloud');
+      // Hapus baris cloud yang sudah tidak ada di lokal (produk dihapus / reset).
+      const [pIds, oIds] = await Promise.all([
+        c.from('ksep_products').select('id'),
+        c.from('ksep_orders').select('id')
+      ]);
+      const localP = new Set(db.products.map((p) => p.id));
+      const localO = new Set(db.orders.map((o) => o.id));
+      const delP = (pIds.data || []).map((r) => r.id).filter((id) => !localP.has(id));
+      const delO = (oIds.data || []).map((r) => r.id).filter((id) => !localO.has(id));
+      await Promise.all([
+        delP.length ? c.from('ksep_products').delete().in('id', delP) : Promise.resolve(),
+        delO.length ? c.from('ksep_orders').delete().in('id', delO) : Promise.resolve()
+      ]);
+      this.online = true;
+      return true;
+    } catch (e) { this.online = false; return false; }
+  },
+
+  schedulePush() {
+    if (!this.client) return;
+    clearTimeout(this._pushTimer);
+    this._pushTimer = setTimeout(() => { this.pushAll().catch(() => {}); }, 800);
+  },
+
+  productToRow(p) {
+    return {
+      id: p.id, name: p.name, active: !!p.active, is_contoh: !!p.isContoh,
+      badge: p.badge || '', tag: p.tag || '', notes: p.notes || '',
+      image: p.image || 'produk-botol.jpg', sizes: p.sizes || {}
+    };
+  },
+
+  rowToProduct(r) {
+    return {
+      id: r.id, name: r.name, active: !!r.active, isContoh: !!r.is_contoh,
+      badge: r.badge || '', tag: r.tag || '', notes: r.notes || '',
+      image: r.image || 'produk-botol.jpg', sizes: (r.sizes && typeof r.sizes === 'object') ? r.sizes : {}
+    };
+  },
+
+  orderToRow(o) {
+    return {
+      id: o.id, no: o.no, items: o.items || [], total: o.total || 0, points: o.points || 0,
+      customer_name: o.customerName || '', wa: o.wa || '', note: o.note || '',
+      address: o.address || '', status: o.status || 'Baru',
+      created_at: o.createdAt || new Date().toISOString()
+    };
+  },
+
+  rowToOrder(r) {
+    const lines = Array.isArray(r.items) ? r.items : [];
+    const first = lines[0] || {};
+    return {
+      id: r.id, no: r.no, items: lines,
+      productId: first.productId || '', productName: first.productName || '',
+      size: first.size || '', qty: first.qty || 0, unitPrice: first.unitPrice || 0,
+      total: r.total || 0, points: r.points || 0,
+      customerName: r.customer_name || '', wa: r.wa || '', note: r.note || '',
+      address: r.address || '', status: r.status || 'Baru',
+      createdAt: r.created_at || new Date().toISOString()
+    };
+  }
+};
+
 /* ---------------- Init ---------------- */
 Store.load();
-route();
+// Sinkron Supabase dulu (maks ~4 dtk), baru render pertama — supaya tampilan
+// pertama sudah data terbaru. Bila offline/gagal, route tetap jalan dengan data lokal.
+SB.init().catch(() => {}).finally(() => route());
 const _btnCartClose = $('#btnCartClose');
 if (_btnCartClose) _btnCartClose.addEventListener('click', closeCart);
 const _cartOverlay = $('#cartOverlay');
