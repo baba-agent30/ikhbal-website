@@ -100,12 +100,27 @@ const Store = {
       const parsed = JSON.parse(raw);
       if (!parsed || !Array.isArray(parsed.products)) throw new Error('db rusak');
       this.db = parsed;
+      this.migrate();
       return this.db;
     } catch (e) {
       this.db = this.seed();
       this.save();
       return this.db;
     }
+  },
+
+  migrate() {
+    // Samakan foto katalog ke foto botol asli: produk lama tanpa gambar (seed v1/v2)
+    // atau yang masih pakai gambar AI lama (seed v3) diganti ke produk-botol.jpg.
+    // Foto custom (URL lain, mis. diisi Ade lewat admin) TIDAK diubah.
+    // Tanpa reset — order & data lain tetap aman.
+    const OLD_IMGS = ['produk-melati.jpg', 'produk-oud.jpg', 'produk-citrus.jpg',
+      'img/produk-melati.jpg', 'img/produk-oud.jpg', 'img/produk-citrus.jpg'];
+    let changed = false;
+    (this.db.products || []).forEach((p) => {
+      if (!p.image || OLD_IMGS.includes(p.image)) { p.image = 'produk-botol.jpg'; changed = true; }
+    });
+    if (changed) this.save();
   },
 
   save() {
@@ -577,9 +592,9 @@ function bindLanding(view) {
   $$('[data-scroll]', view).forEach((b) => b.addEventListener('click', () => scrollToId(b.dataset.scroll)));
   const searchBtn = $('#btnSearchToggle', view);
   if (searchBtn) searchBtn.addEventListener('click', () => {
-    const bar = $('#searchBar', view);
-    bar.hidden = !bar.hidden;
-    if (!bar.hidden) $('#searchInput', view).focus();
+    scrollToId('sec-katalog');
+    const inp = $('#searchInput', view);
+    if (inp) setTimeout(() => inp.focus({ preventScroll: true }), 500);
   });
   const searchInput = $('#searchInput', view);
   if (searchInput) searchInput.addEventListener('input', () => {
@@ -635,7 +650,7 @@ function renderKatalog(view) {
     <div class="wrap">
       <h2 class="lx-sec-title"><span class="lx-line"></span>Katalog Parfum<span class="lx-line"></span></h2>
       <p class="lx-sec-sub">Temukan aroma terbaik untuk gaya hidup Anda</p>
-      <div class="lx-search" id="searchBar" hidden>
+      <div class="lx-search" id="searchBar">
         <input id="searchInput" type="search" placeholder="Cari parfum... (contoh: oud, melati)" value="${esc(catalogQuery)}">
       </div>
       <div class="lx-grid" id="productGrid"></div>
@@ -1440,25 +1455,15 @@ if (_btnCartClose) _btnCartClose.addEventListener('click', closeCart);
 const _cartOverlay = $('#cartOverlay');
 if (_cartOverlay) _cartOverlay.addEventListener('click', closeCart);
 
-/* Tambah ukuran termurah yang masih ready ke keranjang. */
-function addCheapestToCart(productId) {
-  const p = Store.getProduct(productId);
-  const cheap = p && cheapestInStock(p);
-  if (!cheap) { toast('Stok habis'); return; }
-  const r = Cart.add(p.id, cheap.size, 1);
-  if (!r.ok) { toast(r.msg); return; }
-  toast(p.name.replace(/^CONTOH\s*[—-]\s*/i, '') + ' ' + cheap.size + ' ml masuk keranjang');
-  updateCartBadge();
-}
-
 /* Delegasi klik keranjang di document — nempel permanen, tidak hilang saat katalog
-   di-render ulang (habis cari / pindah halaman). Ini perbaikan bug "tekan keranjang
-   tidak bisa": binding langsung di tiap render bisa lepas, delegasi tidak. */
+   di-render ulang (habis cari / pindah halaman).
+   Tombol "Tambah ke Keranjang" di kartu langsung buka halaman detail (pilih ukuran),
+   bukan tambah ukuran termurah diam-diam — sesuai permintaan user 28 Nov 2026. */
 document.addEventListener('click', (ev) => {
   const t = ev.target && ev.target.closest ? ev.target.closest('#btnCartOpen, [data-add]') : null;
   if (!t) return;
   if (t.id === 'btnCartOpen') { openCart(); return; }
-  if (t.dataset && t.dataset.add) addCheapestToCart(t.dataset.add);
+  if (t.dataset && t.dataset.add) { location.hash = '#/produk/' + t.dataset.add; }
 });
 const _btnVideoClose = $('#btnVideoClose');
 if (_btnVideoClose) _btnVideoClose.addEventListener('click', closeVideo);
